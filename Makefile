@@ -28,6 +28,7 @@ deploy-model-armor:
 	@gcloud container clusters get-credentials envoy-ai-gw-cluster --region $(GCP_REGION) --project $(GCP_PROJECT) 2>/dev/null || true
 	$(MAKE) update-manifests
 	kubectl apply -k manifests/08-model-armor
+	kubectl rollout restart deployment/model-armor-extproc -n routing
 	kubectl rollout status deployment/model-armor-extproc -n routing --timeout=120s
 
 update-manifests:
