@@ -2,7 +2,7 @@ export GOOGLE_OAUTH_ACCESS_TOKEN ?= $(shell gcloud auth print-access-token)
 export GCP_PROJECT ?= $(shell gcloud config get-value project 2>/dev/null)
 export GCP_REGION ?= asia-southeast1
 
-.PHONY: deploy update-manifests apply-manifests setup-secrets benchmark placeholders clean destroy
+.PHONY: deploy deploy-model-armor update-manifests apply-manifests setup-secrets benchmark placeholders clean destroy
 
 deploy:
 	cd terraform && terraform init && terraform apply -var="project_id=$(GCP_PROJECT)" -var="region=$(GCP_REGION)" -auto-approve
@@ -12,6 +12,22 @@ deploy:
 	 gcloud container clusters get-credentials envoy-ai-gw-cluster --region $$REGION --project $$PROJECT_ID
 	$(MAKE) update-manifests
 	$(MAKE) apply-manifests
+
+deploy-model-armor:
+	cd terraform && terraform init && terraform apply \
+		-target=random_id.model_armor_suffix \
+		-target=google_project_service.model_armor_api \
+		-target=google_project_service.dlp_api \
+		-target=google_project_iam_member.model_armor_user \
+		-target=google_project_iam_member.dlp_user \
+		-target=google_project_iam_member.dlp_templates_reader \
+		-target=google_data_loss_prevention_inspect_template.ai_guardrail_inspect \
+		-target=google_data_loss_prevention_deidentify_template.ai_guardrail_deid \
+		-target=null_resource.model_armor_template \
+		-var="project_id=$(GCP_PROJECT)" -var="region=$(GCP_REGION)" -auto-approve
+	@gcloud container clusters get-credentials envoy-ai-gw-cluster --region $(GCP_REGION) --project $(GCP_PROJECT) 2>/dev/null || true
+	$(MAKE) update-manifests
+	kubectl apply -k manifests/08-model-armor
 
 update-manifests:
 	@echo "Updating manifest placeholders from Terraform outputs..."
