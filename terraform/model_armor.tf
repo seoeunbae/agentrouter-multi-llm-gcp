@@ -98,7 +98,7 @@ resource "google_data_loss_prevention_deidentify_template" "ai_guardrail_deid" {
     info_type_transformations {
       transformations {
         primitive_transformation {
-          replace_with_info_type_config {}
+          replace_with_info_type_config = true
         }
       }
     }
