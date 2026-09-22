@@ -134,7 +134,7 @@ kubectl rollout status deployment/envoy-gateway -n envoy-gateway-system --timeou
 kubectl rollout status deployment/ai-gateway-controller -n default --timeout=180s
 ```
 
-### 4.4 01번부터 07번까지 순차 배포
+### 4.4 01번부터 08번까지 순차 배포
 ```bash
 # 1. Gateway 및 프록시 설정
 kubectl apply -k manifests/01-gateway
@@ -164,6 +164,10 @@ if ! gcloud monitoring dashboards list --project="$GCP_PROJECT" --filter="displa
   gcloud monitoring dashboards create --project="$GCP_PROJECT" \
     --config-from-file=manifests/07-observability/dashboards/vllm-dashboard.json
 fi
+
+# 8. Google Cloud Model Armor & Cloud DLP ext_proc 가드레일 배포
+kubectl apply -k manifests/08-model-armor
+kubectl rollout status deployment/model-armor-extproc -n routing --timeout=120s
 ```
 
 ### 4.5 배포 상태 점검
@@ -171,7 +175,7 @@ fi
 ```bash
 kubectl get pods -A
 ```
-`envoy-routing-*`, `vllm-server-*`, `llm-d-router-*`, `phoenix-*` 파드가 모두 `Running` 및 `Ready` 상태인지 확인하십시오.
+`envoy-routing-*`, `model-armor-extproc-*`, `vllm-server-*`, `llm-d-router-*`, `phoenix-*` 파드가 모두 `Running` 및 `Ready` 상태인지 확인하십시오.
 
 ---
 
