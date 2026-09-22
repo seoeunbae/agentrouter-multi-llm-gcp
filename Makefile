@@ -28,14 +28,15 @@ deploy-model-armor:
 	@gcloud container clusters get-credentials envoy-ai-gw-cluster --region $(GCP_REGION) --project $(GCP_PROJECT) 2>/dev/null || true
 	$(MAKE) update-manifests
 	kubectl apply -k manifests/08-model-armor
+	kubectl rollout status deployment/model-armor-extproc -n routing --timeout=120s
 
 update-manifests:
 	@echo "Updating manifest placeholders from Terraform outputs..."
-	@PROJECT_ID=$$(cd terraform && terraform output -raw project_id 2>/dev/null || echo "$(GCP_PROJECT)") && \
+	@PROJECT_ID=$$(cd terraform && terraform output -raw project_id 2>/dev/null); PROJECT_ID=$${PROJECT_ID:-$(GCP_PROJECT)} && \
 	 BUCKET=$$(cd terraform && terraform output -raw gcs_bucket_name 2>/dev/null || echo "") && \
 	 GSA=$$(cd terraform && terraform output -raw gsa_email 2>/dev/null || echo "") && \
 	 SQL=$$(cd terraform && terraform output -raw sql_connection_name 2>/dev/null || echo "") && \
-	 MA_LOC=$$(cd terraform && terraform output -raw model_armor_location 2>/dev/null || echo "us-central1") && \
+	 MA_LOC=$$(cd terraform && terraform output -raw model_armor_location 2>/dev/null); MA_LOC=$${MA_LOC:-us-central1} && \
 	 MA_TMPL=$$(cd terraform && terraform output -raw model_armor_template_id 2>/dev/null || echo "") && \
 	 if [ -n "$$BUCKET" ]; then sed -i "s|GCS_BUCKET_NAME_PLACEHOLDER|$$BUCKET|g" manifests/03-vllm/*.yaml; fi && \
 	 if [ -n "$$GSA" ]; then sed -i "s|GSA_EMAIL_PLACEHOLDER|$$GSA|g" manifests/01-gateway/*.yaml manifests/03-vllm/*.yaml manifests/07-observability/phoenix/*.yaml tests/e2e/benchmark/*.yaml; fi && \
