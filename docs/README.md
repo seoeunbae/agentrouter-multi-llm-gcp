@@ -1,47 +1,22 @@
----
-hide:
-  - navigation
----
-
 # Multi-LLM Serving Architecture with Agentrouter
+
+> **Languages:** [English](README.md) | [한국어](ko/README.md)
 
 An enterprise multi-LLM serving platform combining **[Agentrouter (formerly Envoy AI Gateway)](https://github.com/theagentrouter/agent-router)** (`v1.1.0`), **Kubernetes Gateway API Inference Extension (GIE `v1.6.0`)**, **llm-d-router (`EPP v0.10.0`)**, **vLLM**, **Google Cloud Model Armor & Cloud DLP**, and **Vertex AI** on **Google Kubernetes Engine (GKE)**.
 
-<div class="grid cards" markdown>
+---
 
--   :material-rocket-launch:{ .lg .middle } __Quickstart & Deployment__
+## Documentation Navigation
 
-    ---
-
-    Provision GKE, L4 GPUs, Cloud SQL, GCS, and deploy the full AI gateway stack with `make deploy`.
-
-    [:octicons-arrow-right-24: Quickstart Guide](getting-started/quickstart.md)
-
--   :material-school:{ .lg .middle } __Customer Workshop Guide__
-
-    ---
-
-    Step-by-step hands-on walkthrough covering IAM, GPU quotas, 3-tier auth, EPP prefix cache, Model Armor, and Phoenix tracing.
-
-    [:octicons-arrow-right-24: Workshop Guide](getting-started/workshop-guide.md)
-
--   :material-sitemap:{ .lg .middle } __Architecture & Request Flow__
-
-    ---
-
-    Explore Kubernetes Gateway API resource hierarchies and end-to-end sequence diagrams across every persona.
-
-    [:octicons-arrow-right-24: Architecture Diagrams](architecture/gateway-resources.md)
-
--   :material-check-decagram:{ .lg .middle } __Verification & Operations__
-
-    ---
-
-    Scenario-by-scenario manual test procedures and Claude Code (`advisor-tool-2026-03-01`) Vertex AI compatibility guide.
-
-    [:octicons-arrow-right-24: Manual Testing Guide](operations/manual-test-guide.md)
-
-</div>
+| Section | Guide | Summary |
+|---|---|---|
+| **Getting Started** | [Quickstart & Deployment](getting-started/quickstart.md) | Provision GKE, L4 GPUs, Cloud SQL, GCS, and deploy the full AI gateway stack with `make deploy`. |
+| **Getting Started** | [Customer Workshop Guide](getting-started/workshop-guide.md) | Step-by-step hands-on walkthrough covering IAM, GPU quotas, 3-tier auth, EPP prefix cache, Model Armor, and Phoenix tracing. |
+| **Architecture & Design** | [Gateway & Resource Hierarchy](architecture/gateway-resources.md) | Explore Kubernetes Gateway API resource hierarchies and routing policy attachments. |
+| **Architecture & Design** | [End-to-End Request Flow](architecture/request-flow.md) | Sequence diagrams across employee, microservice, and external partner personas. |
+| **Architecture & Design** | [Project Specification](architecture/project-spec.md) | Full feature inventory, milestone verification matrix, and interface contracts. |
+| **Verification & Guides** | [Manual Testing Guide](operations/manual-test-guide.md) | Scenario-by-scenario manual test procedures and verification commands. |
+| **Verification & Guides** | [Claude Code & Vertex AI Compatibility](operations/claude-code-compatibility.md) | Root-cause analysis and gateway solutions for `advisor-tool-2026-03-01` beta headers on Vertex AI. |
 
 ---
 

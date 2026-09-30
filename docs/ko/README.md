@@ -1,47 +1,22 @@
----
-hide:
-  - navigation
----
-
 # Agentrouter 기반 멀티 LLM 서빙 아키텍처
+
+> **Languages:** [English](../README.md) | [한국어](README.md)
 
 Google Kubernetes Engine(GKE) 환경에서 **[Agentrouter (formerly Envoy AI Gateway)](https://github.com/theagentrouter/agent-router)**(`v1.1.0`), **Kubernetes Gateway API Inference Extension(GIE `v1.6.0`)**, **llm-d-router(`EPP v0.10.0`)**, **vLLM**, **Google Cloud Model Armor & Cloud DLP** 및 **Vertex AI**를 결합한 엔터프라이즈 멀티 LLM 서빙 플랫폼입니다.
 
-<div class="grid cards" markdown>
+---
 
--   :material-rocket-launch:{ .lg .middle } __빠른 시작 및 배포__
+## 문서 바로가기
 
-    ---
-
-    `make deploy` 명령 한 줄로 GKE, L4 GPU, Cloud SQL, GCS 인프라와 AI 게이트웨이 전체 스택을 배포합니다.
-
-    [:octicons-arrow-right-24: 빠른 시작 가이드](getting-started/quickstart.md)
-
--   :material-school:{ .lg .middle } __고객 워크숍 가이드__
-
-    ---
-
-    IAM 권한, GPU 쿼터 점검, 3대 다계층 인증, EPP 접두사 캐시, Model Armor 가드레일, Phoenix 관측성까지 단계별 실습을 안내합니다.
-
-    [:octicons-arrow-right-24: 워크숍 가이드](getting-started/workshop-guide.md)
-
--   :material-sitemap:{ .lg .middle } __아키텍처 & 요청 흐름__
-
-    ---
-
-    Kubernetes Gateway API 리소스 계층 구조와 페르소나별 엔드투엔드 시퀀스 다이어그램을 확인합니다.
-
-    [:octicons-arrow-right-24: 아키텍처 다이어그램](architecture/gateway-resources.md)
-
--   :material-check-decagram:{ .lg .middle } __검증 & 운영 가이드__
-
-    ---
-
-    시나리오별 수동 검증 절차와 Claude Code(`advisor-tool-2026-03-01`) 및 Vertex AI 호환성 가이드를 제공합니다.
-
-    [:octicons-arrow-right-24: 수동 테스트 가이드](operations/manual-test-guide.md)
-
-</div>
+| 분류 | 가이드 문서 | 핵심 내용 |
+|---|---|---|
+| **시작하기** | [빠른 시작 및 배포](getting-started/quickstart.md) | `make deploy` 명령 한 줄로 GKE, L4 GPU, Cloud SQL, GCS 인프라와 AI 게이트웨이 전체 스택을 배포합니다. |
+| **시작하기** | [고객 워크숍 가이드](getting-started/workshop-guide.md) | IAM 권한, GPU 쿼터 점검, 3대 다계층 인증, EPP 접두사 캐시, Model Armor 가드레일, Phoenix 관측성까지 단계별 실습을 안내합니다. |
+| **아키텍처 & 설계** | [게이트웨이 및 리소스 계층 구조](architecture/gateway-resources.md) | Kubernetes Gateway API 리소스 계층 구조와 라우팅·정책 연결 관계를 확인합니다. |
+| **아키텍처 & 설계** | [엔드투엔드 요청 처리 흐름](architecture/request-flow.md) | 사내 임직원, 내부 마이크로서비스, 외부 파트너 페르소나별 엔드투엔드 시퀀스 다이어그램을 확인합니다. |
+| **아키텍처 & 설계** | [프로젝트 설계 명세](architecture/project-spec.md) | 전체 기능 인벤토리, 마일스톤 검증 매트릭스 및 컴포넌트 간 인터페이스 계약을 정의합니다. |
+| **검증 & 운영 가이드** | [수동 테스트 가이드](operations/manual-test-guide.md) | 시나리오별 수동 검증 절차와 점검 명령어를 제공합니다. |
+| **검증 & 운영 가이드** | [Claude Code & Vertex AI 호환성 가이드](operations/claude-code-compatibility.md) | Claude Code의 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 원인과 해결 방안을 안내합니다. |
 
 ---
 
