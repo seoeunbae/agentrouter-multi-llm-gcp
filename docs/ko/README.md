@@ -1,7 +1,5 @@
 # Agentrouter 기반 멀티 LLM 서빙 아키텍처
 
-> **Languages:** [English](../README.md) | [한국어](README.md)
-
 Google Kubernetes Engine(GKE) 환경에서 **[Agentrouter (formerly Envoy AI Gateway)](https://github.com/theagentrouter/agent-router)**(`v1.1.0`), **Kubernetes Gateway API Inference Extension(GIE `v1.6.0`)**, **llm-d-router(`EPP v0.10.0`)**, **vLLM**, **Google Cloud Model Armor & Cloud DLP** 및 **Vertex AI**를 결합한 엔터프라이즈 멀티 LLM 서빙 플랫폼입니다.
 
 ---

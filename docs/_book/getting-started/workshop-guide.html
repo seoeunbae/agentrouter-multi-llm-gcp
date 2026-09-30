@@ -1,0 +1,972 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Customer Workshop Guide · HonKit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../architecture/gateway-resources.html" />
+    
+    
+    <link rel="prev" href="quickstart.html" />
+    
+
+    <style>
+        .book-header .lang-switch-container {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            padding: 0 14px;
+            position: relative;
+            z-index: 10;
+        }
+        .book-header .lang-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 999px;
+            padding: 2px;
+            text-decoration: none !important;
+            line-height: 1;
+            height: 28px;
+            box-sizing: border-box;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        .book-header .lang-toggle-pill:hover {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        .book-header .lang-toggle-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            height: 22px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7e888b;
+            transition: all 0.18s ease;
+            user-select: none;
+        }
+        .book-header .lang-toggle-option.active {
+            background: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-pill {
+            background: rgba(112, 66, 20, 0.1);
+            border-color: rgba(112, 66, 20, 0.2);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-option.active {
+            background: #f3eacb;
+            color: #704214;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option {
+            color: #9da5b4;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option.active {
+            background: #2d3143;
+            color: #68a0f8;
+        }
+    </style>
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+            
+            
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Getting Started</li>
+            
+            
+    
+        <li class="chapter " data-level="2.1" data-path="quickstart.html">
+            
+                <a href="quickstart.html">
+            
+                    
+                    Quickstart & Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.2" data-path="workshop-guide.html">
+            
+                <a href="workshop-guide.html">
+            
+                    
+                    Customer Workshop Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Architecture & Design</li>
+            
+            
+    
+        <li class="chapter " data-level="3.1" data-path="../architecture/gateway-resources.html">
+            
+                <a href="../architecture/gateway-resources.html">
+            
+                    
+                    Gateway & Resource Hierarchy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../architecture/request-flow.html">
+            
+                <a href="../architecture/request-flow.html">
+            
+                    
+                    End-to-End Request Flow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../architecture/project-spec.html">
+            
+                <a href="../architecture/project-spec.html">
+            
+                    
+                    Project Specification
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Verification & Guides</li>
+            
+            
+    
+        <li class="chapter " data-level="4.1" data-path="../operations/manual-test-guide.html">
+            
+                <a href="../operations/manual-test-guide.html">
+            
+                    
+                    Manual Testing Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../operations/claude-code-compatibility.html">
+            
+                <a href="../operations/claude-code-compatibility.html">
+            
+                    
+                    Claude Code & Vertex AI Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+
+
+    
+    
+
+<div class="book-header" role="navigation">
+    
+
+    <div class="lang-switch-container pull-right">
+        <a href="../ko/getting-started/workshop-guide.html" class="lang-toggle-pill" title="한국어로 전환" aria-label="한국어로 전환">
+            <span class="lang-toggle-option active">EN</span>
+            <span class="lang-toggle-option ">한국어</span>
+        </a>
+    </div>
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Customer Workshop Guide</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="agentrouter-multi-llm-serving-customer-workshop-guide">Agentrouter Multi-LLM Serving Customer Workshop Guide</h1>
+<p>This guide walks through deploying and verifying an enterprise AI serving platform on Google Kubernetes Engine (GKE) using <a href="https://github.com/theagentrouter/agent-router" target="_blank">Agentrouter (formerly Envoy AI Gateway)</a>, Kubernetes Gateway API Inference Extension (GIE), llm-d-router (EPP), vLLM, Vertex AI, and <a href="https://github.com/Arize-ai/phoenix" target="_blank">Arize Phoenix</a>.</p>
+<p>Participants will experience enterprise AI gateway capabilities firsthand, including multi-tier authentication, partner token budget isolation, KV cache prefix acceleration, header spoofing defense, and full-stack distributed tracing.</p>
+<hr></hr>
+<h2 id="1-workshop-overview--architecture">1. Workshop Overview &amp; Architecture</h2>
+<p>Participants build an enterprise AI serving infrastructure from a single gateway endpoint supporting internal developer workstations, internal microservices, and external partner integrations.</p>
+<ul>
+<li><strong>Infrastructure Layer</strong>: Provisions a GKE Standard cluster with 2x NVIDIA L4 GPU Spot node pools (<code>g2-standard-8</code>), a Cloud SQL PostgreSQL 16 instance, and a Cloud Storage bucket.</li>
+<li><strong>Inference Backend Layer</strong>: Integrates Google Cloud Vertex AI (Gemini 2.5 Flash and Claude Sonnet 5) alongside self-hosted vLLM (Gemma 2B).</li>
+<li><strong>Intelligent Routing &amp; Cache Acceleration</strong>: Applies Kubernetes GIE <code>InferencePool</code> and <code>llm-d-router</code> (EPP) prefix cache scoring to reduce GPU prefill latency.</li>
+<li><strong>Multi-Tier Security &amp; Authorization</strong>: Enforces GCIP JWTs, Google SA ID tokens, and partner API keys with isolated token rate limits per tenant.</li>
+<li><strong>Full-Stack Observability</strong>: Collects OpenInference traces in Arize Phoenix and vLLM Prometheus metrics in Google Cloud Monitoring.</li>
+</ul>
+<p>For detailed architecture and request sequence diagrams, see:</p>
+<ul>
+<li><a href="../architecture/gateway-resources.html">Resource Structure &amp; Layer Diagram</a></li>
+<li><a href="../architecture/request-flow.html">End-to-End Request Sequence Flow</a></li>
+</ul>
+<hr></hr>
+<h2 id="2-prerequisites--environment-preparation">2. Prerequisites &amp; Environment Preparation</h2>
+<h3 id="21-required-local-tools">2.1 Required Local Tools</h3>
+<p>Ensure the following CLI tools are installed in your local shell or Cloud Shell:</p>
+<ul>
+<li>Google Cloud SDK (<code>gcloud</code> CLI)</li>
+<li>Terraform (v1.5 or higher recommended)</li>
+<li>Kubernetes CLI (<code>kubectl</code>)</li>
+<li><code>jq</code>, <code>curl</code></li>
+</ul>
+<h3 id="22-hugging-face-access-token-required">2.2 Hugging Face Access Token (Required)</h3>
+<p>Downloading <code>google/gemma-2-2b-it</code> weights to Cloud Storage requires a Hugging Face account with accepted model license terms:</p>
+<ol>
+<li>Visit the <a href="https://huggingface.co/google/gemma-2-2b-it" target="_blank">Hugging Face Gemma-2-2b-it page</a> and accept the license agreement.</li>
+<li>Generate a token with <code>Read</code> permissions under <code>Settings &gt; Access Tokens</code>.</li>
+</ol>
+<h3 id="23-gcp-iam-roles">2.3 GCP IAM Roles</h3>
+<p>Your GCP account must hold the following IAM roles in the target project:</p>
+<ul>
+<li>Kubernetes Engine Admin (<code>roles/container.admin</code>)</li>
+<li>Compute Admin (<code>roles/compute.admin</code>)</li>
+<li>Cloud SQL Admin (<code>roles/cloudsql.admin</code>)</li>
+<li>Storage Admin (<code>roles/storage.admin</code>)</li>
+<li>Service Account Admin &amp; User (<code>roles/iam.serviceAccountAdmin</code>, <code>roles/iam.serviceAccountUser</code>)</li>
+<li>Service Account Token Creator (<code>roles/iam.serviceAccountTokenCreator</code> - required for SA impersonation &amp; JWT signing)</li>
+<li>Vertex AI User (<code>roles/aiplatform.user</code>)</li>
+</ul>
+<h3 id="24-enable-required-gcp-apis--identity-platform-gcip-setup">2.4 Enable Required GCP APIs &amp; Identity Platform (GCIP) Setup</h3>
+<p>Enable all required Google Cloud APIs in your target project:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">export</span> GCP_PROJECT=<span class="hljs-string">"&lt;YOUR_PROJECT_ID&gt;"</span>
+<span class="hljs-built_in">export</span> GCP_REGION=<span class="hljs-string">"asia-southeast1"</span>
+
+gcloud services <span class="hljs-built_in">enable</span> compute.googleapis.com container.googleapis.com \
+  sqladmin.googleapis.com storage.googleapis.com iam.googleapis.com \
+  iamcredentials.googleapis.com aiplatform.googleapis.com \
+  identitytoolkit.googleapis.com firebase.googleapis.com --project=<span class="hljs-variable">$GCP_PROJECT</span>
+</code></pre>
+<p>In addition, to run the employee JWT token script (<code>scripts/gcip-token.sh</code>), enable <strong>Identity Platform (or Firebase Authentication)</strong> in the Google Cloud Console for your project and register one Web App.</p>
+<h3 id="25-check-nvidia-l4-gpu-quota">2.5 Check NVIDIA L4 GPU Quota</h3>
+<p>Provisioning 2 NVIDIA L4 GPUs requires at least 2 regional <code>NVIDIA_L4_GPUS</code> quota in your target region:</p>
+<pre><code class="lang-bash">gcloud compute regions describe <span class="hljs-variable">$GCP_REGION</span> \
+  --project=<span class="hljs-variable">$GCP_PROJECT</span> \
+  --format=<span class="hljs-string">"json"</span> | jq -r <span class="hljs-string">'.quotas[] | select(.metric | contains("NVIDIA_L4_GPUS"))'</span>
+</code></pre>
+<p>Verify that <code>limit</code> is at least <code>2</code>. Request a quota increase under <code>IAM &amp; Admin &gt; Quotas</code> if needed.</p>
+<hr></hr>
+<h2 id="3-step-1-terraform-infrastructure-provisioning">3. Step 1: Terraform Infrastructure Provisioning</h2>
+<p>Provision the VPC network, GKE cluster, L4 GPU Spot node pools, Cloud SQL PostgreSQL 16 instance, Cloud Storage bucket, and Workload Identity service accounts.</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">cd</span> terraform
+
+<span class="hljs-comment"># 1. Initialize Terraform</span>
+terraform init
+
+<span class="hljs-comment"># 2. Provision infrastructure (takes ~12-15 minutes)</span>
+terraform apply -var=<span class="hljs-string">"project_id=<span class="hljs-variable">$GCP_PROJECT</span>"</span> -var=<span class="hljs-string">"region=<span class="hljs-variable">$GCP_REGION</span>"</span> -auto-approve
+
+<span class="hljs-comment"># 3. Fetch GKE cluster credentials</span>
+gcloud container clusters get-credentials envoy-ai-gw-cluster \
+  --region=<span class="hljs-variable">$GCP_REGION</span> \
+  --project=<span class="hljs-variable">$GCP_PROJECT</span>
+
+<span class="hljs-built_in">cd</span> ..
+</code></pre>
+<hr></hr>
+<h2 id="4-step-2-sequential-kubernetes-deployment">4. Step 2: Sequential Kubernetes Deployment</h2>
+<p>Manifests are organized into numbered directories by dependency order.</p>
+<h3 id="41-substitute-manifest-placeholders--hugging-face-token">4.1 Substitute Manifest Placeholders &amp; Hugging Face Token</h3>
+<p>Export your Hugging Face token and substitute all Terraform output placeholders across the manifests:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">export</span> HF_TOKEN=<span class="hljs-string">"hf_your_token_here"</span>
+
+<span class="hljs-comment"># Automatically substitute Terraform outputs and HF_TOKEN</span>
+make update-manifests
+</code></pre>
+<h3 id="42-create-secret-for-vertex-ai-backend-delegation">4.2 Create Secret for Vertex AI Backend Delegation</h3>
+<p>Create the <code>vertex-ai-sa-key</code> secret referenced by <code>BackendSecurityPolicy</code> so the gateway can authenticate to Google Cloud Vertex AI on behalf of clients:</p>
+<pre><code class="lang-bash">make setup-secrets
+</code></pre>
+<p><em>(This creates the <code>routing</code> namespace, generates a JSON key for <code>envoy-ai-workload-sa</code>, and stores it in K8s Secret <code>vertex-ai-sa-key</code>.)</em></p>
+<h3 id="43-install-base-crds--core-controllers">4.3 Install Base CRDs &amp; Core Controllers</h3>
+<p>Because the Envoy Gateway and AI Gateway CRDs are large, apply them with <code>--server-side</code>. Then deploy the Envoy Gateway controller, GIE controller, and Agent Router controller, restart Envoy Gateway to reload its custom config, and wait for them to become ready:</p>
+<pre><code class="lang-bash">kubectl apply --server-side -f manifests/00-setup/envoy-gateway-crds.yaml
+kubectl apply --server-side -f manifests/00-setup/agent-router-crds.yaml
+kubectl apply -f manifests/00-setup/envoy-gateway-controller.yaml
+kubectl apply -f manifests/00-setup/gie-install.yaml
+kubectl apply -f manifests/00-setup/agent-router.yaml
+kubectl apply -f manifests/00-setup/envoy-gateway-config.yaml
+kubectl apply -f manifests/00-setup/envoy-ai-gateway-ratelimit-svc.yaml
+
+<span class="hljs-comment"># Restart controller to load custom config and wait for readiness</span>
+kubectl rollout restart deployment/envoy-gateway -n envoy-gateway-system
+kubectl rollout status deployment/envoy-gateway -n envoy-gateway-system --<span class="hljs-built_in">timeout</span>=180s
+kubectl rollout status deployment/ai-gateway-controller -n default --<span class="hljs-built_in">timeout</span>=180s
+</code></pre>
+<h3 id="44-deploy-manifests-01-through-07">4.4 Deploy Manifests 01 through 07</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Gateway and Envoy proxy configuration</span>
+kubectl apply -k manifests/01-gateway
+
+<span class="hljs-comment"># 2. Global security policy and partner key issuer</span>
+kubectl apply -k manifests/02-security
+
+<span class="hljs-comment"># 3. vLLM GPU serving engine (includes model weight loader job)</span>
+kubectl apply -k manifests/03-vllm
+kubectl <span class="hljs-built_in">wait</span> --<span class="hljs-keyword">for</span>=condition=complete job/hf-weight-loader -n vllm --<span class="hljs-built_in">timeout</span>=600s
+kubectl rollout restart deployment/vllm-server -n vllm
+
+<span class="hljs-comment"># 4. GIE InferencePool and llm-d-router EPP (includes cross-namespace ReferenceGrant)</span>
+kubectl apply -k manifests/04-inference-pool
+
+<span class="hljs-comment"># 5. Intelligent model routing and echo test server</span>
+kubectl apply -k manifests/05-routing
+
+<span class="hljs-comment"># 6. Redis and token quota/rate-limit policies</span>
+kubectl apply -k manifests/06-traffic-policy
+
+<span class="hljs-comment"># 7. Arize Phoenix, PodMonitoring, and Cloud Monitoring Dashboard</span>
+kubectl apply -k manifests/07-observability
+
+<span class="hljs-comment"># Create custom vLLM Cloud Monitoring dashboard (idempotent)</span>
+<span class="hljs-keyword">if</span> ! gcloud monitoring dashboards list --project=<span class="hljs-string">"<span class="hljs-variable">$GCP_PROJECT</span>"</span> --filter=<span class="hljs-string">"displayName:'vLLM Model Server Monitoring'"</span> --format=<span class="hljs-string">"value(name)"</span> | grep -q .; <span class="hljs-keyword">then</span>
+  gcloud monitoring dashboards create --project=<span class="hljs-string">"<span class="hljs-variable">$GCP_PROJECT</span>"</span> \
+    --config-from-file=manifests/07-observability/dashboards/vllm-dashboard.json
+<span class="hljs-keyword">fi</span>
+</code></pre>
+<h3 id="45-verify-deployment-status">4.5 Verify Deployment Status</h3>
+<p>Wait until all pods reach <code>Running</code> and <code>Ready</code> status (<code>hf-weight-loader</code> downloads model weights to GCS before <code>vllm-server</code> initializes, which takes ~5-8 minutes):</p>
+<pre><code class="lang-bash">kubectl get pods -A
+</code></pre>
+<p>Confirm that <code>envoy-routing-*</code>, <code>vllm-server-*</code>, <code>llm-d-router-*</code>, and <code>phoenix-*</code> pods are <code>Running</code> and <code>Ready</code>.</p>
+<hr></hr>
+<h2 id="5-step-3-hands-on-verification-scenarios">5. Step 3: Hands-On Verification Scenarios</h2>
+<p>Export the Gateway external IP address:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">export</span> GW=<span class="hljs-string">"http://<span class="hljs-subst">$(kubectl get gateway envoy-ai-gateway -n routing -o jsonpath='{.status.addresses[0].value}')</span>:8080"</span>
+<span class="hljs-built_in">export</span> PARTNER_HOST=<span class="hljs-string">"partner.agent-router.internal"</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Gateway Endpoint: <span class="hljs-variable">$GW</span>"</span>
+</code></pre>
+<hr></hr>
+<h3 id="51-pre-flight-healthcheck">5.1 Pre-Flight Healthcheck</h3>
+<p>Verify that the gateway listener is responding:</p>
+<pre><code class="lang-bash">curl -s -o /dev/null -w <span class="hljs-string">"%{http_code}\n"</span> <span class="hljs-string">"<span class="hljs-variable">$GW</span>"</span>
+</code></pre>
+<p>An HTTP <code>404</code> response confirms the Envoy listener is active (no root path route is configured).</p>
+<hr></hr>
+<h3 id="52-scenario-1-employee-rest-api-gcip-jwt--vertex-ai-models">5.2 Scenario 1: Employee REST API (GCIP JWT) &amp; Vertex AI Models</h3>
+<p>Issue a signed GCIP JWT token and invoke Google Cloud Vertex AI models (Gemini and Claude) through the gateway.</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Issue employee JWT token (department: platform)</span>
+<span class="hljs-built_in">export</span> GT=$(./scripts/gcip-token.sh alice platform)
+
+<span class="hljs-comment"># 2. Invoke Vertex AI Gemini 2.5 Flash</span>
+curl -sS -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$GT</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "model": "gemini-2.5-flash",
+    "messages": [{"role": "user", "content": "Summarize the benefits of Kubernetes Gateway API in one sentence."}],
+    "max_tokens": 1500
+  }'</span> | jq .
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: HTTP <code>200 OK</code>. Even though the client has no direct GCP IAM permissions or Vertex API key, the gateway authenticates upstream using its <code>BackendSecurityPolicy</code>.</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-comment"># 3. Invoke Vertex AI Claude Sonnet 5 (Anthropic Messages API)</span>
+curl -sS -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/anthropic/v1/messages"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$GT</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "model": "claude-sonnet-5",
+    "messages": [{"role": "user", "content": "Say hello in Korean"}],
+    "max_tokens": 30
+  }'</span> | jq .
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: HTTP <code>200 OK</code> returning a standard <code>type: "message"</code> payload from Claude.</li>
+</ul>
+<h4 id="521-employee-ai-coding-agent-claude-code-cli-integration">5.2.1 Employee AI Coding Agent (Claude Code CLI) Integration</h4>
+<p>Configure Claude Code (<code>claude</code> CLI) on a Cloud Workstation or local machine to route through Envoy AI Gateway using <code>apiKeyHelper</code> for dynamic token injection:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Generate Claude Code gateway settings</span>
+python3 scripts/prepare_ws_settings.py
+
+<span class="hljs-comment"># 2. Apply generated settings to Claude Code configuration</span>
+<span class="hljs-built_in">mkdir</span> -p ~/.claude
+<span class="hljs-built_in">cp</span> /tmp/new_settings.json ~/.claude/settings.json
+</code></pre>
+<ul>
+<li><strong>Key Configuration Settings</strong>:<ul>
+<li><code>"ANTHROPIC_BASE_URL": "$GW/anthropic"</code>: Routes all requests through the gateway's Anthropic-compatible endpoint.</li>
+<li><code>"apiKeyHelper"</code>: Dynamically invokes <code>gcip-token.sh</code> to inject fresh corporate JWT tokens.</li>
+<li><code>"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"</code>: Prevents experimental beta headers (<code>advisor-tool-2026-03-01</code>) from conflicting with Vertex AI's schema validation. See the <a href="../operations/claude-code-compatibility.html">Claude Code &amp; Vertex AI Compatibility Guide</a> for architectural details.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-comment"># 3. Run a one-shot prompt via Claude Code CLI</span>
+claude -p <span class="hljs-string">"Say hello in 3 words"</span>
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: Exits with code <code>0</code> and outputs a 3-word greeting routed through Envoy AI Gateway.</li>
+</ul>
+<hr></hr>
+<h3 id="53-scenario-2-security-verification-—-header-spoofing-defense-authtest">5.3 Scenario 2: Security Verification — Header Spoofing Defense (<code>/authtest</code>)</h3>
+<p>Verify that if a malicious client attempts to spoof their department header (<code>x-tenant-id: finance-vip</code>), the gateway overwrites it using the verified JWT claim (<code>department: platform</code>).</p>
+<blockquote>
+<p>[!NOTE]
+<code>/authtest</code> routes to an echo server (<code>mendhak/http-https-echo</code>) behind the same Gateway <code>SecurityPolicy</code> to inspect the exact headers delivered upstream.</p>
+</blockquote>
+<pre><code class="lang-bash">curl -sS -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/authtest"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$GT</span>"</span> \
+  -H <span class="hljs-string">"x-tenant-id: finance-vip"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{}'</span> | jq .headers
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: The echoed <code>"x-tenant-id"</code> header is <code>"platform"</code> (from the signed JWT claim), neutralizing the client's <code>"finance-vip"</code> spoofing attempt.</li>
+</ul>
+<hr></hr>
+<h3 id="54-scenario-3-internal-microservice-google-sa-id-token">5.4 Scenario 3: Internal Microservice (Google SA ID Token)</h3>
+<p>Verify keyless authentication for internal microservices or batch jobs using Google Service Account OpenID Connect (OIDC) ID tokens. In a local terminal, use <code>--impersonate-service-account</code> to mint an OIDC token with a custom audience:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Mint Google SA ID token (impersonation and audience required)</span>
+<span class="hljs-built_in">export</span> SA_EMAIL=<span class="hljs-string">"envoy-ai-workload-sa@<span class="hljs-variable">${GCP_PROJECT}</span>.iam.gserviceaccount.com"</span>
+<span class="hljs-built_in">export</span> SA_TOKEN=$(gcloud auth print-identity-token \
+  --impersonate-service-account=<span class="hljs-string">"<span class="hljs-variable">$SA_EMAIL</span>"</span> \
+  --audiences=https://agent-router.internal \
+  --include-email)
+
+<span class="hljs-comment"># 2. Invoke self-hosted Gemma 2B model</span>
+curl -sS -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$SA_TOKEN</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "model": "gemma-rr",
+    "messages": [{"role": "user", "content": "Healthcheck from microservice"}],
+    "max_tokens": 15
+  }'</span> | jq .
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: HTTP <code>200 OK</code> with <code>system_fingerprint</code> showing <code>vllm-0.29.0</code>. The gateway extracts the <code>email</code> claim and injects it into <code>x-tenant-id</code>.</li>
+</ul>
+<hr></hr>
+<h3 id="55-scenario-4-external-partner-integration--quota-isolation-api-key">5.5 Scenario 4: External Partner Integration &amp; Quota Isolation (API Key)</h3>
+<p>Verify model allowlisting and independent per-partner token rate limiting using API keys.</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Retrieve pre-deployed partner API keys</span>
+<span class="hljs-built_in">export</span> AK=$(kubectl get secret partner-api-keys -n routing -o jsonpath=<span class="hljs-string">'{.data.acme-corp}'</span> | <span class="hljs-built_in">base64</span> -d)
+<span class="hljs-built_in">export</span> GK=$(kubectl get secret partner-api-keys -n routing -o jsonpath=<span class="hljs-string">'{.data.globex}'</span> | <span class="hljs-built_in">base64</span> -d)
+
+<span class="hljs-comment"># 2. Dynamically issue a new partner key via Key Issuer</span>
+kubectl <span class="hljs-built_in">exec</span> -n routing deploy/keyissuer -- python3 /app/client.py | jq .
+
+<span class="hljs-comment"># 3. Invoke authorized model (gemma-rr)</span>
+curl -sS -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Host: <span class="hljs-variable">$PARTNER_HOST</span>"</span> \
+  -H <span class="hljs-string">"X-API-Key: <span class="hljs-variable">$AK</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"model":"gemma-rr","messages":[{"role":"user","content":"Partner API test"}],"max_tokens":16}'</span> | jq .
+</code></pre>
+<pre><code class="lang-bash"><span class="hljs-comment"># 4. Verify unauthorized high-cost model (claude-sonnet-5) is blocked</span>
+curl -sS -i -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Host: <span class="hljs-variable">$PARTNER_HOST</span>"</span> \
+  -H <span class="hljs-string">"X-API-Key: <span class="hljs-variable">$AK</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"model":"claude-sonnet-5","messages":[{"role":"user","content":"Blocked"}]}'</span> | <span class="hljs-built_in">head</span> -n 1
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: <code>HTTP/1.1 404 Not Found</code>. High-cost models are excluded from the partner route.</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-comment"># 5. Verify tenant quota isolation (exhaust acme-corp 60 tokens/min budget)</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> {1..6}; <span class="hljs-keyword">do</span>
+  CODE=$(curl -s -o /dev/null -w <span class="hljs-string">"%{http_code}"</span> -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+    -H <span class="hljs-string">"Host: <span class="hljs-variable">$PARTNER_HOST</span>"</span> \
+    -H <span class="hljs-string">"X-API-Key: <span class="hljs-variable">$AK</span>"</span> \
+    -H <span class="hljs-string">"Content-Type: application/json"</span> \
+    -d <span class="hljs-string">'{"model":"gemma-rr","messages":[{"role":"user","content":"Quota test"}],"max_tokens":20}'</span>)
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Acme Request <span class="hljs-variable">$i</span>: HTTP <span class="hljs-variable">$CODE</span>"</span>
+<span class="hljs-keyword">done</span>
+
+<span class="hljs-comment"># 6. Immediately invoke using globex key (verify independent token bucket)</span>
+curl -s -o /dev/null -w <span class="hljs-string">"Globex Concurrent Request: HTTP %{http_code}\n"</span> -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Host: <span class="hljs-variable">$PARTNER_HOST</span>"</span> \
+  -H <span class="hljs-string">"X-API-Key: <span class="hljs-variable">$GK</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"model":"gemma-rr","messages":[{"role":"user","content":"Globex check"}],"max_tokens":10}'</span>
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: <code>acme-corp</code> is throttled with <code>HTTP 429 Too Many Requests</code> once its 60 token/min budget is exhausted, while <code>globex</code> immediately succeeds with <code>HTTP 200</code>.</li>
+</ul>
+<hr></hr>
+<h3 id="56-scenario-5-gemma-epp-prefix-cache-acceleration">5.6 Scenario 5: Gemma-EPP Prefix Cache Acceleration</h3>
+<p>Send a ~2,000-token shared system prompt to measure TTFT (Time to First Token) acceleration between the 1st Cold request and 2nd Warm request, and inspect per-pod Prometheus cache hit counters.</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Generate test payloads with shared long context</span>
+<span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">'EOF'</span> &gt; /tmp/make_prefix_payload.py
+import json
+ctx = <span class="hljs-string">"Google Kubernetes Engine and Gateway API enterprise prompt context. "</span> * 150
+with open(<span class="hljs-string">'/tmp/p1.json'</span>, <span class="hljs-string">'w'</span>) as f:
+    json.dump({<span class="hljs-string">'model'</span>:<span class="hljs-string">'gemma-epp'</span>,<span class="hljs-string">'messages'</span>:[{<span class="hljs-string">'role'</span>:<span class="hljs-string">'user'</span>,<span class="hljs-string">'content'</span>:ctx+<span class="hljs-string">'\nQuestion 1: Summarize the infrastructure setup.'</span>}],<span class="hljs-string">'stream'</span>:True,<span class="hljs-string">'max_tokens'</span>:30}, f)
+with open(<span class="hljs-string">'/tmp/p2.json'</span>, <span class="hljs-string">'w'</span>) as f:
+    json.dump({<span class="hljs-string">'model'</span>:<span class="hljs-string">'gemma-epp'</span>,<span class="hljs-string">'messages'</span>:[{<span class="hljs-string">'role'</span>:<span class="hljs-string">'user'</span>,<span class="hljs-string">'content'</span>:ctx+<span class="hljs-string">'\nQuestion 2: Explain prefix caching benefits.'</span>}],<span class="hljs-string">'stream'</span>:True,<span class="hljs-string">'max_tokens'</span>:30}, f)
+EOF
+python3 /tmp/make_prefix_payload.py
+
+<span class="hljs-comment"># 2. 1st Cold Request (populates KV cache)</span>
+curl -N -s -o /dev/null -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$GT</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d @/tmp/p1.json \
+  -w <span class="hljs-string">"[1st Cold TTFT]: %{time_starttransfer}s\n"</span>
+
+<span class="hljs-comment"># 3. 2nd Warm Request (routed to cached pod by EPP prefix-cache-scorer)</span>
+curl -N -s -o /dev/null -X POST <span class="hljs-string">"<span class="hljs-variable">$GW</span>/v1/chat/completions"</span> \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$GT</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d @/tmp/p2.json \
+  -w <span class="hljs-string">"[2nd Warm TTFT]: %{time_starttransfer}s\n"</span>
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: 2nd Warm TTFT is significantly faster than 1st Cold TTFT because EPP's <code>prefix-cache-scorer</code> routes the request directly to the GPU pod holding the KV cache.</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-comment"># 4. Verify vLLM per-pod Prefix Cache hit counters</span>
+<span class="hljs-keyword">for</span> POD <span class="hljs-keyword">in</span> $(kubectl get pods -n vllm -l app=vllm-server -o jsonpath=<span class="hljs-string">'{.items[*].metadata.name}'</span>); <span class="hljs-keyword">do</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"=== GPU Pod: <span class="hljs-variable">$POD</span> ==="</span>
+  kubectl <span class="hljs-built_in">exec</span> -n vllm <span class="hljs-variable">$POD</span> -c vllm -- curl -s http://localhost:8000/metrics \
+    | grep -E <span class="hljs-string">"vllm:prefix_cache_hits_total"</span>
+<span class="hljs-keyword">done</span>
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: Only the specific vLLM pod that processed the 1st request shows an increase of ~1,500+ tokens in <code>vllm:prefix_cache_hits_total</code>.</li>
+</ul>
+<hr></hr>
+<h3 id="57-scenario-6-full-stack-enterprise-observability-cloud-monitoring--arize-phoenix">5.7 Scenario 6: Full-Stack Enterprise Observability (Cloud Monitoring &amp; Arize Phoenix)</h3>
+<p>Verify end-to-end observability across infrastructure GPU metrics (<code>Google Cloud Monitoring</code>) and application-level LLM distributed traces (<code>Arize Phoenix</code>).</p>
+<h4 id="part-1-google-cloud-monitoring-vllm-dashboard">Part 1: Google Cloud Monitoring vLLM Dashboard</h4>
+<p>Google Cloud Managed Service for Prometheus (GMP) scrapes vLLM GPU metrics every 15 seconds via <code>PodMonitoring</code> and visualizes them in a custom Cloud Monitoring dashboard.</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Verify PodMonitoring status (Status: True)</span>
+kubectl get podmonitoring -n vllm vllm-server \
+  -o jsonpath=<span class="hljs-string">'{.status.conditions[0].type}: {.status.conditions[0].status}{"\n"}'</span>
+
+<span class="hljs-comment"># 2. Retrieve custom dashboard URL</span>
+DASH_ID=$(gcloud monitoring dashboards list --project=<span class="hljs-string">"<span class="hljs-variable">$GCP_PROJECT</span>"</span> \
+  --filter=<span class="hljs-string">"displayName:'vLLM Model Server Monitoring'"</span> --format=<span class="hljs-string">"value(name)"</span> | awk -F/ <span class="hljs-string">'{print $NF}'</span>)
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Dashboard URL: https://console.cloud.google.com/monitoring/dashboards/builder/<span class="hljs-variable">${DASH_ID}</span>?project=<span class="hljs-variable">${GCP_PROJECT}</span>"</span>
+</code></pre>
+<ol>
+<li>Open the printed <strong>Dashboard URL</strong> in Google Cloud Console to view <code>vLLM Model Server Monitoring</code>.</li>
+<li>Use the 4 top filter dropdowns (<code>cluster</code>, <code>namespace</code>, <code>pod</code>, <code>model_name</code>) to slice metrics:<ul>
+<li>Select a specific pod (<code>vllm-server-*</code>) in the <code>pod</code> filter to isolate a single GPU instance.</li>
+<li>Keep <code>pod</code> and <code>model_name</code> set to <code>All</code> to overlay all GPU pods on the same chart and compare load balance and cache hit skew.</li>
+</ul>
+</li>
+<li>Inspect the 6 core dashboard charts:<ul>
+<li><strong>KV Cache Usage %</strong>: VRAM KV cache block utilization across L4 GPUs</li>
+<li><strong>Prefix Cache Hit Rate %</strong>: Prefix cache hit rate driven by EPP routing (observe the spike on the specific pod hit in Section 5.6)</li>
+<li><strong>Running &amp; Waiting Requests</strong>: Active concurrent requests and queue depth (<code>Waiting</code>)</li>
+<li><strong>TTFT (Time to First Token) Latency</strong>: P50 and P95 TTFT latency trends</li>
+<li><strong>Generation Token &amp; Request Throughput</strong>: Tokens generated per second (<code>Tokens/s</code>) and completed requests per second (<code>Req/s</code>)</li>
+</ul>
+</li>
+</ol>
+<hr></hr>
+<h4 id="part-2-arize-phoenix-distributed-tracing-openinference-spans-audit">Part 2: Arize Phoenix Distributed Tracing (OpenInference Spans) Audit</h4>
+<p>Audit the full prompt/response payloads, token consumption, and latency breakdown exported by Envoy AI Gateway (<code>ai-gateway-extproc</code>) using the OpenInference standard.</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Port-forward Arize Phoenix web UI</span>
+kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
+</code></pre>
+<ul>
+<li><strong>Local PC</strong>: Open <code>http://localhost:6006</code> in your browser.</li>
+<li><p><strong>Cloud Shell / Cloud Workstation</strong>: Click the <strong>Web Preview</strong> icon and change the port to <code>6006</code>.</p>
+</li>
+<li><p>On the Phoenix landing page, click into the <strong><code>default</code> project</strong>.</p>
+</li>
+<li>Select the <strong><code>Traces</code></strong> tab at the top to view chronological <code>ChatCompletion</code> traces across all models invoked in Scenarios 1–5 (<code>gemini-2.5-flash</code>, <code>claude-sonnet-5</code>, <code>gemma-rr</code>, <code>gemma-epp</code>).</li>
+<li>Click any individual <code>ChatCompletion</code> span row to open the right-hand detail panel and audit 4 enterprise attributes:<ul>
+<li><strong>Model &amp; Provider Identification (<code>Attributes</code> tab)</strong>: Verify <code>llm.model_name</code> (<code>gemini-2.5-flash</code>, <code>claude-sonnet-5</code>, <code>gemma-epp</code>) and <code>llm.system</code> (<code>openai</code>, <code>anthropic</code>).</li>
+<li><strong>Input &amp; Output Payload Audit (<code>Input / Output</code> tab)</strong>: Inspect <code>llm.input_messages</code> (exact user prompt) and <code>llm.output_messages</code> (assistant response text) captured for compliance and quality evaluation.</li>
+<li><strong>Token Billing Ledger (<code>Attributes</code> tab)</strong>: Verify exact token counts in <code>llm.token_count.prompt</code>, <code>llm.token_count.completion</code>, and <code>llm.token_count.total</code>.</li>
+<li><strong>End-to-End Latency Breakdown (<code>Latency</code> column)</strong>: Compare total <code>Duration</code> between 1st Cold requests and 2nd Warm cache-hit requests.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-comment"># [Optional] Verify the 5 most recent spans directly via Phoenix REST API from CLI</span>
+kubectl <span class="hljs-built_in">exec</span> -n routing deploy/echo-server -- wget -qO- \
+  <span class="hljs-string">"http://phoenix-service.phoenix.svc.cluster.local:6006/v1/projects/default/spans?limit=5"</span> \
+  | jq <span class="hljs-string">'{total_fetched: (.data | length), spans: [.data[] | {name: .name, model: .attributes."llm.model_name", prompt_tokens: .attributes."llm.token_count.prompt", completion_tokens: .attributes."llm.token_count.completion", total_tokens: .attributes."llm.token_count.total", trace_id: .context.trace_id}]}'</span>
+</code></pre>
+<ul>
+<li><strong>Expected Result</strong>: Returns a JSON array displaying <code>trace_id</code>, <code>model</code>, <code>prompt_tokens</code>, <code>completion_tokens</code>, and <code>total_tokens</code> for your recent invocations.</li>
+</ul>
+<hr></hr>
+<h2 id="6-troubleshooting-faq">6. Troubleshooting FAQ</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Root Cause</th>
+<th>Remediation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Too long: may not be more than 262144 bytes</code> during CRD install</td>
+<td>Client-side <code>apply</code> annotation limit exceeded</td>
+<td>Use server-side apply: <code>kubectl apply --server-side -f manifests/00-setup/agent-router-crds.yaml</code>.</td>
+</tr>
+<tr>
+<td>vLLM pod in <code>CrashLoopBackOff</code></td>
+<td>Missing <code>HF_TOKEN</code> or unaccepted model license</td>
+<td>Accept the <code>google/gemma-2-2b-it</code> license on Hugging Face and re-apply <code>hf-token</code>.</td>
+</tr>
+<tr>
+<td>HTTP 500 when calling Vertex AI models</td>
+<td>Missing <code>vertex-ai-sa-key</code> Secret</td>
+<td>Run <code>make setup-secrets</code> to generate and mount the service account key in <code>routing</code>.</td>
+</tr>
+<tr>
+<td><code>Invalid account type for --audiences</code> during token minting</td>
+<td>Missing <code>--impersonate-service-account</code> flag on user credentials</td>
+<td>Include <code>--impersonate-service-account="envoy-ai-workload-sa@${GCP_PROJECT}.iam.gserviceaccount.com"</code>.</td>
+</tr>
+<tr>
+<td><code>400 Unexpected value(s) advisor-tool-2026-03-01</code> in Claude Code</td>
+<td>Experimental beta header rejected by Vertex AI</td>
+<td>Add <code>"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"</code> to <code>env</code> in <code>~/.claude/settings.json</code>.</td>
+</tr>
+<tr>
+<td><code>429 Too Many Requests</code> on partner route</td>
+<td>Partner token per-minute quota exhausted</td>
+<td>Wait 60 seconds for window reset or issue a fresh key via <code>keyissuer</code>.</td>
+</tr>
+<tr>
+<td><code>500 Unexpected end of JSON</code> on <code>/authtest</code></td>
+<td>Missing request body for echo JSON parser</td>
+<td>Include <code>-d '{}'</code> in your <code>curl</code> command.</td>
+</tr>
+</tbody>
+</table>
+<hr></hr>
+<h2 id="7-step-4-clean-teardown--cost-prevention">7. Step 4: Clean Teardown &amp; Cost Prevention</h2>
+<p>To avoid ongoing charges after completing the workshop, delete all Kubernetes workloads first so the GCP LoadBalancer is released from the VPC before destroying Terraform resources (or simply run <code>make clean</code>):</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># 1. Delete K8s workloads and wait for LoadBalancer release</span>
+kubectl delete -k manifests/07-observability --ignore-not-found
+kubectl delete -k manifests/06-traffic-policy --ignore-not-found
+kubectl delete -k manifests/05-routing --ignore-not-found
+kubectl delete -k manifests/04-inference-pool --ignore-not-found
+kubectl delete -k manifests/03-vllm --ignore-not-found
+kubectl delete -k manifests/02-security --ignore-not-found
+kubectl delete -k manifests/01-gateway --ignore-not-found
+<span class="hljs-built_in">sleep</span> 20
+
+<span class="hljs-comment"># 2. Destroy all Terraform infrastructure (~10-15 minutes)</span>
+<span class="hljs-built_in">cd</span> terraform
+terraform destroy -var=<span class="hljs-string">"project_id=<span class="hljs-variable">$GCP_PROJECT</span>"</span> -var=<span class="hljs-string">"region=<span class="hljs-variable">$GCP_REGION</span>"</span> -auto-approve
+<span class="hljs-built_in">cd</span> ..
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+    
+    
+    
+    
+    <a href="quickstart.html" class="navigation navigation-prev " aria-label="Previous page: Quickstart & Deployment">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    
+    
+    <a href="../architecture/gateway-resources.html" class="navigation navigation-next " aria-label="Next page: Gateway & Resource Hierarchy">
+        <i class="fa fa-angle-right"></i>
+    </a>
+    
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Customer Workshop Guide","level":"2.2","depth":1,"next":{"title":"Gateway & Resource Hierarchy","level":"3.1","depth":1,"path":"architecture/gateway-resources.md","ref":"architecture/gateway-resources.md","articles":[]},"previous":{"title":"Quickstart & Deployment","level":"2.1","depth":1,"path":"getting-started/quickstart.md","ref":"getting-started/quickstart.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"getting-started/workshop-guide.md","mtime":"2026-09-30T05:01:45.510Z","type":"markdown"},"gitbook":{"version":"6.2.2","time":"2026-09-30T06:02:32.136Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    <script>
+        (function() {
+            if (typeof gitbook !== "undefined" && gitbook.events) {
+                gitbook.events.bind("page.change", function() {
+                    var isKo = window.location.pathname.indexOf("/ko/") !== -1 || window.location.pathname.endsWith("/ko");
+                    var searchInput = document.querySelector("#book-search-input input");
+                    if (searchInput) {
+                        searchInput.setAttribute("placeholder", isKo ? "검색어를 입력하세요" : "Type to search");
+                    }
+                });
+            }
+        })();
+    </script>
+
+    </body>
+</html>
+

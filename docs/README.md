@@ -1,7 +1,5 @@
 # Multi-LLM Serving Architecture with Agentrouter
 
-> **Languages:** [English](README.md) | [한국어](ko/README.md)
-
 An enterprise multi-LLM serving platform combining **[Agentrouter (formerly Envoy AI Gateway)](https://github.com/theagentrouter/agent-router)** (`v1.1.0`), **Kubernetes Gateway API Inference Extension (GIE `v1.6.0`)**, **llm-d-router (`EPP v0.10.0`)**, **vLLM**, **Google Cloud Model Armor & Cloud DLP**, and **Vertex AI** on **Google Kubernetes Engine (GKE)**.
 
 ---

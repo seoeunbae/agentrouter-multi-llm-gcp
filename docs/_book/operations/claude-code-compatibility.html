@@ -1,0 +1,750 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Claude Code & Vertex AI Compatibility · HonKit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../ko/" />
+    
+    
+    <link rel="prev" href="manual-test-guide.html" />
+    
+
+    <style>
+        .book-header .lang-switch-container {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            padding: 0 14px;
+            position: relative;
+            z-index: 10;
+        }
+        .book-header .lang-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 999px;
+            padding: 2px;
+            text-decoration: none !important;
+            line-height: 1;
+            height: 28px;
+            box-sizing: border-box;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        .book-header .lang-toggle-pill:hover {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        .book-header .lang-toggle-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            height: 22px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7e888b;
+            transition: all 0.18s ease;
+            user-select: none;
+        }
+        .book-header .lang-toggle-option.active {
+            background: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-pill {
+            background: rgba(112, 66, 20, 0.1);
+            border-color: rgba(112, 66, 20, 0.2);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-option.active {
+            background: #f3eacb;
+            color: #704214;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option {
+            color: #9da5b4;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option.active {
+            background: #2d3143;
+            color: #68a0f8;
+        }
+    </style>
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+            
+            
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Getting Started</li>
+            
+            
+    
+        <li class="chapter " data-level="2.1" data-path="../getting-started/quickstart.html">
+            
+                <a href="../getting-started/quickstart.html">
+            
+                    
+                    Quickstart & Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../getting-started/workshop-guide.html">
+            
+                <a href="../getting-started/workshop-guide.html">
+            
+                    
+                    Customer Workshop Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Architecture & Design</li>
+            
+            
+    
+        <li class="chapter " data-level="3.1" data-path="../architecture/gateway-resources.html">
+            
+                <a href="../architecture/gateway-resources.html">
+            
+                    
+                    Gateway & Resource Hierarchy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../architecture/request-flow.html">
+            
+                <a href="../architecture/request-flow.html">
+            
+                    
+                    End-to-End Request Flow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../architecture/project-spec.html">
+            
+                <a href="../architecture/project-spec.html">
+            
+                    
+                    Project Specification
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Verification & Guides</li>
+            
+            
+    
+        <li class="chapter " data-level="4.1" data-path="manual-test-guide.html">
+            
+                <a href="manual-test-guide.html">
+            
+                    
+                    Manual Testing Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.2" data-path="claude-code-compatibility.html">
+            
+                <a href="claude-code-compatibility.html">
+            
+                    
+                    Claude Code & Vertex AI Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+
+
+    
+    
+
+<div class="book-header" role="navigation">
+    
+
+    <div class="lang-switch-container pull-right">
+        <a href="../ko/operations/claude-code-compatibility.html" class="lang-toggle-pill" title="한국어로 전환" aria-label="한국어로 전환">
+            <span class="lang-toggle-option active">EN</span>
+            <span class="lang-toggle-option ">한국어</span>
+        </a>
+    </div>
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Claude Code & Vertex AI Compatibility</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="claude-code-compatibility-guide-for-vertex-ai--envoy-ai-gateway">Claude Code Compatibility Guide for Vertex AI &amp; Envoy AI Gateway</h1>
+<p>This document analyzes the root cause of the <code>advisor-tool-2026-03-01</code> beta header error (<code>HTTP 400 Bad Request</code>) that occurs when invoking Google Cloud Vertex AI or Envoy AI Gateway from Claude Code (v2.1+). It provides immediate client-side remediation steps as well as long-term gateway-level architectural solutions.</p>
+<hr></hr>
+<h2 id="1-symptom--error-log">1. Symptom &amp; Error Log</h2>
+<p>When running recent versions of Claude Code (e.g., <code>v2.1.272</code>) on Google Cloud Workstations or local development environments, submitting any prompt triggers an immediate <code>HTTP 400 Bad Request</code> error:</p>
+<pre><code class="lang-text"> ▐▛███▛█   Claude Code v2.1.272
+▝▜██████▀  Sonnet 5 with medium effort · API Usage Billing
+  ▝▝ ▝▝    /tmp/test
+
+❯ hi
+
+● API Error: 400 Unexpected value(s) `advisor-tool-2026-03-01` for the `anthropic-beta` header. Please consult our documentation at platform.claude.com/docs or try again without the header.
+</code></pre>
+<p>This failure occurs both when routing through Envoy AI Gateway and when invoking Google Cloud Vertex AI directly (<code>CLAUDE_CODE_USE_VERTEX=1</code>).</p>
+<hr></hr>
+<h2 id="2-what-is-the-advisor-tool-advisor-tool-2026-03-01">2. What is the Advisor Tool (<code>advisor-tool-2026-03-01</code>)?</h2>
+<p>The <code>advisor-tool-2026-03-01</code> identifier activates Anthropic's <strong>Advisor Tool</strong> beta feature.</p>
+<h3 id="21-official-documentation-citations">2.1 Official Documentation Citations</h3>
+<ul>
+<li><strong>Official Documentation</strong>: <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool" target="_blank">Claude Platform Docs — Advisor tool</a></li>
+<li><strong>Korean Documentation</strong>: <a href="https://platform.claude.com/docs/ko/agents-and-tools/tool-use/advisor-tool" target="_blank">Claude Platform Docs — Advisor 도구</a></li>
+<li><strong>Official Specification Excerpt</strong>:<blockquote>
+<p><em>"Pair a faster executor model with a higher-intelligence advisor model that provides strategic guidance mid-generation."</em><br></br><em>"The advisor tool is in beta. Include the beta header <code>advisor-tool-2026-03-01</code> in your requests."</em></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="22-mechanism-executor--advisor-hybrid-reasoning-pattern">2.2 Mechanism (Executor + Advisor Hybrid Reasoning Pattern)</h3>
+<p>The Advisor Tool is a server-side orchestration capability designed to balance cost efficiency and frontier intelligence in long-horizon agentic workflows:</p>
+<ol>
+<li><strong>Executor Model Execution</strong>:<ul>
+<li>A fast, cost-effective executor model (e.g., <code>claude-sonnet-5</code> or <code>claude-haiku-4-5</code>) handles the vast majority of routine, mechanical operations such as file exploration, code scaffolding, and simple tool calls.</li>
+</ul>
+</li>
+<li><strong>Mid-Generation Consultation</strong>:<ul>
+<li>When the executor encounters a complex architectural decision or requires deep reasoning, it emits a <code>server_tool_use</code> call to invoke the <code>advisor</code> tool mid-generation.</li>
+</ul>
+</li>
+<li><strong>Server-Side Advisor Routing</strong>:<ul>
+<li>Without closing the client stream, Anthropic's API server internally forwards the full conversation context to a higher-intelligence <strong>Advisor Model</strong> (e.g., <code>claude-opus-4-6</code>).</li>
+<li>The advisor produces a concise strategic plan or course correction (typically 400–700 tokens as an <code>advisor_tool_result</code>), and the executor immediately resumes generation informed by that guidance.</li>
+</ul>
+</li>
+</ol>
+<h3 id="23-automatic-injection-by-claude-code">2.3 Automatic Injection by Claude Code</h3>
+<p>Because Claude Code operates as a long-horizon coding agent, running an Opus model for every single turn incurs high latency and token costs. To optimize performance when Sonnet is selected, Claude Code automatically injects two elements into outgoing <code>/v1/messages</code> requests:</p>
+<ol>
+<li><strong>HTTP Request Header</strong>:<pre><code class="lang-http"><span class="hljs-attribute">anthropic-beta</span><span class="hljs-punctuation">: </span>advisor-tool-2026-03-01
+</code></pre>
+</li>
+<li><strong>JSON Request Body (<code>tools</code> Array Definition)</strong>:<pre><code class="lang-json">{
+  <span class="hljs-string">"model"</span>: <span class="hljs-string">"claude-sonnet-5"</span>,
+  <span class="hljs-string">"tools"</span>: [
+    {
+      <span class="hljs-string">"type"</span>: <span class="hljs-string">"advisor_20260301"</span>,
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"advisor"</span>,
+      <span class="hljs-string">"model"</span>: <span class="hljs-string">"claude-opus-4-6"</span>,
+      <span class="hljs-string">"max_uses"</span>: <span class="hljs-number">3</span>
+    }
+  ]
+}
+</code></pre>
+</li>
+</ol>
+<hr></hr>
+<h2 id="3-root-cause-anthropic-1st-party-api-vs-google-cloud-vertex-ai-architecture">3. Root Cause: Anthropic 1st-Party API vs. Google Cloud Vertex AI Architecture</h2>
+<p>This error is not a bug in Envoy AI Gateway. Rather, the upstream backend (<strong>Google Cloud Vertex AI</strong>) does not support this beta feature and strictly rejects unrecognized headers and schema tags.</p>
+<h3 id="31-why-is-it-unsupported-on-vertex-ai">3.1 Why is it Unsupported on Vertex AI?</h3>
+<ul>
+<li><strong>Cross-Model Routing vs. Endpoint Isolation</strong>:<ul>
+<li>Anthropic's 1st-party platform (<code>api.anthropic.com</code>) manages all Claude model pools under a unified orchestrator. It can pause a Sonnet stream mid-request, internally invoke Opus, and meter tokens across both models within a single HTTP request.</li>
+<li>Conversely, Google Cloud Vertex AI (<code>aiplatform.googleapis.com</code>) exposes each model as a strictly isolated GCP Publisher Model endpoint (<code>/projects/.../models/claude-sonnet-5:streamRawPredict</code> vs. <code>.../models/claude-opus-4-6:streamRawPredict</code>).</li>
+<li>Because GCP IAM authorization, regional quotas, and billing pipelines are scoped per endpoint, a prediction request targeting the Sonnet endpoint cannot dynamically jump to the Opus endpoint inside Vertex AI's serving infrastructure (<code>harpoon</code>).</li>
+</ul>
+</li>
+</ul>
+<h3 id="32-empirical-verification-vertex-ais-double-validation-mechanism">3.2 Empirical Verification: Vertex AI's Double Validation Mechanism</h3>
+<p>Direct <code>curl</code> tests through Envoy AI Gateway to Vertex AI demonstrate that Vertex AI enforces strict allowlist validation at <strong>two distinct layers</strong>:</p>
+<h4 id="layer-1-http-header-validation-anthropic-beta">Layer 1: HTTP Header Validation (<code>anthropic-beta</code>)</h4>
+<p>When sending the request with <code>-H "anthropic-beta: advisor-tool-2026-03-01"</code>:</p>
+<pre><code class="lang-bash">curl -i -X POST http://&lt;GATEWAY_IP&gt;:8080/anthropic/v1/messages \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$TOKEN</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -H <span class="hljs-string">"anthropic-version: 2023-06-01"</span> \
+  -H <span class="hljs-string">"anthropic-beta: advisor-tool-2026-03-01"</span> \
+  -d <span class="hljs-string">'{"model":"claude-sonnet-5","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'</span>
+</code></pre>
+<ul>
+<li><p><strong>Live Response (<code>HTTP 400 Bad Request</code>)</strong>:</p>
+<pre><code class="lang-http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">400</span> Bad Request
+<span class="hljs-attribute">x-vertex-ai-internal-prediction-backend</span><span class="hljs-punctuation">: </span>harpoon
+<span class="hljs-attribute">request-id</span><span class="hljs-punctuation">: </span>req_vrtx_011Cf69ffRgRk2w8QxkdR5ZA
+
+<span class="language-autohotkey">{
+  <span class="hljs-string">"type"</span>: <span class="hljs-string">"error"</span>,
+  <span class="hljs-string">"error"</span>: {
+    <span class="hljs-string">"type"</span>: <span class="hljs-string">"invalid_request_error"</span>,
+    <span class="hljs-string">"message"</span>: <span class="hljs-string">"Unexpected value(s) `advisor-tool-2026-03-01` for the `anthropic-beta` header. Please consult our documentation at platform.claude.com/docs or try again without the header."</span>
+  }
+}
+</span></code></pre>
+</li>
+</ul>
+<h4 id="layer-2-json-body-schema-validation-tools-array">Layer 2: JSON Body Schema Validation (<code>tools</code> Array)</h4>
+<p>If the gateway strips the <code>anthropic-beta</code> header but leaves the <code>advisor_20260301</code> tool definition in the JSON body:</p>
+<pre><code class="lang-bash">curl -i -X POST http://&lt;GATEWAY_IP&gt;:8080/anthropic/v1/messages \
+  -H <span class="hljs-string">"Authorization: Bearer <span class="hljs-variable">$TOKEN</span>"</span> \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -H <span class="hljs-string">"anthropic-version: 2023-06-01"</span> \
+  -d <span class="hljs-string">'{"model":"claude-sonnet-5","max_tokens":10,"tools":[{"type":"advisor_20260301","name":"advisor","model":"claude-opus-4-6"}],"messages":[{"role":"user","content":"hi"}]}'</span>
+</code></pre>
+<ul>
+<li><p><strong>Live Response (<code>HTTP 400 Bad Request</code>)</strong>:</p>
+<pre><code class="lang-http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">400</span> Bad Request
+<span class="hljs-attribute">x-vertex-ai-internal-prediction-backend</span><span class="hljs-punctuation">: </span>harpoon
+<span class="hljs-attribute">request-id</span><span class="hljs-punctuation">: </span>req_vrtx_011Cf69mJL5zmnNWDZji9DuH
+
+<span class="language-scilab">{
+  <span class="hljs-string">"type"</span>: <span class="hljs-string">"error"</span>,
+  <span class="hljs-string">"error"</span>: {
+    <span class="hljs-string">"type"</span>: <span class="hljs-string">"invalid_request_error"</span>,
+    <span class="hljs-string">"message"</span>: <span class="hljs-string">"tools.0: Input tag '</span>advisor_20260301' found using <span class="hljs-string">'type'</span> does not match any of the expected tags: <span class="hljs-string">'bash_20250124'</span>, <span class="hljs-string">'browser_toolset_20260801'</span>, <span class="hljs-string">'computer_toolset_20260801'</span>, <span class="hljs-string">'custom'</span>, <span class="hljs-string">'memory_20250818'</span>, <span class="hljs-string">'text_editor_20250124'</span>, <span class="hljs-string">'text_editor_20250429'</span>, <span class="hljs-string">'text_editor_20250728'</span>, <span class="hljs-string">'tool_search_tool_bm25'</span>, <span class="hljs-string">'tool_search_tool_bm25_20251119'</span>, <span class="hljs-string">'tool_search_tool_regex'</span>, <span class="hljs-string">'tool_search_tool_regex_20251119'</span>, <span class="hljs-string">'web_search_20250305'</span><span class="hljs-string">"
+  }
+}
+</span></span></code></pre>
+</li>
+</ul>
+<p>Consequently, simply removing the HTTP header via a basic proxy rule is insufficient because the request will still fail at Layer 2 during body schema validation.</p>
+<hr></hr>
+<h2 id="4-standard-remediation-disabling-client-experimental-betas-recommended">4. Standard Remediation: Disabling Client Experimental Betas (Recommended)</h2>
+<p>The cleanest and most reliable solution when targeting Vertex AI or Envoy AI Gateway is instructing the Claude Code client to disable experimental beta injections.</p>
+<h3 id="41-environment-variable-configuration-claudecodedisableexperimentalbetas1">4.1 Environment Variable Configuration (<code>CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1</code>)</h3>
+<p>Export the variable in your shell session or add it to <code>~/.bashrc</code>:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">export</span> CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+</code></pre>
+<h3 id="42-persistent-configuration-via-claudesettingsjson">4.2 Persistent Configuration via <code>~/.claude/settings.json</code></h3>
+<p>Add the flag to the <code>env</code> block in <code>~/.claude/settings.json</code> so it applies across all invocations. The helper script <a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py" target="_blank"><code>scripts/prepare_ws_settings.py</code></a> in this repository automatically injects this key:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">"env"</span>: {
+    <span class="hljs-string">"ANTHROPIC_BASE_URL"</span>: <span class="hljs-string">"http://&lt;GATEWAY_IP&gt;:8080/anthropic"</span>,
+    <span class="hljs-string">"ANTHROPIC_MODEL"</span>: <span class="hljs-string">"claude-sonnet-5"</span>,
+    <span class="hljs-string">"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS"</span>: <span class="hljs-string">"1"</span>
+  },
+  <span class="hljs-string">"model"</span>: <span class="hljs-string">"claude-sonnet-5"</span>
+}
+</code></pre>
+<p>With this setting enabled, Claude Code omits both the <code>anthropic-beta: advisor-tool-2026-03-01</code> header and the <code>advisor_20260301</code> tool entry, ensuring seamless operation across both direct Vertex AI and Envoy AI Gateway modes.</p>
+<hr></hr>
+<h2 id="5-gateway-level-long-term-architecture-reference">5. Gateway-Level Long-Term Architecture Reference</h2>
+<p>In enterprise environments where enforcing environment variables across hundreds of developer workstations is impractical, <strong>Envoy AI Gateway can act as a centralized Compatibility Layer</strong> that automatically sanitizes incompatible headers and payload fields before forwarding requests to Vertex AI.</p>
+<h3 id="51-architectural-options-comparison">5.1 Architectural Options Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Evaluation Criteria</th>
+<th style="text-align:center">Option A: EnvoyExtensionPolicy (Lua Filter)</th>
+<th style="text-align:center">Option B: HTTPRouteFilter (HeaderModifier)</th>
+<th style="text-align:center">Option C: Custom ExtProc (gRPC Service)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Selective Header Filtering (<code>anthropic-beta</code>)</strong></td>
+<td style="text-align:center">Supported (granular token filtering)</td>
+<td style="text-align:center">Unsupported (drops entire header only)</td>
+<td style="text-align:center">Supported</td>
+</tr>
+<tr>
+<td><strong>Body Tool Removal (<code>advisor_20260301</code>)</strong></td>
+<td style="text-align:center">Supported</td>
+<td style="text-align:center">Unsupported (<strong>Fails with Layer 2 HTTP 400</strong>)</td>
+<td style="text-align:center">Supported (full JSON AST parsing)</td>
+</tr>
+<tr>
+<td><strong>Extra Pod / Infrastructure Deployment</strong></td>
+<td style="text-align:center">None (single CRD YAML manifest)</td>
+<td style="text-align:center">None</td>
+<td style="text-align:center">Required (separate Deployment/Service)</td>
+</tr>
+<tr>
+<td><strong>Added Network Latency</strong></td>
+<td style="text-align:center">Negligible (&lt; 0.1ms in-memory LuaJIT)</td>
+<td style="text-align:center">None</td>
+<td style="text-align:center">Low (~1–3ms gRPC hop)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-reference-implementation-envoyextensionpolicy-lua-http-filter">5.2 Reference Implementation: <code>EnvoyExtensionPolicy</code> (Lua HTTP Filter)</h3>
+<p>Using Envoy Gateway's native <code>EnvoyExtensionPolicy</code> CRD, both the HTTP header and JSON request body can be sanitized in-flight without deploying additional containers.</p>
+<p><em>(Prerequisite: The target <code>AIGatewayRoute</code> or <code>HTTPRoute</code> must have <code>aigateway.envoyproxy.io/processing-body-mode: buffered</code> enabled to allow body inspection and mutation.)</em></p>
+<pre><code class="lang-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">gateway.envoyproxy.io/v1alpha1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">EnvoyExtensionPolicy</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">anthropic-vertex-compat-sanitizer</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">routing</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">targetRefs:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">group:</span> <span class="hljs-string">gateway.networking.k8s.io</span>
+      <span class="hljs-attr">kind:</span> <span class="hljs-string">Gateway</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">envoy-ai-gateway</span>
+  <span class="hljs-attr">lua:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Inline</span>
+      <span class="hljs-attr">inline:</span> <span class="hljs-string">|
+        function envoy_on_request(request_handle)
+          local path = request_handle:headers():get(":path")
+          if not path or not string.find(path, "^/anthropic") then
+            return
+          end
+</span>
+          <span class="hljs-string">--</span> <span class="hljs-number">1</span><span class="hljs-string">.</span> <span class="hljs-string">Strip</span> <span class="hljs-string">unsupported</span> <span class="hljs-string">flags</span> <span class="hljs-string">from</span> <span class="hljs-string">anthropic-beta</span> <span class="hljs-string">header</span>
+          <span class="hljs-string">local</span> <span class="hljs-string">beta_hdr</span> <span class="hljs-string">=</span> <span class="hljs-string">request_handle:headers():get("anthropic-beta")</span>
+          <span class="hljs-string">if</span> <span class="hljs-string">beta_hdr</span> <span class="hljs-string">then</span>
+            <span class="hljs-string">local</span> <span class="hljs-string">valid_betas</span> <span class="hljs-string">=</span> {}
+            <span class="hljs-string">for</span> <span class="hljs-string">token</span> <span class="hljs-string">in</span> <span class="hljs-string">string.gmatch(beta_hdr,</span> <span class="hljs-string">"([^,]+)"</span><span class="hljs-string">)</span> <span class="hljs-string">do</span>
+              <span class="hljs-string">local</span> <span class="hljs-string">trimmed</span> <span class="hljs-string">=</span> <span class="hljs-string">token:match("^%s*(.-)%s*$")</span>
+              <span class="hljs-string">if</span> <span class="hljs-string">not</span> <span class="hljs-string">string.find(trimmed,</span> <span class="hljs-string">"^advisor%-tool"</span><span class="hljs-string">)</span> <span class="hljs-string">and</span>
+                 <span class="hljs-string">not</span> <span class="hljs-string">string.find(trimmed,</span> <span class="hljs-string">"^prompt%-caching"</span><span class="hljs-string">)</span> <span class="hljs-string">then</span>
+                <span class="hljs-string">table.insert(valid_betas,</span> <span class="hljs-string">trimmed)</span>
+              <span class="hljs-string">end</span>
+            <span class="hljs-string">end</span>
+            <span class="hljs-string">if</span> <span class="hljs-comment">#valid_betas == 0 then</span>
+              <span class="hljs-string">request_handle:headers():remove("anthropic-beta")</span>
+            <span class="hljs-string">else</span>
+              <span class="hljs-string">request_handle:headers():replace("anthropic-beta",</span> <span class="hljs-string">table.concat(valid_betas,</span> <span class="hljs-string">","</span><span class="hljs-string">))</span>
+            <span class="hljs-string">end</span>
+          <span class="hljs-string">end</span>
+
+          <span class="hljs-string">--</span> <span class="hljs-number">2</span><span class="hljs-string">.</span> <span class="hljs-string">Remove</span> <span class="hljs-string">advisor_20260301</span> <span class="hljs-string">tool</span> <span class="hljs-string">definition</span> <span class="hljs-string">from</span> <span class="hljs-string">JSON</span> <span class="hljs-string">body</span>
+          <span class="hljs-string">local</span> <span class="hljs-string">body</span> <span class="hljs-string">=</span> <span class="hljs-string">request_handle:body()</span>
+          <span class="hljs-string">if</span> <span class="hljs-string">body</span> <span class="hljs-string">then</span>
+            <span class="hljs-string">local</span> <span class="hljs-string">raw</span> <span class="hljs-string">=</span> <span class="hljs-string">body:getBytes(0,</span> <span class="hljs-string">body:length())</span>
+            <span class="hljs-string">if</span> <span class="hljs-string">raw</span> <span class="hljs-string">and</span> <span class="hljs-string">string.find(raw,</span> <span class="hljs-string">"advisor_20260301"</span><span class="hljs-string">,</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-literal">true</span><span class="hljs-string">)</span> <span class="hljs-string">then</span>
+              <span class="hljs-string">local</span> <span class="hljs-string">sanitized</span> <span class="hljs-string">=</span> <span class="hljs-string">raw</span>
+              <span class="hljs-string">sanitized</span> <span class="hljs-string">=</span> <span class="hljs-string">string.gsub(sanitized,</span> <span class="hljs-string">'%s*{[^{}]*"type"%s*:%s*"advisor_20260301"[^{}]*}%s*,?'</span><span class="hljs-string">,</span> <span class="hljs-string">''</span><span class="hljs-string">)</span>
+              <span class="hljs-string">sanitized</span> <span class="hljs-string">=</span> <span class="hljs-string">string.gsub(sanitized,</span> <span class="hljs-string">',%s*%]'</span><span class="hljs-string">,</span> <span class="hljs-string">']'</span><span class="hljs-string">)</span>
+              <span class="hljs-string">sanitized</span> <span class="hljs-string">=</span> <span class="hljs-string">string.gsub(sanitized,</span> <span class="hljs-string">'"tools"%s*:%s*%[%s*%]%s*,?'</span><span class="hljs-string">,</span> <span class="hljs-string">''</span><span class="hljs-string">)</span>
+              <span class="hljs-string">sanitized</span> <span class="hljs-string">=</span> <span class="hljs-string">string.gsub(sanitized,</span> <span class="hljs-string">',%s*}'</span><span class="hljs-string">,</span> <span class="hljs-string">'}'</span><span class="hljs-string">)</span>
+
+              <span class="hljs-string">body:setBytes(sanitized)</span>
+              <span class="hljs-string">request_handle:headers():replace("content-length",</span> <span class="hljs-string">tostring(#sanitized))</span>
+            <span class="hljs-string">end</span>
+          <span class="hljs-string">end</span>
+        <span class="hljs-string">end</span>
+</code></pre>
+<h3 id="53-recommended-defense-in-depth-strategy">5.3 Recommended Defense-in-Depth Strategy</h3>
+<ol>
+<li><strong>Primary Defense (Client-Side)</strong>: Set <code>CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: "1"</code> in workstation provisioning scripts (<a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py" target="_blank"><code>scripts/prepare_ws_settings.py</code></a>) and default user profiles (<code>~/.claude/settings.json</code>) to prevent clients from generating unsupported payloads.</li>
+<li><strong>Secondary Defense (Gateway-Side)</strong>: Deploy the <code>EnvoyExtensionPolicy</code> sanitizer on the gateway so that unconfigured or newly updated clients continue to function without interruption.</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+    
+    
+    
+    
+    <a href="manual-test-guide.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Manual Testing Guide">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    
+    
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Claude Code & Vertex AI Compatibility","level":"4.2","depth":1,"next":{"title":"아키텍처 개요","level":"5.1","depth":1,"path":"ko/README.md","ref":"ko/README.md","articles":[]},"previous":{"title":"Manual Testing Guide","level":"4.1","depth":1,"path":"operations/manual-test-guide.md","ref":"operations/manual-test-guide.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"operations/claude-code-compatibility.md","mtime":"2026-09-30T05:05:23.716Z","type":"markdown"},"gitbook":{"version":"6.2.2","time":"2026-09-30T06:02:32.136Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    <script>
+        (function() {
+            if (typeof gitbook !== "undefined" && gitbook.events) {
+                gitbook.events.bind("page.change", function() {
+                    var isKo = window.location.pathname.indexOf("/ko/") !== -1 || window.location.pathname.endsWith("/ko");
+                    var searchInput = document.querySelector("#book-search-input input");
+                    if (searchInput) {
+                        searchInput.setAttribute("placeholder", isKo ? "검색어를 입력하세요" : "Type to search");
+                    }
+                });
+            }
+        })();
+    </script>
+
+    </body>
+</html>
+
