@@ -18,8 +18,9 @@ Google Kubernetes Engine(GKE) 환경에서 [Agentrouter(formerly Envoy AI Gatewa
 - **관측성 계층**: [Arize Phoenix](https://github.com/Arize-ai/phoenix)를 Cloud SQL 백엔드와 연동하여 OTLP 트레이스를 영구 적재한 뒤 Google Cloud Monitoring으로 GPU 및 접두사 캐시 지표를 실시간 수집합니다.
 
 상세 아키텍처 및 컴포넌트 흐름은 다음 문서를 참고하십시오.
-- [리소스 구조 및 계층 다이어그램](design/gateway-architecture-diagram.kr.md)
-- [시나리오별 엔드투엔드 요청 처리 시퀀스](design/architecture-request-flow.kr.md)
+- [리소스 구조 및 계층 다이어그램](docs/ko/architecture/gateway-resources.md)
+- [시나리오별 엔드투엔드 요청 처리 시퀀스](docs/ko/architecture/request-flow.md)
+- [프로젝트 설계 명세](docs/ko/architecture/project-spec.md)
 
 ---
 
@@ -164,6 +165,6 @@ kubectl apply -k manifests/06-traffic-policy
 kubectl apply -k manifests/07-observability
 ```
 
-상세한 시나리오별 검증 방법은 [수동 테스트 가이드](tests/manual-test-guide.kr.md)를 참고하십시오.
-GCP 계정 권한, L4 GPU 쿼터 확인 및 허깅페이스 토큰 설정을 포함한 단계별 튜토리얼은 [고객 워크숍 가이드](docs/workshop-guide.kr.md)를 참고하십시오.
-Claude Code의 실험적 베타 헤더(advisor-tool-2026-03-01)와 Vertex AI 간 호환성 이슈 원인 분석 및 게이트웨이 단 해결 방안은 [Claude Code 및 Vertex AI 호환성 가이드](docs/claude-code-vertex-compatibility.kr.md)를 참고하십시오.
+상세한 시나리오별 검증 방법은 [수동 테스트 가이드](docs/ko/operations/manual-test-guide.md)를 참고하십시오.
+GCP 계정 권한, L4 GPU 쿼터 확인 및 허깅페이스 토큰 설정을 포함한 단계별 튜토리얼은 [고객 워크숍 가이드](docs/ko/getting-started/workshop-guide.md)를 참고하십시오.
+Claude Code의 실험적 베타 헤더(advisor-tool-2026-03-01)와 Vertex AI 간 호환성 이슈 원인 분석 및 게이트웨이 단 해결 방안은 [Claude Code 및 Vertex AI 호환성 가이드](docs/ko/operations/claude-code-compatibility.md)를 참고하십시오.

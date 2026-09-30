@@ -1,0 +1,853 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>End-to-End Request Flow · HonKit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="project-spec.html" />
+    
+    
+    <link rel="prev" href="gateway-resources.html" />
+    
+
+    <style>
+        .book-header .lang-switch-container {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            padding: 0 14px;
+            position: relative;
+            z-index: 10;
+        }
+        .book-header .lang-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 999px;
+            padding: 2px;
+            text-decoration: none !important;
+            line-height: 1;
+            height: 28px;
+            box-sizing: border-box;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        .book-header .lang-toggle-pill:hover {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        .book-header .lang-toggle-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            height: 22px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7e888b;
+            transition: all 0.18s ease;
+            user-select: none;
+        }
+        .book-header .lang-toggle-option.active {
+            background: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-pill {
+            background: rgba(112, 66, 20, 0.1);
+            border-color: rgba(112, 66, 20, 0.2);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-option.active {
+            background: #f3eacb;
+            color: #704214;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option {
+            color: #9da5b4;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option.active {
+            background: #2d3143;
+            color: #68a0f8;
+        }
+    </style>
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+            
+            
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Getting Started</li>
+            
+            
+    
+        <li class="chapter " data-level="2.1" data-path="../getting-started/quickstart.html">
+            
+                <a href="../getting-started/quickstart.html">
+            
+                    
+                    Quickstart & Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../getting-started/workshop-guide.html">
+            
+                <a href="../getting-started/workshop-guide.html">
+            
+                    
+                    Customer Workshop Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Architecture & Design</li>
+            
+            
+    
+        <li class="chapter " data-level="3.1" data-path="gateway-resources.html">
+            
+                <a href="gateway-resources.html">
+            
+                    
+                    Gateway & Resource Hierarchy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.2" data-path="request-flow.html">
+            
+                <a href="request-flow.html">
+            
+                    
+                    End-to-End Request Flow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="project-spec.html">
+            
+                <a href="project-spec.html">
+            
+                    
+                    Project Specification
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Verification & Guides</li>
+            
+            
+    
+        <li class="chapter " data-level="4.1" data-path="../operations/manual-test-guide.html">
+            
+                <a href="../operations/manual-test-guide.html">
+            
+                    
+                    Manual Testing Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../operations/claude-code-compatibility.html">
+            
+                <a href="../operations/claude-code-compatibility.html">
+            
+                    
+                    Claude Code & Vertex AI Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+
+
+    
+    
+
+<div class="book-header" role="navigation">
+    
+
+    <div class="lang-switch-container pull-right">
+        <a href="../ko/architecture/request-flow.html" class="lang-toggle-pill" title="한국어로 전환" aria-label="한국어로 전환">
+            <span class="lang-toggle-option active">EN</span>
+            <span class="lang-toggle-option ">한국어</span>
+        </a>
+    </div>
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >End-to-End Request Flow</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="inference-request-flow-architecture-with-envoy-ai-gateway">Inference Request Flow Architecture with Envoy AI Gateway</h1>
+<p>This document provides a comprehensive end-to-end request processing architecture for Envoy AI Gateway (<a href="https://github.com/theagentrouter/agent-router" target="_blank">Agentrouter</a>), Kubernetes Gateway API Inference Extension (GIE), llm-d-router (EPP), vLLM serving engines, Google Cloud Vertex AI (Gemini &amp; Claude), Arize Phoenix observability, 3-tier multi-authentication (GCIP JWT, Google SA ID Token, Partner API Key), and Redis-backed dual rate limiting and quota policies deployed on Google Kubernetes Engine (GKE).</p>
+<hr></hr>
+<h2 id="1-component--namespace-topology-diagram">1. Component &amp; Namespace Topology Diagram</h2>
+<p>Mapping of pods, policies, and networking paths traversed by different client personas:</p>
+<pre><code class="lang-mermaid">flowchart TD
+    classDef client fill:#f1f3f4,stroke:#5f6368,stroke-width:2px;
+    classDef lb fill:#fef7e0,stroke:#fbbc04,stroke-width:2px;
+    classDef envoy fill:#e8f0fe,stroke:#4285f4,stroke-width:2px;
+    classDef sec fill:#fce8e6,stroke:#ea4335,stroke-width:2px;
+    classDef route fill:#e6f4ea,stroke:#34a853,stroke-width:2px;
+    classDef rls fill:#f3e8fd,stroke:#a142f4,stroke-width:2px;
+    classDef backend fill:#e8eaed,stroke:#202124,stroke-width:2px;
+    classDef obs fill:#e0f2f1,stroke:#00897b,stroke-width:2px;
+
+    subgraph ClientLayer["1. Client Layer"]
+        C_Emp["Corporate Employee / Claude Code\n(Authorization: Bearer GCIP JWT)"]:::client
+        C_Workload["Internal Microservice\n(Authorization: Bearer Google SA Token)"]:::client
+        C_Partner["External Partner Service\n(X-API-Key: pk-...)"]:::client
+    end
+
+    subgraph IngressLB["2. Ingress Entry Point"]
+        ExtLB["GCP External Passthrough NLB\n(&lt;GATEWAY_IP&gt;:8080)"]:::lb
+    end
+
+    subgraph EnvoyNS["3. Proxy Data Plane (envoy-gateway-system)"]
+        subgraph EnvoyPod["Envoy AI Gateway Pod"]
+            EnvoyEngine["envoy core\n(L7 data plane)"]:::envoy
+            ExtProc["ai-gateway-extproc\n(Body buffering, model parsing, OTel export)"]:::envoy
+        end
+        SP_JWT["SecurityPolicy: agent-router-jwt\n(Global Default: GCIP / Google SA JWT auth\nclaimToHeaders -&gt; x-tenant-id injection)"]:::sec
+        SP_Key["SecurityPolicy: partner-apikey\n(Partner Route Override:\nAPI Key auth -&gt; forwardClientIDHeader)"]:::sec
+        RLS_EG["envoy-ratelimit\n(BackendTrafficPolicy engine)"]:::rls
+        RLS_AI["envoy-ai-gateway-ratelimit\n(QuotaPolicy engine)"]:::rls
+    end
+
+    subgraph StorageNS["4. Distributed State Store (redis-system)"]
+        Redis["redis pod\n(Rate limit counters and quota windows)"]:::rls
+    end
+
+    subgraph RoutingLayer["5. Intelligent Routing Layer (routing)"]
+        AIRoute_Emp["AIGatewayRoute: envoy-ai-gw-router\n(Default Domain: All models allowed)"]:::route
+        AIRoute_Partner["AIGatewayRoute: partner-router\n(partner.agent-router.internal\ngemma-rr model only)"]:::route
+        EchoRoute["HTTPRoute: authtest\n(/authtest header echo)"]:::route
+    end
+
+    subgraph BackendLayer["6. Backend Serving Layer"]
+        subgraph CloudAI["Google Cloud Vertex AI"]
+            BSP["BackendSecurityPolicy\n(Secret/vertex-ai-sa-key credentials)"]:::sec
+            Gemini["Gemini 2.5 Flash\n(asia-southeast1)"]:::backend
+            Claude["Claude Sonnet 5\n(global / GCPAnthropic)"]:::backend
+        end
+
+        subgraph VLLMNS["Self-Hosted GPU Cluster (vllm)"]
+            EPP_Pref["llm-d-router\n(prefix-cache-scorer weight 10)"]:::backend
+            EPP_Gen["llm-d-router-noprefix\n(queue-scorer weight 1)"]:::backend
+            V1["vLLM Pod 1 (NVIDIA L4 24GB)\nvllm-server-4q9r4 (10.1.0.10)"]:::backend
+            V2["vLLM Pod 2 (NVIDIA L4 24GB)\nvllm-server-995q2 (10.1.1.10)"]:::backend
+        end
+
+        subgraph EchoNS["Test Echo (routing)"]
+            EchoServer["echo-server pod\n(Reflects headers as JSON)"]:::backend
+        end
+    end
+
+    subgraph ObservabilityLayer["7. Enterprise Observability Layer"]
+        Phoenix["Arize Phoenix (Port 6006)\nPersisted to Cloud SQL Postgres 16"]:::obs
+        GMP["GMP Collector\nExport to Cloud Monitoring"]:::obs
+    end
+
+    %% Connections
+    C_Emp --&gt; ExtLB
+    C_Workload --&gt; ExtLB
+    C_Partner --&gt; ExtLB
+    ExtLB --&gt; EnvoyEngine
+
+    EnvoyEngine &lt;--&gt; SP_JWT
+    EnvoyEngine &lt;--&gt; SP_Key
+    EnvoyEngine &lt;--&gt;|gRPC| ExtProc
+
+    EnvoyEngine &lt;--&gt;|gRPC| RLS_EG
+    EnvoyEngine &lt;--&gt;|gRPC| RLS_AI
+    RLS_EG &lt;--&gt; Redis
+    RLS_AI &lt;--&gt; Redis
+
+    EnvoyEngine --&gt; AIRoute_Emp
+    EnvoyEngine --&gt; AIRoute_Partner
+    EnvoyEngine --&gt; EchoRoute
+
+    AIRoute_Emp --&gt;|"model: gemini-2.5-flash"| BSP
+    AIRoute_Emp --&gt;|"model: claude-sonnet-5"| BSP
+    BSP --&gt; Gemini
+    BSP --&gt; Claude
+
+    AIRoute_Emp --&gt;|"model: gemma-epp"| EPP_Pref
+    AIRoute_Emp --&gt;|"model: gemma-epp-noprefix"| EPP_Gen
+    AIRoute_Emp --&gt;|"model: gemma-rr"| V1 &amp; V2
+    AIRoute_Partner --&gt;|"model: gemma-rr"| V1 &amp; V2
+    EchoRoute --&gt; EchoServer
+
+    EPP_Pref -.-&gt;|Returns optimal Pod IP| EnvoyEngine
+    EPP_Gen -.-&gt;|Returns optimal Pod IP| EnvoyEngine
+
+    ExtProc -.-&gt;|OTLP gRPC Traces| Phoenix
+    V1 &amp; V2 -.-&gt;|Prometheus Metrics| GMP
+</code></pre>
+<hr></hr>
+<h2 id="2-detailed-end-to-end-sequence-diagrams">2. Detailed End-to-End Sequence Diagrams</h2>
+<h3 id="21-scenario-a-corporate-employee--claude-code-invoking-vertex-ai-claude">2.1 Scenario A: Corporate Employee / Claude Code invoking Vertex AI Claude</h3>
+<p>7-step sequence when an authenticated client requests <code>model: claude-sonnet-5</code> with a corporate GCIP JWT:</p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    autonumber
+    actor Client as Employee Developer (Claude Code)
+    participant Envoy as envoy proxy core
+    participant JWT as JWT Authn Filter (agent-router-jwt)
+    participant Q_RLS as envoy-ai-gateway-ratelimit
+    participant ExtProc as ai-gateway-extproc sidecar
+    participant BSP as BackendSecurityPolicy
+    participant Vertex as Vertex AI Anthropic
+    participant Phoenix as Arize Phoenix
+
+    Note over Client,Envoy: [Step 1: Request Ingestion]
+    Client-&gt;&gt;Envoy: POST /v1/chat/completions&lt;br/&gt;Authorization: Bearer $GT (GCIP JWT)&lt;br/&gt;{"model": "claude-sonnet-5", "messages": [...]}
+
+    Note over Envoy,JWT: [Step 2: Ingress Security &amp; Header Injection]
+    Envoy-&gt;&gt;JWT: Verify JWT signature against Google public keys (remoteJWKS)
+    Note over JWT: 1. Validate signature and expiration&lt;br/&gt;2. Extract department claim&lt;br/&gt;3. Automatically inject x-tenant-id: platform
+    JWT--&gt;&gt;Envoy: Authentication Succeeded (Headers Updated)
+
+    Note over Envoy,Q_RLS: [Step 3: Pre-Execution Tenant Quota Check]
+    Envoy-&gt;&gt;Q_RLS: gRPC ShouldRateLimit (x-tenant-id: platform)
+    Q_RLS--&gt;&gt;Envoy: Quota Available (Return OK)
+
+    Note over Envoy,ExtProc: [Step 4: Body Buffering &amp; Protocol Translation]
+    Envoy-&gt;&gt;ExtProc: gRPC ProcessingRequest (Buffered request body)
+    Note over ExtProc: Translates OpenAI JSON format to Vertex AI Anthropic rawPredict format
+    ExtProc--&gt;&gt;Envoy: Transformed Request Delivered
+
+    Note over Envoy,Vertex: [Step 5: Egress Delegation &amp; Model Execution]
+    Note over Envoy,BSP: Generates Google OAuth2 Access Token using Secret/vertex-ai-sa-key&lt;br/&gt;(Client's corporate JWT is never exposed externally)
+    Envoy-&gt;&gt;Vertex: POST .../models/claude-sonnet-5:rawPredict&lt;br/&gt;Authorization: Bearer ya29...
+    Vertex--&gt;&gt;Envoy: HTTP 200 Streaming Chunks Response
+
+    Note over Envoy,Client: [Step 6: Return Response to Client]
+    Envoy--&gt;&gt;Client: HTTP 200 Stream Delivered
+
+    Note over ExtProc,Phoenix: [Step 7: Async Observability Ingestion]
+    ExtProc-)Phoenix: OTLP gRPC Trace Export (TTFT, token counts, prompt text)
+</code></pre>
+<hr></hr>
+<h3 id="22-scenario-b-gemma-2b-epp-prefix-cache-aware-routing">2.2 Scenario B: Gemma 2B EPP Prefix-Cache-Aware Routing</h3>
+<p>Sequence when a client sends a request with <code>model: gemma-epp</code> containing a long system prompt (&gt;2,000 tokens):</p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    autonumber
+    actor Client as Client
+    participant Envoy as envoy proxy core
+    participant ExtProc as ai-gateway-extproc sidecar
+    participant EPP as llm-d-router (prefix-scorer-pool)
+    participant vLLM as vLLM Pod 2 (10.1.1.10, L4 GPU)
+    participant Phoenix as Arize Phoenix
+
+    Note over Client,Envoy: [Step 1: Request Ingestion]
+    Client-&gt;&gt;Envoy: POST /v1/chat/completions&lt;br/&gt;{"model": "gemma-epp", "messages": [Long system prompt...]}
+
+    Note over Envoy,ExtProc: [Step 2: Body Buffering &amp; Model Extraction]
+    Envoy-&gt;&gt;ExtProc: gRPC ProcessingRequest (Buffered request body)
+    Note over ExtProc: 1. Extracts model field (x-ai-eg-model: gemma-epp)&lt;br/&gt;2. Matches prefix-scorer-pool in AIGatewayRoute
+    ExtProc--&gt;&gt;Envoy: Routing Header Updated
+
+    Note over Envoy,EPP: [Step 3: EPP Intelligent Endpoint Selection]
+    Envoy-&gt;&gt;EPP: gRPC CheckRequest (Prompt text and candidate pod list)
+    Note over EPP: 1. prefix-cache-scorer: Compares prompt hashes&lt;br/&gt;   Finds identical prefix cached on vllm-server Pod 2 (+10 score)&lt;br/&gt;2. queue-scorer: Evaluates queue load (+5 score)&lt;br/&gt;-&gt; Target selected: 10.1.1.10
+    EPP--&gt;&gt;Envoy: Destination Pod IP (10.1.1.10) Returned
+
+    Note over Envoy,vLLM: [Step 4: vLLM PagedAttention Cache Reuse Execution]
+    Envoy-&gt;&gt;vLLM: HTTP POST http://10.1.1.10:8000/v1/chat/completions
+    Note over vLLM: --enable-prefix-caching active:&lt;br/&gt;1. Maps existing KV blocks immediately (bypasses prefill calculation)&lt;br/&gt;2. Enters decoding with ~0.14s TTFT
+    vLLM--&gt;&gt;Envoy: HTTP 200 Streaming Response
+    Envoy--&gt;&gt;Client: HTTP 200 Final Response Stream
+
+    Note over ExtProc,Phoenix: [Step 5: Observability Trace Export]
+    ExtProc-)Phoenix: OTLP gRPC Trace Export (Records accelerated TTFT metrics)
+</code></pre>
+<hr></hr>
+<h3 id="23-scenario-c-external-partner-api-key-authentication--route-isolation">2.3 Scenario C: External Partner API Key Authentication &amp; Route Isolation</h3>
+<p>Sequence when an external partner accesses the gateway via dedicated credentials:</p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    autonumber
+    actor Partner as External Partner Service
+    participant Envoy as envoy proxy core
+    participant KeyAuth as API Key Filter (partner-apikey)
+    participant Route as AIGatewayRoute (partner-router)
+    participant vLLM as In-Cluster vLLM Pod (gemma-rr)
+
+    Note over Partner,Envoy: [Step 1: Request to Dedicated Partner Domain]
+    Partner-&gt;&gt;Envoy: POST /v1/chat/completions&lt;br/&gt;Host: partner.agent-router.internal&lt;br/&gt;X-API-Key: pk-partner-htcsor-...&lt;br/&gt;{"model": "gemma-rr", "messages": [...]}
+
+    Note over Envoy,KeyAuth: [Step 2: Partner Security Evaluation (Route Override)]
+    Note over KeyAuth: Bypasses parent Gateway JWT filter and evaluates API key
+    Envoy-&gt;&gt;KeyAuth: Look up Secret/partner-api-keys mapping table
+    alt Invalid or missing key
+        KeyAuth--&gt;&gt;Partner: Blocked immediately with HTTP 401 Unauthorized
+    else Valid key match
+        Note over KeyAuth: 1. Identifies Client ID (partner-htcsor)&lt;br/&gt;2. Injects x-tenant-id: partner-htcsor header&lt;br/&gt;3. Strips X-API-Key header (sanitize: true prevents backend exposure)
+        KeyAuth--&gt;&gt;Envoy: Authentication Passed
+    end
+
+    Note over Envoy,Route: [Step 3: Allowed Model Catalog Check]
+    Note over Route: Evaluates partner-router rules:&lt;br/&gt;- gemma-rr: Forwarded normally&lt;br/&gt;- gemini/claude: Blocked with HTTP 404 Route Not Found (Cost protection)
+
+    Note over Envoy,vLLM: [Step 4: Backend Serving]
+    Envoy-&gt;&gt;vLLM: HTTP POST (x-tenant-id: partner-htcsor)
+    vLLM--&gt;&gt;Envoy: HTTP 200 Response
+    Envoy--&gt;&gt;Partner: HTTP 200 Result Returned
+</code></pre>
+<hr></hr>
+<h3 id="24-scenario-d-security-header-anti-spoofing-verification-authtest">2.4 Scenario D: Security Header Anti-Spoofing Verification (<code>/authtest</code>)</h3>
+<p>Sequence illustrating gateway defense against client header tampering:</p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    autonumber
+    actor Client as Client (Simulating Attacker)
+    participant Envoy as envoy proxy core
+    participant JWT as JWT Authn Filter
+    participant Echo as echo-server Pod
+
+    Note over Client,Envoy: [Step 1: Ingest Request with Spoofed Header]
+    Client-&gt;&gt;Envoy: POST /authtest&lt;br/&gt;Authorization: Bearer $GT (department: platform)&lt;br/&gt;x-tenant-id: finance-vip (Forged header)&lt;br/&gt;{}
+
+    Note over Envoy,JWT: [Step 2: JWT Validation &amp; Enforced Overwrite]
+    Envoy-&gt;&gt;JWT: Validate JWT integrity
+    Note over JWT: claimToHeaders rule enforced:&lt;br/&gt;Disregards client-sent 'finance-vip'&lt;br/&gt;Overwrites x-tenant-id header with token claim 'platform' (Anti-spoofing)
+    JWT--&gt;&gt;Envoy: Overwrite Applied
+
+    Note over Envoy,Echo: [Step 3: Echo Server Reflection]
+    Envoy-&gt;&gt;Echo: POST /authtest (x-tenant-id: platform)
+    Echo--&gt;&gt;Client: HTTP 200 {"headers": {"x-tenant-id": "platform", ...}}
+</code></pre>
+<hr></hr>
+<h2 id="3-pod--configuration-role-mapping-table">3. Pod &amp; Configuration Role Mapping Table</h2>
+<table>
+<thead>
+<tr>
+<th>Pod / Component</th>
+<th>Namespace</th>
+<th>Applied Manifest Path</th>
+<th>Role &amp; Runtime Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>envoy</code> (Core Proxy)</strong></td>
+<td><code>envoy-gateway-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml" target="_blank"><code>manifests/01-gateway/gateway.yaml</code></a></td>
+<td>Receives external LB (<code>:8080</code>) traffic and executes L7 routing decisions</td>
+</tr>
+<tr>
+<td><strong><code>ai-gateway-extproc</code></strong></td>
+<td><code>envoy-gateway-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-config.yaml" target="_blank"><code>manifests/01-gateway/gateway-config.yaml</code></a></td>
+<td>Buffers request body, parses JSON <code>model</code>, and publishes OTLP gRPC traces</td>
+</tr>
+<tr>
+<td><strong><code>envoy-ratelimit</code></strong></td>
+<td><code>envoy-gateway-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml" target="_blank"><code>manifests/06-traffic-policy/traffic-policy.yaml</code></a></td>
+<td>Handles token-per-minute rate limits via <code>BackendTrafficPolicy</code> (EG xDS 18001)</td>
+</tr>
+<tr>
+<td><strong><code>envoy-ai-gateway-ratelimit</code></strong></td>
+<td><code>envoy-gateway-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml" target="_blank"><code>manifests/06-traffic-policy/traffic-policy.yaml</code></a></td>
+<td>Manages cumulative token budgets per model via <code>QuotaPolicy</code> (AI GW xDS 18002)</td>
+</tr>
+<tr>
+<td><strong><code>redis</code></strong></td>
+<td><code>redis-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/redis.yaml" target="_blank"><code>manifests/06-traffic-policy/redis.yaml</code></a></td>
+<td>Distributed in-memory storage for rate-limit counters and quota keys</td>
+</tr>
+<tr>
+<td><strong><code>SecurityPolicy</code> (JWT)</strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml" target="_blank"><code>manifests/02-security/security-policy.yaml</code></a></td>
+<td>Global verification for GCIP and Google SA tokens; injects <code>x-tenant-id</code></td>
+</tr>
+<tr>
+<td><strong><code>SecurityPolicy</code> (API Key)</strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml" target="_blank"><code>manifests/05-routing/partner-route.yaml</code></a></td>
+<td>Route-level API key verification and tenant mapping (overrides gateway default)</td>
+</tr>
+<tr>
+<td><strong><code>keyissuer</code></strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/keyissuer.yaml" target="_blank"><code>manifests/02-security/keyissuer.yaml</code></a></td>
+<td>Dynamically patches new partner API keys into K8s Secret <code>partner-api-keys</code></td>
+</tr>
+<tr>
+<td><strong><code>echo-server</code></strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml" target="_blank"><code>manifests/05-routing/echo-route.yaml</code></a></td>
+<td>Reflects received request headers as JSON to verify anti-spoofing behavior</td>
+</tr>
+<tr>
+<td><strong><code>AIGatewayRoute</code> (Internal)</strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml" target="_blank"><code>manifests/05-routing/ai-gateway-route.yaml</code></a></td>
+<td>Allows full routing across Gemini, Claude, Gemma-RR, and EPP cache pools</td>
+</tr>
+<tr>
+<td><strong><code>AIGatewayRoute</code> (Partner)</strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml" target="_blank"><code>manifests/05-routing/partner-route.yaml</code></a></td>
+<td>Restricts access to <code>gemma-rr</code> only for domain <code>partner.agent-router.internal</code></td>
+</tr>
+<tr>
+<td><strong><code>BackendSecurityPolicy</code></strong></td>
+<td><code>routing</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml" target="_blank"><code>manifests/05-routing/ai-gateway-route.yaml</code></a></td>
+<td>Fetches Google OAuth2 tokens from <code>Secret/vertex-ai-sa-key</code> to call Vertex AI</td>
+</tr>
+<tr>
+<td><strong><code>llm-d-router</code> (EPP)</strong></td>
+<td><code>vllm</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/04-inference-pool/llm-d-router.yaml" target="_blank"><code>manifests/04-inference-pool/llm-d-router.yaml</code></a></td>
+<td>Scores pods using prompt prefix hashes to maximize KV cache reuse (<code>prefix-cache-scorer</code>)</td>
+</tr>
+<tr>
+<td><strong><code>vllm-server</code> (2 Pods)</strong></td>
+<td><code>vllm</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/03-vllm/vllm-deployment.yaml" target="_blank"><code>manifests/03-vllm/vllm-deployment.yaml</code></a></td>
+<td>Hosts Gemma 2B on NVIDIA L4 GPUs with V1 PagedAttention prefix caching enabled</td>
+</tr>
+<tr>
+<td><strong><code>phoenix</code></strong></td>
+<td><code>phoenix</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/tree/main/manifests/07-observability/phoenix" target="_blank"><code>manifests/07-observability/phoenix/</code></a></td>
+<td>Persists OTLP traces into Cloud SQL Postgres 16 and serves the web UI (<code>:6006</code>)</td>
+</tr>
+<tr>
+<td><strong><code>gmp-collector</code></strong></td>
+<td><code>gmp-system</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/07-observability/podmonitoring.yaml" target="_blank"><code>manifests/07-observability/podmonitoring.yaml</code></a></td>
+<td>Periodically scrapes vLLM <code>:8000/metrics</code> and exports to Google Cloud Monitoring</td>
+</tr>
+</tbody>
+</table>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+    
+    
+    
+    
+    <a href="gateway-resources.html" class="navigation navigation-prev " aria-label="Previous page: Gateway & Resource Hierarchy">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    
+    
+    <a href="project-spec.html" class="navigation navigation-next " aria-label="Next page: Project Specification">
+        <i class="fa fa-angle-right"></i>
+    </a>
+    
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"End-to-End Request Flow","level":"3.2","depth":1,"next":{"title":"Project Specification","level":"3.3","depth":1,"path":"architecture/project-spec.md","ref":"architecture/project-spec.md","articles":[]},"previous":{"title":"Gateway & Resource Hierarchy","level":"3.1","depth":1,"path":"architecture/gateway-resources.md","ref":"architecture/gateway-resources.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"architecture/request-flow.md","mtime":"2026-09-30T05:05:23.717Z","type":"markdown"},"gitbook":{"version":"6.2.2","time":"2026-09-30T06:02:32.136Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    <script>
+        (function() {
+            if (typeof gitbook !== "undefined" && gitbook.events) {
+                gitbook.events.bind("page.change", function() {
+                    var isKo = window.location.pathname.indexOf("/ko/") !== -1 || window.location.pathname.endsWith("/ko");
+                    var searchInput = document.querySelector("#book-search-input input");
+                    if (searchInput) {
+                        searchInput.setAttribute("placeholder", isKo ? "검색어를 입력하세요" : "Type to search");
+                    }
+                });
+            }
+        })();
+    </script>
+
+    </body>
+</html>
+

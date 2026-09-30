@@ -18,8 +18,9 @@ This platform provides a unified entry point bridging public cloud managed model
 - **Observability Layer**: [Arize Phoenix](https://github.com/Arize-ai/phoenix) persisting OTLP traces into Cloud SQL PostgreSQL, complemented by Google Cloud Monitoring collecting GPU and prefix cache metrics.
 
 For detailed architecture diagrams and workflows:
-- [Resource Hierarchy & Architecture Diagram](design/gateway-architecture-diagram.md)
-- [End-to-End Request Flow Sequence Diagram](design/architecture-request-flow.md)
+- [Resource Hierarchy & Architecture Diagram](docs/architecture/gateway-resources.md)
+- [End-to-End Request Flow Sequence Diagram](docs/architecture/request-flow.md)
+- [Project Specification](docs/architecture/project-spec.md)
 
 ---
 
@@ -163,6 +164,6 @@ kubectl apply -k manifests/06-traffic-policy
 kubectl apply -k manifests/07-observability
 ```
 
-For step-by-step verification commands, see the [Manual Testing Guide](tests/manual-test-guide.md).
-For a comprehensive workshop walkthrough including IAM, GPU quota checks, and HF Token setup, see the [Customer Workshop Guide](docs/workshop-guide.md).
-For root-cause analysis and gateway-side architectural solutions regarding Claude Code experimental beta headers (advisor-tool-2026-03-01) on Vertex AI, see the [Claude Code & Vertex AI Compatibility Guide](docs/claude-code-vertex-compatibility.md).
+For step-by-step verification commands, see the [Manual Testing Guide](docs/operations/manual-test-guide.md).
+For a comprehensive workshop walkthrough including IAM, GPU quota checks, and HF Token setup, see the [Customer Workshop Guide](docs/getting-started/workshop-guide.md).
+For root-cause analysis and gateway-side architectural solutions regarding Claude Code experimental beta headers (advisor-tool-2026-03-01) on Vertex AI, see the [Claude Code & Vertex AI Compatibility Guide](docs/operations/claude-code-compatibility.md).

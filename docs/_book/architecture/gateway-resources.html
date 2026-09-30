@@ -1,0 +1,663 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Gateway & Resource Hierarchy · HonKit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="request-flow.html" />
+    
+    
+    <link rel="prev" href="../getting-started/workshop-guide.html" />
+    
+
+    <style>
+        .book-header .lang-switch-container {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            padding: 0 14px;
+            position: relative;
+            z-index: 10;
+        }
+        .book-header .lang-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 999px;
+            padding: 2px;
+            text-decoration: none !important;
+            line-height: 1;
+            height: 28px;
+            box-sizing: border-box;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        .book-header .lang-toggle-pill:hover {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        .book-header .lang-toggle-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            height: 22px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7e888b;
+            transition: all 0.18s ease;
+            user-select: none;
+        }
+        .book-header .lang-toggle-option.active {
+            background: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-pill {
+            background: rgba(112, 66, 20, 0.1);
+            border-color: rgba(112, 66, 20, 0.2);
+        }
+        .book.color-theme-1 .book-header .lang-toggle-option.active {
+            background: #f3eacb;
+            color: #704214;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option {
+            color: #9da5b4;
+        }
+        .book.color-theme-2 .book-header .lang-toggle-option.active {
+            background: #2d3143;
+            color: #68a0f8;
+        }
+    </style>
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+            
+            
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Getting Started</li>
+            
+            
+    
+        <li class="chapter " data-level="2.1" data-path="../getting-started/quickstart.html">
+            
+                <a href="../getting-started/quickstart.html">
+            
+                    
+                    Quickstart & Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../getting-started/workshop-guide.html">
+            
+                <a href="../getting-started/workshop-guide.html">
+            
+                    
+                    Customer Workshop Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Architecture & Design</li>
+            
+            
+    
+        <li class="chapter active" data-level="3.1" data-path="gateway-resources.html">
+            
+                <a href="gateway-resources.html">
+            
+                    
+                    Gateway & Resource Hierarchy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="request-flow.html">
+            
+                <a href="request-flow.html">
+            
+                    
+                    End-to-End Request Flow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="project-spec.html">
+            
+                <a href="project-spec.html">
+            
+                    
+                    Project Specification
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+            
+            <li class="header">Verification & Guides</li>
+            
+            
+    
+        <li class="chapter " data-level="4.1" data-path="../operations/manual-test-guide.html">
+            
+                <a href="../operations/manual-test-guide.html">
+            
+                    
+                    Manual Testing Guide
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../operations/claude-code-compatibility.html">
+            
+                <a href="../operations/claude-code-compatibility.html">
+            
+                    
+                    Claude Code & Vertex AI Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+        
+        
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+
+
+    
+    
+
+<div class="book-header" role="navigation">
+    
+
+    <div class="lang-switch-container pull-right">
+        <a href="../ko/architecture/gateway-resources.html" class="lang-toggle-pill" title="한국어로 전환" aria-label="한국어로 전환">
+            <span class="lang-toggle-option active">EN</span>
+            <span class="lang-toggle-option ">한국어</span>
+        </a>
+    </div>
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Gateway & Resource Hierarchy</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="resource-architecture-envoy-ai-gateway--kubernetes-gateway-api">Resource Architecture: Envoy AI Gateway &amp; Kubernetes Gateway API</h1>
+<p>This document provides an architectural overview of the core resources and hierarchy across the Kubernetes Gateway API, Envoy Gateway, and Envoy AI Gateway (<a href="https://github.com/theagentrouter/agent-router" target="_blank">Agentrouter</a>).</p>
+<hr></hr>
+<h2 id="1-resource-relationships--layer-diagram">1. Resource Relationships &amp; Layer Diagram</h2>
+<pre><code class="lang-mermaid">flowchart TD
+    classDef infra fill:#e8f0fe,stroke:#4285f4,stroke-width:2px;
+    classDef entry fill:#fef7e0,stroke:#fbbc04,stroke-width:2px;
+    classDef route fill:#e6f4ea,stroke:#34a853,stroke-width:2px;
+    classDef backend fill:#fce8e6,stroke:#ea4335,stroke-width:2px;
+
+    subgraph InfraLayer["1. Infrastructure Layer (Specifications &amp; Pod Deployment Options)"]
+        GC["GatewayClass&lt;br/&gt;(envoy-ai-gw-class)"]:::infra
+        EP["EnvoyProxy&lt;br/&gt;(envoy-custom-proxy)"]:::infra
+        EP -. "References Pod specs and LB config" .-&gt; GC
+    end
+
+    subgraph EntryLayer["2. Network Entry Layer (Listeners &amp; Global Security Policies)"]
+        GW["Gateway&lt;br/&gt;(envoy-ai-gateway)&lt;br/&gt;External IP: &amp;lt;GATEWAY_IP&amp;gt;:8080"]:::entry
+        GC --&gt;|"Deploys Envoy proxy pods"| GW
+        SP["SecurityPolicy&lt;br/&gt;(agent-router-jwt)&lt;br/&gt;(Default: Corporate JWT Validation)"]:::entry
+        SP --&gt;|"Attaches global gateway policy"| GW
+    end
+
+    subgraph RouteLayer["3. Intelligent Routing Layer (L7 &amp; Model-Based Dispatching)"]
+        HR["HTTPRoute&lt;br/&gt;(/authtest standard HTTP)"]:::route
+        AIGR["AIGatewayRoute&lt;br/&gt;(/v1/chat/completions)&lt;br/&gt;(Routes based on body model field)"]:::route
+        GW --&gt; HR
+        GW --&gt; AIGR
+        SP_Partner["SecurityPolicy&lt;br/&gt;(partner-apikey)&lt;br/&gt;(API Key Policy)"]:::entry
+        SP_Partner -. "Overrides partner route policy" .-&gt; AIGR
+    end
+
+    subgraph BackendLayer["4. Backend Serving Layer (Inference Engines)"]
+        ASB_Gemini["AIServiceBackend: Vertex AI Gemini&lt;br/&gt;(GCPVertexAI schema)"]:::backend
+        ASB_Claude["AIServiceBackend: Vertex AI Claude&lt;br/&gt;(GCPAnthropic schema)"]:::backend
+        ASB_vLLM["AIServiceBackend: vLLM&lt;br/&gt;(OpenAI schema)"]:::backend
+        ECHO["Service: echo-server"]:::backend
+
+        HR --&gt; ECHO
+        AIGR --&gt;|"model: gemini-2.5-flash"| ASB_Gemini
+        AIGR --&gt;|"model: claude-sonnet-5"| ASB_Claude
+        AIGR --&gt;|"model: gemma-rr"| ASB_vLLM
+    end
+</code></pre>
+<hr></hr>
+<h2 id="2-resource-roles--cluster-mapping">2. Resource Roles &amp; Cluster Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Role &amp; Metaphor</th>
+<th>Deployed Resource Name</th>
+<th>Manifest File Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>GatewayClass</code></strong></td>
+<td><strong>Building Code</strong>: Defines the ingress controller engine installed in the cluster.</td>
+<td><code>envoy-ai-gw-class</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-class.yaml" target="_blank"><code>manifests/01-gateway/gateway-class.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>EnvoyProxy</code></strong></td>
+<td><strong>Construction Spec</strong>: Specifies Envoy data-plane pod CPU/memory requests, replicas, log level, and external LoadBalancer options.</td>
+<td><code>routing/envoy-custom-proxy</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/envoy-proxy.yaml" target="_blank"><code>manifests/01-gateway/envoy-proxy.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>Gateway</code></strong></td>
+<td><strong>Building Main Entrance</strong>: External entry point listening on port 8080 and provisioned with a GCP external LoadBalancer IP.</td>
+<td><code>routing/envoy-ai-gateway</code><br></br>(External IP: <code>&lt;GATEWAY_IP&gt;</code>)</td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml" target="_blank"><code>manifests/01-gateway/gateway.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>SecurityPolicy</code></strong></td>
+<td><strong>Security Checkpoint</strong>: Attached to the Gateway or Route to execute JWT verification, API key authentication, and tenant header injection.</td>
+<td><code>routing/agent-router-jwt</code><br></br><code>routing/partner-apikey</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml" target="_blank"><code>manifests/02-security/security-policy.yaml</code></a><br></br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml" target="_blank"><code>manifests/05-routing/partner-route.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>HTTPRoute</code></strong></td>
+<td><strong>Standard Signpost</strong>: Routes traffic based on standard URL paths (<code>/authtest</code>) or headers to regular Kubernetes Services.</td>
+<td><code>routing/authtest</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml" target="_blank"><code>manifests/05-routing/echo-route.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>AIGatewayRoute</code></strong></td>
+<td><strong>AI-Aware Router</strong>: Buffers and parses the JSON request body, reads the <code>model</code> field (<code>gemini-2.5-flash</code>, <code>gemma-rr</code>), and dispatches to the optimal AI backend.</td>
+<td><code>routing/envoy-ai-gw-router</code><br></br><code>routing/partner-router</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml" target="_blank"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br></br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml" target="_blank"><code>manifests/05-routing/partner-route.yaml</code></a></td>
+</tr>
+<tr>
+<td><strong><code>AIServiceBackend</code></strong></td>
+<td><strong>AI Backend Interface</strong>: Declares target backend protocol schemas (OpenAI, GCPVertexAI, GCPAnthropic) and handles protocol translation.</td>
+<td><code>routing/vertex-ai-backend</code><br></br><code>routing/vertex-ai-claude-backend</code><br></br><code>routing/vllm-rr-backend</code><br></br><code>routing/partner-vllm-backend</code></td>
+<td><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml" target="_blank"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br></br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml" target="_blank"><code>manifests/05-routing/partner-route.yaml</code></a></td>
+</tr>
+</tbody>
+</table>
+<hr></hr>
+<h2 id="3-end-to-end-request-processing-flow">3. End-to-End Request Processing Flow</h2>
+<p>Sequence of operations when a client sends an inference request to <code>http://&lt;GATEWAY_IP&gt;:8080/v1/chat/completions</code>:</p>
+<pre><code>[Client]
+   │
+   │  1. HTTP POST /v1/chat/completions (Header: Authorization Bearer JWT)
+   ▼
+[Gateway: envoy-ai-gateway (&lt;GATEWAY_IP&gt;:8080)]
+   │
+   │  2. SecurityPolicy Validation:
+   │     - Validates JWT signature against Google/GCIP public keys
+   │     - Extracts token claims and injects x-tenant-id header
+   ▼
+[AIGatewayRoute: envoy-ai-gw-router]
+   │
+   │  3. Body Buffering &amp; Model Parsing:
+   │     - Parses JSON payload to inspect the model field
+   │
+   ├─ model == "gemini-2.5-flash" ──┐
+   │                                 │
+   ├─ model == "claude-sonnet-5" ───┼─┐
+   │                                 │ │
+   └─ model == "gemma-rr" ───┐       │ │
+                             │       ▼ │
+                             │  [AIServiceBackend: vertex-ai-backend]
+                             │     - Translates OpenAI-compatible schema to Vertex AI Gemini
+                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy credentials
+                             │     - Calls Google Cloud Vertex AI Gemini API
+                             │
+                             │       ▼
+                             │  [AIServiceBackend: vertex-ai-claude-backend]
+                             │     - Translates schema to Vertex AI Anthropic Claude
+                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy credentials
+                             │     - Calls Vertex AI Anthropic Claude API
+                             │
+                             ▼
+                        [AIServiceBackend: vLLM / InferencePool]
+                           - Dispatches request to in-cluster GPU vLLM pods
+</code></pre><hr></hr>
+<h2 id="4-policy-inheritance--override-rules">4. Policy Inheritance &amp; Override Rules</h2>
+<p>Policy attachment follows standard Kubernetes Gateway API rules across architectural tiers:</p>
+<ol>
+<li><p><strong>Gateway-Level Policy (<code>agent-router-jwt</code>)</strong>:</p>
+<ul>
+<li><code>targetRefs</code> points to the <code>Gateway</code>.</li>
+<li>All child routes attached to this Gateway inherit corporate JWT authentication by default.</li>
+<li>Prevents unauthenticated routes from unintended exposure.</li>
+</ul>
+</li>
+<li><p><strong>Route-Level Policy (<code>partner-apikey</code>)</strong>:</p>
+<ul>
+<li><code>targetRefs</code> points to a specific <code>HTTPRoute</code> (<code>partner-router</code>).</li>
+<li>Route-level policies override gateway-level policies according to Gateway API specifications.</li>
+<li>Requests arriving at the partner domain bypass standard corporate JWT evaluation and enforce strict API key validation.</li>
+</ul>
+</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+    
+    
+    
+    
+    <a href="../getting-started/workshop-guide.html" class="navigation navigation-prev " aria-label="Previous page: Customer Workshop Guide">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    
+    
+    <a href="request-flow.html" class="navigation navigation-next " aria-label="Next page: End-to-End Request Flow">
+        <i class="fa fa-angle-right"></i>
+    </a>
+    
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Gateway & Resource Hierarchy","level":"3.1","depth":1,"next":{"title":"End-to-End Request Flow","level":"3.2","depth":1,"path":"architecture/request-flow.md","ref":"architecture/request-flow.md","articles":[]},"previous":{"title":"Customer Workshop Guide","level":"2.2","depth":1,"path":"getting-started/workshop-guide.md","ref":"getting-started/workshop-guide.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"architecture/gateway-resources.md","mtime":"2026-09-30T05:05:23.717Z","type":"markdown"},"gitbook":{"version":"6.2.2","time":"2026-09-30T06:02:32.136Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    <script>
+        (function() {
+            if (typeof gitbook !== "undefined" && gitbook.events) {
+                gitbook.events.bind("page.change", function() {
+                    var isKo = window.location.pathname.indexOf("/ko/") !== -1 || window.location.pathname.endsWith("/ko");
+                    var searchInput = document.querySelector("#book-search-input input");
+                    if (searchInput) {
+                        searchInput.setAttribute("placeholder", isKo ? "검색어를 입력하세요" : "Type to search");
+                    }
+                });
+            }
+        })();
+    </script>
+
+    </body>
+</html>
+
