@@ -2,48 +2,48 @@
 
 ## 1. Architecture Overview
 
-* **Infrastructure Layer:** GCP Project `<YOUR_PROJECT_ID>` (`asia-southeast1`), GKE Standard cluster with Gateway API and GCS FUSE CSI driver enabled. L4 GPU NodePool (2x `g2-standard-8`, spot=true). Cloud SQL PostgreSQL 16. GCS Bucket for model weights.
-* **Model Storage & Serving Layer:** Model weights loaded from Hugging Face into GCS. vLLM `0.29.0` pods with GCS FUSE mounts (`gke-gcsfuse/volumes: "true"`). Memory contention simulated via VRAM limits, Prefix Caching V1 enabled.
-* **Routing & Networking Layer:** Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`) intercepting external traffic, buffering JSON request bodies to apply L7 routing against the `model` key. Forwarding internal routes to `InferencePool` via `inference.networking.k8s.io/v1`. `llm-d-router` (`0.10.0`) acts as an Envoy ext-proc EPP to rank InferencePool pods dynamically using Prefix Cache scoring. Egress to Vertex AI using GCP credentials for Gemini models and Anthropic Claude models.
-* **Security & Multi-Tenancy Layer:** 3-tier unified authentication via Envoy Gateway `SecurityPolicy`: GCIP JWT for corporate employees / Cloud Workstation, Google SA ID Tokens for internal microservices, and API Key authentication for external partners with strict model routing isolation.
-* **Traffic Policy & Quotas:** Redis-backed token rate limiting (`BackendTrafficPolicy`) for LLM inference calls and multi-tenant token quota isolation (`QuotaPolicy`) preventing noisy neighbor resource exhaustion.
-* **Observability Layer:** [Arize Phoenix](https://github.com/Arize-ai/phoenix) backing to Cloud SQL via Auth Proxy sidecar. OTLP trace gathering from API paths. PodMonitoring targeting vLLM `/metrics` for prefix caches.
-* **Validation & Docs:** In-cluster load generator pod resetting vLLM caches dynamically across 3 randomized arms. Output feeds into empirical tutorial assets compliant with `AGENTS.md`.
+* Infrastructure: GCP Project `<YOUR_PROJECT_ID>` (`asia-southeast1`), GKE Standard cluster with Gateway API and GCS FUSE CSI driver enabled, 2x L4 GPU Spot node pools (`g2-standard-8`), Cloud SQL PostgreSQL 16, and GCS bucket for model weights.
+* Model Storage & Serving: Loads model weights from Hugging Face into GCS and mounts them to vLLM `0.29.0` pods via GCS FUSE (`gke-gcsfuse/volumes: "true"`), with PagedAttention V1 Prefix Caching enabled.
+* Routing & Networking: Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`) buffers JSON request bodies and routes by the `model` key. Internal routes use `InferencePool` (`inference.networking.k8s.io/v1`) with `llm-d-router` (`0.10.0`) scoring pods by prefix cache state. Gemini and Claude routes call Vertex AI using GCP credentials.
+* Security & Multi-Tenancy: Unified authentication via Envoy Gateway `SecurityPolicy` supporting GCIP JWT for employees, Google SA ID tokens for internal services, and API keys for external partners with isolated model routing.
+* Traffic Policy & Quotas: Redis-backed token rate limiting (`BackendTrafficPolicy`) and per-tenant token quota isolation (`QuotaPolicy`).
+* Observability: [Arize Phoenix](https://github.com/Arize-ai/phoenix) connected to Cloud SQL via Auth Proxy sidecar for OTLP trace storage, plus `PodMonitoring` scraping vLLM `/metrics`.
+* Validation: In-cluster benchmark job testing 3 routing configurations in randomized order with vLLM cache resets between runs.
 
 ***
 
 ## 2. Feature Inventory
 
-| #  | Feature                      | Description                                                                                               | Milestone         |
-| -- | ---------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------- |
-| 1  | GCP Terraform VPC/GKE        | Deploy GKE with Gateway API, Workload Identity, GCS FUSE                                                  | M1 (Completed)    |
-| 2  | GCP Terraform DB/Storage     | Deploy Cloud SQL PG 16, GCS Bucket                                                                        | M1 (Completed)    |
-| 3  | GCP Terraform NodePool       | Deploy 2x L4 Spot NodePool (`g2-standard-8`)                                                              | M1 (Completed)    |
-| 4  | GCP Terraform IAM            | Service Accounts + KSA/GSA Workload Identity bindings                                                     | M1 (Completed)    |
-| 5  | Model Weight Loader          | Job to pull google/gemma-2-2b-it from HF to GCS bucket                                                    | M2 (Completed)    |
-| 6  | vLLM Workload                | Deploy vLLM `0.29.0` pods referencing GCS FUSE mount. Enable Prefix Caching, configure KV bounds          | M2 (Completed)    |
-| 7  | Phoenix Tracing Server       | Deploy Arize Phoenix tracing UI with Cloud SQL Auth Proxy Sidecar                                         | M3 (Completed)    |
-| 8  | K8s GIE & InferencePools     | Define InferencePools representing baseline RR vs EPP Ext-proc targets                                    | M3 (Completed)    |
-| 9  | llm-d EPP Router             | Deploy `llm-d-router` v0.10.0 configured for `prefix-cache` & `queue` scorer                              | M3 (Completed)    |
-| 10 | Agent Router Hybrid Mesh     | Deploy Envoy AI Gateway (Agent Router `1.1.0`), AIGatewayRoute buffering body and routing to backend arms | M3 (Completed)    |
-| 11 | 3-Tier Multi-Authentication  | GCIP JWT, Google SA ID Token, and Partner API Key authentication with header spoofing defense             | M3 (Completed)    |
-| 12 | Redis Traffic & Quota Policy | Rate limiting (`BackendTrafficPolicy`) and per-tenant quota isolation (`QuotaPolicy`) backed by Redis     | M3 (Completed)    |
-| 13 | E2E Benchmark Suite          | Load generator script, randomized 3 arms, TTFT/cache stat metrics, vLLM cache reset logic                 | E2E (Completed)   |
-| 14 | Teardown Automation          | Makefile scripts to create and delete the entire environment predictably                                  | M4 (Completed)    |
-| 15 | Bilingual Documentation      | Primary English (`*.md`) & Korean (`*.kr.md`) with cross-document navigation                              | Final (Completed) |
+| # | Feature | Description | Milestone |
+| --- | --- | --- | --- |
+| 1 | GCP Terraform VPC/GKE | Deploy GKE with Gateway API, Workload Identity, GCS FUSE | M1 (Completed) |
+| 2 | GCP Terraform DB/Storage | Deploy Cloud SQL PG 16 and GCS Bucket | M1 (Completed) |
+| 3 | GCP Terraform NodePool | Deploy 2x L4 Spot NodePool (`g2-standard-8`) | M1 (Completed) |
+| 4 | GCP Terraform IAM | Service Accounts and KSA/GSA Workload Identity bindings | M1 (Completed) |
+| 5 | Model Weight Loader | Job to pull `google/gemma-2-2b-it` from HF to GCS bucket | M2 (Completed) |
+| 6 | vLLM Workload | Deploy vLLM `0.29.0` pods with GCS FUSE mount and Prefix Caching | M2 (Completed) |
+| 7 | Phoenix Tracing Server | Deploy Arize Phoenix UI with Cloud SQL Auth Proxy sidecar | M3 (Completed) |
+| 8 | K8s GIE & InferencePools | Define InferencePools for round-robin and EPP targets | M3 (Completed) |
+| 9 | llm-d EPP Router | Deploy `llm-d-router` v0.10.0 with `prefix-cache` and `queue` scorers | M3 (Completed) |
+| 10 | Agent Router Hybrid Mesh | Deploy Envoy AI Gateway (`1.1.0`) and `AIGatewayRoute` | M3 (Completed) |
+| 11 | 3-Tier Multi-Authentication | GCIP JWT, Google SA ID Token, and Partner API Key auth with anti-spoofing | M3 (Completed) |
+| 12 | Redis Traffic & Quota Policy | Rate limiting (`BackendTrafficPolicy`) and tenant quotas (`QuotaPolicy`) via Redis | M3 (Completed) |
+| 13 | E2E Benchmark Suite | Benchmark job measuring TTFT and cache hits across 3 routing setups | E2E (Completed) |
+| 14 | Teardown Automation | Makefile targets for automated provisioning and cleanup | M4 (Completed) |
+| 15 | Bilingual Documentation | English and Korean documentation | Final (Completed) |
 
 ***
 
 ## 3. Milestones
 
-| #     | Name                         | Scope                                                                               | Dependencies | Status |
-| ----- | ---------------------------- | ----------------------------------------------------------------------------------- | ------------ | ------ |
-| M1    | Infrastructure (Terraform)   | GCP resources (GKE, NodePools, Cloud SQL, GCS, IAM)                                 | none         | DONE   |
-| M2    | Models & Serving (vLLM)      | HF weight preloader, GCS FUSE mounting, vLLM pod definitions                        | M1           | DONE   |
-| M3    | Routing & Security           | GIE, llm-d EPP, Agent Router, Phoenix, 3-tier auth, Redis quotas                    | M2           | DONE   |
-| M4    | Automation & Packaging       | Numbered Kustomize manifests, Makefile automation, teardown verification            | M3           | DONE   |
-| E2E   | Empirical Benchmark          | In-cluster 3-way comparative load tests with cache isolation and metrics collection | M3           | DONE   |
-| Final | Bilingual Docs & Publication | Primary English & Korean documentation, cross-linking, zero-leak verification       | M4, E2E      | DONE   |
+| # | Name | Scope | Dependencies | Status |
+| --- | --- | --- | --- | --- |
+| M1 | Infrastructure (Terraform) | GCP resources (GKE, NodePools, Cloud SQL, GCS, IAM) | none | DONE |
+| M2 | Models & Serving (vLLM) | HF weight loader, GCS FUSE mount, vLLM pods | M1 | DONE |
+| M3 | Routing & Security | GIE, llm-d EPP, Agent Router, Phoenix, 3-tier auth, Redis quotas | M2 | DONE |
+| M4 | Automation & Packaging | Numbered Kustomize manifests, Makefile automation, cleanup | M3 | DONE |
+| E2E | Benchmark Verification | In-cluster 3-way load tests with cache reset and metrics collection | M3 | DONE |
+| Final | Documentation | English and Korean documentation and credential checks | M4, E2E | DONE |
 
 ***
 
@@ -51,21 +51,21 @@
 
 ### 4.1 Terraform ↔ K8s
 
-* KSA Name, GSA Email mapped for Workload Identity
-* GCS Bucket Name exported for Manifest mounts
+* KSA Name and GSA Email mapped for Workload Identity
+* GCS Bucket Name exported for manifest mounts
 * Cloud SQL Instance Connection Name exported for Auth Proxy
 
 ### 4.2 Agent Router ↔ Backend Routes
 
-* Envoy intercepts HTTP requests to `/v1/chat/completions`.
-* `model: "gemini-2.5-flash"` routes to Google Cloud Vertex AI Gemini.
-* `model: "claude-sonnet-5"` routes to Google Cloud Vertex AI Claude.
-* `model: "gemma-rr"` routes to basic K8s Service (L4 round-robin).
-* `model: "gemma-epp"` routes to InferencePool via Ext-Proc EPP with prefix scorer.
-* `model: "gemma-epp-noprefix"` routes to InferencePool via EPP ignoring prefix scores.
+* Envoy handles HTTP requests to `/v1/chat/completions`.
+* `model: "gemini-2.5-flash"`: Routes to Google Cloud Vertex AI Gemini
+* `model: "claude-sonnet-5"`: Routes to Google Cloud Vertex AI Claude
+* `model: "gemma-rr"`: Routes to standard K8s Service (L4 round-robin)
+* `model: "gemma-epp"`: Routes to InferencePool via EPP with prefix scorer
+* `model: "gemma-epp-noprefix"`: Routes to InferencePool via EPP queue scorer
 
 ### 4.3 Multi-Tenancy & Security Contracts
 
-* Default Host (`*`): Enforces GCIP JWT or Google SA ID Token signature verification via `agent-router-jwt`. Injects `x-tenant-id`.
-* Partner Host (`partner.agent-router.internal`): Enforces API Key verification via `partner-apikey`. Injects `x-tenant-id` and strips `X-API-Key` header.
-* Redis Rate Limit / Quota: Ingests `llm_total_token` metadata and evaluates tenant token buckets.
+* Default Host (`*`): Verifies GCIP JWT or Google SA ID Token via `agent-router-jwt` and sets `x-tenant-id`.
+* Partner Host (`partner.agent-router.internal`): Verifies API keys via `partner-apikey`, sets `x-tenant-id`, and strips `X-API-Key`.
+* Redis Rate Limit / Quota: Tracks `llm_total_token` response metadata against tenant token buckets.

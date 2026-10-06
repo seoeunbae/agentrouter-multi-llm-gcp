@@ -1,12 +1,12 @@
 # End-to-End Request Flow
 
-This document provides a comprehensive end-to-end request processing architecture for Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)), Kubernetes Gateway API Inference Extension (GIE), llm-d-router (EPP), vLLM serving engines, Google Cloud Vertex AI (Gemini & Claude), Arize Phoenix observability, 3-tier multi-authentication (GCIP JWT, Google SA ID Token, Partner API Key), and Redis-backed dual rate limiting and quota policies deployed on Google Kubernetes Engine (GKE).
+End-to-end request processing flow across Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)), GIE, llm-d-router (EPP), vLLM, Google Cloud Vertex AI (Gemini & Claude), Arize Phoenix, 3-tier authentication (GCIP JWT, Google SA ID Token, Partner API Key), and Redis-backed rate limiting and quota policies on GKE.
 
 ***
 
-## 1. Component & Namespace Topology Diagram
+## 1. Component & Namespace Topology
 
-Mapping of pods, policies, and networking paths traversed by different client personas:
+Mapping of pods, policies, and network paths across client types:
 
 ```mermaid
 flowchart TD
@@ -265,23 +265,23 @@ sequenceDiagram
 
 ***
 
-## 3. Pod & Configuration Role Mapping Table
+## 3. Pod & Configuration Mapping
 
-| Pod / Component                  | Namespace              | Applied Manifest Path                                                                                                                                                 | Role & Runtime Behavior                                                                   |
-| -------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **`envoy` (Core Proxy)**         | `envoy-gateway-system` | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml)                             | Receives external LB (`:8080`) traffic and executes L7 routing decisions                  |
-| **`ai-gateway-extproc`**         | `envoy-gateway-system` | [`manifests/01-gateway/gateway-config.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-config.yaml)               | Buffers request body, parses JSON `model`, and publishes OTLP gRPC traces                 |
-| **`envoy-ratelimit`**            | `envoy-gateway-system` | [`manifests/06-traffic-policy/traffic-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml) | Handles token-per-minute rate limits via `BackendTrafficPolicy` (EG xDS 18001)            |
-| **`envoy-ai-gateway-ratelimit`** | `envoy-gateway-system` | [`manifests/06-traffic-policy/traffic-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml) | Manages cumulative token budgets per model via `QuotaPolicy` (AI GW xDS 18002)            |
-| **`redis`**                      | `redis-system`         | [`manifests/06-traffic-policy/redis.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/redis.yaml)                   | Distributed in-memory storage for rate-limit counters and quota keys                      |
-| **`SecurityPolicy` (JWT)**       | `routing`              | [`manifests/02-security/security-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml)           | Global verification for GCIP and Google SA tokens; injects `x-tenant-id`                  |
-| **`SecurityPolicy` (API Key)**   | `routing`              | [`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml)                 | Route-level API key verification and tenant mapping (overrides gateway default)           |
-| **`keyissuer`**                  | `routing`              | [`manifests/02-security/keyissuer.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/keyissuer.yaml)                       | Dynamically patches new partner API keys into K8s Secret `partner-api-keys`               |
-| **`echo-server`**                | `routing`              | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml)                       | Reflects received request headers as JSON to verify anti-spoofing behavior                |
-| **`AIGatewayRoute` (Internal)**  | `routing`              | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)           | Allows full routing across Gemini, Claude, Gemma-RR, and EPP cache pools                  |
-| **`AIGatewayRoute` (Partner)**   | `routing`              | [`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml)                 | Restricts access to `gemma-rr` only for domain `partner.agent-router.internal`            |
-| **`BackendSecurityPolicy`**      | `routing`              | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)           | Fetches Google OAuth2 tokens from `Secret/vertex-ai-sa-key` to call Vertex AI             |
-| **`llm-d-router` (EPP)**         | `vllm`                 | [`manifests/04-inference-pool/llm-d-router.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/04-inference-pool/llm-d-router.yaml)     | Scores pods using prompt prefix hashes to maximize KV cache reuse (`prefix-cache-scorer`) |
-| **`vllm-server` (2 Pods)**       | `vllm`                 | [`manifests/03-vllm/vllm-deployment.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/03-vllm/vllm-deployment.yaml)                   | Hosts Gemma 2B on NVIDIA L4 GPUs with V1 PagedAttention prefix caching enabled            |
-| **`phoenix`**                    | `phoenix`              | [`manifests/07-observability/phoenix/`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/tree/main/manifests/07-observability/phoenix/README.md)                | Persists OTLP traces into Cloud SQL Postgres 16 and serves the web UI (`:6006`)           |
-| **`gmp-collector`**              | `gmp-system`           | [`manifests/07-observability/podmonitoring.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/07-observability/podmonitoring.yaml)     | Periodically scrapes vLLM `:8000/metrics` and exports to Google Cloud Monitoring          |
+| Pod / Component | Namespace | Manifest Path | Role & Behavior |
+| --- | --- | --- | --- |
+| `envoy` (Core Proxy) | `envoy-gateway-system` | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml) | Receives external LB (`:8080`) traffic and handles L7 routing |
+| `ai-gateway-extproc` | `envoy-gateway-system` | [`manifests/01-gateway/gateway-config.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-config.yaml) | Buffers request body, parses JSON `model`, and exports OTLP gRPC traces |
+| `envoy-ratelimit` | `envoy-gateway-system` | [`manifests/06-traffic-policy/traffic-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml) | Enforces token-per-minute rate limits via `BackendTrafficPolicy` (EG xDS 18001) |
+| `envoy-ai-gateway-ratelimit` | `envoy-gateway-system` | [`manifests/06-traffic-policy/traffic-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/traffic-policy.yaml) | Manages cumulative token budgets via `QuotaPolicy` (AI GW xDS 18002) |
+| `redis` | `redis-system` | [`manifests/06-traffic-policy/redis.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/06-traffic-policy/redis.yaml) | Stores rate-limit counters and quota windows in memory |
+| `SecurityPolicy` (JWT) | `routing` | [`manifests/02-security/security-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml) | Verifies GCIP and Google SA tokens globally and injects `x-tenant-id` |
+| `SecurityPolicy` (API Key) | `routing` | [`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) | Route-level API key verification and tenant mapping (overrides gateway default) |
+| `keyissuer` | `routing` | [`manifests/02-security/keyissuer.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/keyissuer.yaml) | Dynamically patches new partner API keys into K8s Secret `partner-api-keys` |
+| `echo-server` | `routing` | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml) | Returns received request headers as JSON to verify anti-spoofing |
+| `AIGatewayRoute` (Internal) | `routing` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml) | Routes across Gemini, Claude, Gemma-RR, and EPP cache pools |
+| `AIGatewayRoute` (Partner) | `routing` | [`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) | Allows only `gemma-rr` on `partner.agent-router.internal` |
+| `BackendSecurityPolicy` | `routing` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml) | Uses `Secret/vertex-ai-sa-key` to obtain Google OAuth2 tokens for Vertex AI |
+| `llm-d-router` (EPP) | `vllm` | [`manifests/04-inference-pool/llm-d-router.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/04-inference-pool/llm-d-router.yaml) | Scores pods by prompt prefix hash to reuse KV caches (`prefix-cache-scorer`) |
+| `vllm-server` (2 Pods) | `vllm` | [`manifests/03-vllm/vllm-deployment.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/03-vllm/vllm-deployment.yaml) | Serves Gemma 2B on NVIDIA L4 GPUs with V1 PagedAttention prefix caching |
+| `phoenix` | `phoenix` | [`manifests/07-observability/phoenix/`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/tree/main/manifests/07-observability/phoenix/README.md) | Stores OTLP traces in Cloud SQL Postgres 16 and serves the web UI (`:6006`) |
+| `gmp-collector` | `gmp-system` | [`manifests/07-observability/podmonitoring.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/07-observability/podmonitoring.yaml) | Scrapes vLLM `:8000/metrics` and exports to Google Cloud Monitoring |

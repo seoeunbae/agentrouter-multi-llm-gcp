@@ -1,6 +1,6 @@
 # Gateway & Resource Hierarchy
 
-This document provides an architectural overview of the core resources and hierarchy across the Kubernetes Gateway API, Envoy Gateway, and Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)).
+Overview of the core resources and hierarchy across the Kubernetes Gateway API, Envoy Gateway, and Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)).
 
 ***
 
@@ -26,7 +26,7 @@ flowchart TD
         SP -->|"Attaches global gateway policy"| GW
     end
 
-    subgraph RouteLayer["3. Intelligent Routing Layer (L7 & Model-Based Dispatching)"]
+    subgraph RouteLayer["3. Routing Layer (L7 & Model-Based Dispatching)"]
         HR["HTTPRoute<br/>(/authtest standard HTTP)"]:::route
         AIGR["AIGatewayRoute<br/>(/v1/chat/completions)<br/>(Routes based on body model field)"]:::route
         GW --> HR
@@ -52,21 +52,21 @@ flowchart TD
 
 ## 2. Resource Roles & Cluster Mapping
 
-| Resource Type          | Role & Metaphor                                                                                                                                                    | Deployed Resource Name                                                                                                                                                              | Manifest File Path                                                                                                                                                                                                                                                                                                                                                      |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`GatewayClass`**     | **Building Code**: Defines the ingress controller engine installed in the cluster.                                                                                 | `envoy-ai-gw-class`                                                                                                                                                                 | [`manifests/01-gateway/gateway-class.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-class.yaml)                                                                                                                                                                                                                   |
-| **`EnvoyProxy`**       | **Construction Spec**: Specifies Envoy data-plane pod CPU/memory requests, replicas, log level, and external LoadBalancer options.                                 | `routing/envoy-custom-proxy`                                                                                                                                                        | [`manifests/01-gateway/envoy-proxy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/envoy-proxy.yaml)                                                                                                                                                                                                                       |
-| **`Gateway`**          | **Building Main Entrance**: External entry point listening on port 8080 and provisioned with a GCP external LoadBalancer IP.                                       | <p><code>routing/envoy-ai-gateway</code><br>(External IP: <code>&#x3C;GATEWAY_IP></code>)</p>                                                                                       | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml)                                                                                                                                                                                                                               |
-| **`SecurityPolicy`**   | **Security Checkpoint**: Attached to the Gateway or Route to execute JWT verification, API key authentication, and tenant header injection.                        | <p><code>routing/agent-router-jwt</code><br><code>routing/partner-apikey</code></p>                                                                                                 | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml"><code>manifests/02-security/security-policy.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
-| **`HTTPRoute`**        | **Standard Signpost**: Routes traffic based on standard URL paths (`/authtest`) or headers to regular Kubernetes Services.                                         | `routing/authtest`                                                                                                                                                                  | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml)                                                                                                                                                                                                                         |
-| **`AIGatewayRoute`**   | **AI-Aware Router**: Buffers and parses the JSON request body, reads the `model` field (`gemini-2.5-flash`, `gemma-rr`), and dispatches to the optimal AI backend. | <p><code>routing/envoy-ai-gw-router</code><br><code>routing/partner-router</code></p>                                                                                               | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
-| **`AIServiceBackend`** | **AI Backend Interface**: Declares target backend protocol schemas (OpenAI, GCPVertexAI, GCPAnthropic) and handles protocol translation.                           | <p><code>routing/vertex-ai-backend</code><br><code>routing/vertex-ai-claude-backend</code><br><code>routing/vllm-rr-backend</code><br><code>routing/partner-vllm-backend</code></p> | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
+| Resource Type | Role | Deployed Resource Name | Manifest File Path |
+| --- | --- | --- | --- |
+| `GatewayClass` | Defines the ingress controller engine installed in the cluster. | `envoy-ai-gw-class` | [`manifests/01-gateway/gateway-class.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-class.yaml) |
+| `EnvoyProxy` | Specifies Envoy data-plane pod CPU/memory, replicas, log level, and external LoadBalancer options. | `routing/envoy-custom-proxy` | [`manifests/01-gateway/envoy-proxy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/envoy-proxy.yaml) |
+| `Gateway` | External entry point listening on port 8080 with a GCP external LoadBalancer IP. | <p><code>routing/envoy-ai-gateway</code><br>(External IP: <code>&#x3C;GATEWAY_IP></code>)</p> | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml) |
+| `SecurityPolicy` | Attaches to the Gateway or Route for JWT verification, API key authentication, and tenant header injection. | <p><code>routing/agent-router-jwt</code><br><code>routing/partner-apikey</code></p> | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml"><code>manifests/02-security/security-policy.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
+| `HTTPRoute` | Routes traffic by URL path (`/authtest`) or headers to standard Kubernetes Services. | `routing/authtest` | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml) |
+| `AIGatewayRoute` | Parses the JSON request body, reads the `model` field, and routes to the target AI backend. | <p><code>routing/envoy-ai-gw-router</code><br><code>routing/partner-router</code></p> | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
+| `AIServiceBackend` | Declares backend protocol schemas (OpenAI, GCPVertexAI, GCPAnthropic) and handles protocol translation. | <p><code>routing/vertex-ai-backend</code><br><code>routing/vertex-ai-claude-backend</code><br><code>routing/vllm-rr-backend</code><br><code>routing/partner-vllm-backend</code></p> | <p><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml"><code>manifests/05-routing/ai-gateway-route.yaml</code></a><br><a href="https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml"><code>manifests/05-routing/partner-route.yaml</code></a></p> |
 
 ***
 
-## 3. End-to-End Request Processing Flow
+## 3. Request Processing Flow
 
-Sequence of operations when a client sends an inference request to `http://<GATEWAY_IP>:8080/v1/chat/completions`:
+Processing steps when a client sends a request to `http://<GATEWAY_IP>:8080/v1/chat/completions`:
 
 ```
 [Client]
@@ -91,14 +91,14 @@ Sequence of operations when a client sends an inference request to `http://<GATE
    └─ model == "gemma-rr" ───┐       │ │
                              │       ▼ │
                              │  [AIServiceBackend: vertex-ai-backend]
-                             │     - Translates OpenAI-compatible schema to Vertex AI Gemini
-                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy credentials
-                             │     - Calls Google Cloud Vertex AI Gemini API
+                             │     - Translates OpenAI schema to Vertex AI Gemini
+                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy
+                             │     - Calls Vertex AI Gemini API
                              │
                              │       ▼
                              │  [AIServiceBackend: vertex-ai-claude-backend]
                              │     - Translates schema to Vertex AI Anthropic Claude
-                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy credentials
+                             │     - Obtains Google OAuth2 token via BackendSecurityPolicy
                              │     - Calls Vertex AI Anthropic Claude API
                              │
                              ▼
@@ -110,13 +110,12 @@ Sequence of operations when a client sends an inference request to `http://<GATE
 
 ## 4. Policy Inheritance & Override Rules
 
-Policy attachment follows standard Kubernetes Gateway API rules across architectural tiers:
+Policy attachment follows Kubernetes Gateway API hierarchy rules:
 
-1. **Gateway-Level Policy (`agent-router-jwt`)**:
+1. Gateway-Level Policy (`agent-router-jwt`):
    * `targetRefs` points to the `Gateway`.
-   * All child routes attached to this Gateway inherit corporate JWT authentication by default.
-   * Prevents unauthenticated routes from unintended exposure.
-2. **Route-Level Policy (`partner-apikey`)**:
+   * Child routes inherit corporate JWT authentication by default, preventing unauthenticated exposure.
+2. Route-Level Policy (`partner-apikey`):
    * `targetRefs` points to a specific `HTTPRoute` (`partner-router`).
-   * Route-level policies override gateway-level policies according to Gateway API specifications.
-   * Requests arriving at the partner domain bypass standard corporate JWT evaluation and enforce strict API key validation.
+   * Route-level policies override gateway-level policies.
+   * Requests to the partner domain bypass JWT validation and use API key validation instead.

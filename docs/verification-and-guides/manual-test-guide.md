@@ -1,12 +1,12 @@
 # Manual Testing Guide
 
-This document provides step-by-step verification procedures for operators to validate Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)), vLLM, GIE/EPP (llm-d-router), 3-tier multi-authentication (GCIP, Workload Identity, API keys), partner quota isolation, and Arize Phoenix observability pipelines deployed on GKE.
+Step-by-step verification procedures for Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router)), vLLM, GIE/EPP (llm-d-router), 3-tier authentication (GCIP, Workload Identity, API keys), partner quota isolation, and Arize Phoenix observability on GKE.
 
 ***
 
 ## 0. Test Architecture & Routing Overview
 
-Envoy AI Gateway routes traffic and enforces authorization from a single entry point according to client persona and request attributes:
+Envoy AI Gateway routes traffic and enforces authentication from a single entry point based on client type and request attributes:
 
 ```mermaid
 flowchart TD
@@ -49,7 +49,7 @@ flowchart TD
 
 ## 1. Environment Variables Setup
 
-Export test environment variables in your local shell:
+Set the test environment variables in your shell:
 
 ```bash
 # Gateway external address
@@ -84,7 +84,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
   }' | jq '{model: .model, content: .choices[0].message.content, finish_reason: .choices[0].finish_reason}'
 ```
 
-**Expected**: Returns HTTP 200 with model response.
+Expected: Returns HTTP 200 with model response.
 
 ### 1-3. Vertex AI Claude Call
 
@@ -99,7 +99,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
 
-**Expected**: Returns HTTP 200 with model response.
+Expected: Returns HTTP 200 with model response.
 
 ### 1-4. In-Cluster GPU vLLM Call (Gemma 2B)
 
@@ -114,16 +114,16 @@ curl -s -X POST "$GW/v1/chat/completions" \
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
 
-**Expected**: Returns HTTP 200 from vLLM.
+Expected: Returns HTTP 200 from vLLM.
 
 ***
 
-## 3. Scenario 2: Anti-Spoofing Security Verification (`/authtest`)
+## 3. Scenario 2: Anti-Spoofing Verification (`/authtest`)
 
-Verify that Envoy Gateway strips or overwrites forged tenant headers using the token's authenticated claim:
+Verify that Envoy Gateway overwrites forged tenant headers with the authenticated token claim:
 
 ```bash
-# Attacker attempts to forge x-tenant-id: finance-vip
+# Client attempts to send x-tenant-id: finance-vip
 curl -s -X POST "$GW/authtest" \
   -H "Authorization: Bearer $GT" \
   -H "x-tenant-id: finance-vip" \
@@ -134,13 +134,13 @@ curl -s -X POST "$GW/authtest" \
   }'
 ```
 
-**Expected**: `received_tenant` is `"platform"`, returning `"PASS: Spoofing Prevented"`.
+Expected: `received_tenant` is `"platform"`, returning `"PASS: Spoofing Prevented"`.
 
 ***
 
 ## 4. Scenario 3: Internal Microservice Authentication (Google SA ID Token)
 
-Verify authentication using standard Google Service Account tokens from GKE metadata or local credentials:
+Verify authentication using a Google Service Account token:
 
 ```bash
 export GSA_TOKEN=$(gcloud auth print-identity-token --audiences="https://gateway.example.com" 2>/dev/null || gcloud auth print-identity-token)
@@ -155,7 +155,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
 
-**Expected**: Returns HTTP 200 without requiring static credentials.
+Expected: Returns HTTP 200 without static credentials.
 
 ***
 
@@ -193,7 +193,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
 
-**Expected**: Returns HTTP 200.
+Expected: Returns HTTP 200.
 
 ***
 
@@ -207,9 +207,9 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "unauth"}]}'
 ```
 
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
-### 5-2. Expired or Invalid Token (Expect HTTP 401)
+### 5-2. Invalid Token (Expect HTTP 401)
 
 ```bash
 curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/completions" \
@@ -218,7 +218,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "tampered"}]}'
 ```
 
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
 ### 5-3. Partner Domain Invalid Key (Expect HTTP 401)
 
@@ -230,7 +230,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "bad key"}]}'
 ```
 
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
 ### 5-4. Partner Domain Requesting Unauthorized Model (Expect HTTP 404)
 
@@ -242,13 +242,13 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -d '{"model": "claude-sonnet-5", "messages": [{"role": "user", "content": "cost leak probe"}]}'
 ```
 
-**Expected**: `HTTP Status: 404` (Model is not exposed in `partner-router`).
+Expected: `HTTP Status: 404` (`claude-sonnet-5` is not exposed in `partner-router`).
 
 ***
 
 ## 7. Scenario 6: Multi-Tenant Quota & Rate Limit Verification (Redis)
 
-### 6-1. Issue Separate Keys for Low and High Quota Tenants
+### 6-1. Issue Keys for Low and High Quota Tenants
 
 ```bash
 # Low quota: acme-corp (60 tokens/min limit)
@@ -260,7 +260,7 @@ export GLOBEX_KEY=$(kubectl exec -n routing $KEYISSUER_POD -- \
   python3 -c "import urllib.request, json; req = urllib.request.Request('http://localhost:8080/issue', data=json.dumps({'client_id':'globex','department':'partner'}).encode(), headers={'Content-Type':'application/json'}); print(json.loads(urllib.request.urlopen(req).read())['api_key'])")
 ```
 
-### 6-2. Trigger Quota Exhaustion for acme-corp
+### 6-2. Trigger Quota Exhaustion for `acme-corp`
 
 ```bash
 for i in 1 2 3; do
@@ -273,9 +273,9 @@ for i in 1 2 3; do
 done
 ```
 
-**Expected**: Call #1 and #2 return HTTP 200; subsequent calls return `HTTP 429`.
+Expected: Calls #1 and #2 return HTTP 200; subsequent calls return `HTTP 429`.
 
-### 6-3. Verify Resource Isolation for globex
+### 6-3. Verify Quota Isolation for `globex`
 
 ```bash
 curl -s -o /dev/null -w "globex HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/completions" \
@@ -285,18 +285,17 @@ curl -s -o /dev/null -w "globex HTTP Status: %{http_code}\n" -X POST "$GW/v1/cha
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "Quick test."}], "max_tokens": 15}'
 ```
 
-**Expected**: Returns `HTTP 200`, proving `acme-corp`'s throttling does not affect `globex`.
+Expected: Returns `HTTP 200`, confirming `acme-corp`'s rate limit does not affect `globex`.
 
 ***
 
 ## 8. Scenario 7: Prefix Caching & EPP Routing Verification
 
-### 8-1. Warm Up Long System Prompt (\~2,000 Tokens)
+### 8-1. Request 1 (Cold Cache, ~2,000 Tokens)
 
 ```bash
 LONG_PROMPT="You are a principal cloud enterprise architect. Analyze the distributed systems architecture, resilience mechanisms, and high-availability design for the following specifications in comprehensive detail: $(python3 -c 'print("System requirement block: " + "alpha beta gamma delta epsilon " * 350)')"
 
-# Request 1 (Cold Cache)
 curl -s -w "\nCold TTFT/Total: %{time_starttransfer}s / %{time_total}s\n" -X POST "$GW/v1/chat/completions" \
   -H "Authorization: Bearer $GT" \
   -H "Content-Type: application/json" \
@@ -320,28 +319,28 @@ curl -s -w "\nWarm TTFT/Total: %{time_starttransfer}s / %{time_total}s\n" -X POS
   }" | jq -r '.choices[0].message.content // empty'
 ```
 
-**Expected**: Request 2 exhibits a **4x to 6x latency reduction** compared to Request 1.
+Expected: Request 2 shows a 4x to 6x TTFT reduction compared to Request 1.
 
 ***
 
 ## 9. Scenario 8: Arize Phoenix Observability Verification
 
-1.  Start port-forwarding to the Arize Phoenix service:
+1. Port-forward the Arize Phoenix service:
 
-    ```bash
-    kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
-    ```
+   ```bash
+   kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
+   ```
 2. Open `http://localhost:6006` in your browser.
-3. Verify traces in the **Traces** view:
-   * Status 200 OK spans for Gemini, Claude, and Gemma.
+3. Check the Traces view:
+   * 200 OK spans for Gemini, Claude, and Gemma.
    * Span attributes: `gen_ai.request.model`, `gen_ai.usage.prompt_tokens`, `gen_ai.usage.completion_tokens`.
-   * Latency metrics across ext-proc and backend execution phases.
+   * Latency breakdown across ext-proc and backend execution.
 
 ***
 
-## 10. Scenario 9: Google Cloud Monitoring & Prometheus Metrics Verification
+## 10. Scenario 9: Cloud Monitoring & Prometheus Metrics
 
-Check real-time prefix cache metrics scraped from vLLM pods:
+Check prefix cache metrics from the vLLM pods:
 
 ```bash
 POD1=$(kubectl get pods -n vllm -l app=vllm-server -o jsonpath='{.items[0].metadata.name}')
@@ -351,9 +350,9 @@ kubectl exec -n vllm $POD1 -c vllm -- curl -s http://localhost:8000/metrics | gr
 
 ***
 
-## 11. Scenario 10: Claude Code CLI Direct Integration
+## 11. Scenario 10: Claude Code CLI Integration
 
-Configure Claude Code on your local machine or Cloud Workstation to route through Envoy AI Gateway:
+Configure Claude Code to route through Envoy AI Gateway:
 
 ```bash
 # 1. Obtain GCIP token
@@ -369,23 +368,23 @@ unset CLAUDE_CODE_USE_VERTEX
 claude -p "Respond in 5 words: Hello Claude Code via Envoy AI Gateway!"
 ```
 
-**Expected**: Returns model response routed through Envoy AI Gateway with JWT validation and header injection applied transparently.
+Expected: Returns the model response routed through Envoy AI Gateway.
 
 ***
 
-## 12. Verification Summary Checklist
+## 12. Verification Checklist
 
-| #  | Check Item                          | Expected Result                                          | Verified |
-| -- | ----------------------------------- | -------------------------------------------------------- | -------- |
-| 1  | Gemini 2.5 Flash routing            | HTTP 200, valid text generation                          | \[ ]     |
-| 2  | Claude Sonnet 5 routing             | HTTP 200, valid text generation                          | \[ ]     |
-| 3  | Gemma 2B (gemma-rr) routing         | HTTP 200 from in-cluster vLLM                            | \[ ]     |
-| 4  | Anti-spoofing (`/authtest`)         | Forced overwrite of forged tenant header                 | \[ ]     |
-| 5  | Google SA ID Token auth             | HTTP 200 via Workload Identity                           | \[ ]     |
-| 6  | Partner API Key auth                | HTTP 200 via `partner.agent-router.internal`             | \[ ]     |
-| 7  | Unauthenticated request rejection   | HTTP 401 Unauthorized                                    | \[ ]     |
-| 8  | Unauthorized model access rejection | HTTP 404 Route Not Found                                 | \[ ]     |
-| 9  | Multi-tenant quota isolation        | Target tenant throttled (429), other tenant normal (200) | \[ ]     |
-| 10 | EPP prefix cache acceleration       | 4x to 6x latency reduction on warm prompt                | \[ ]     |
-| 11 | Arize Phoenix trace persistence     | Traces visible on `:6006` backed by Cloud SQL            | \[ ]     |
-| 12 | Claude Code CLI integration         | Direct prompt execution via gateway endpoint             | \[ ]     |
+| # | Check Item | Expected Result | Verified |
+| --- | --- | --- | --- |
+| 1 | Gemini 2.5 Flash routing | HTTP 200, valid text generation | [ ] |
+| 2 | Claude Sonnet 5 routing | HTTP 200, valid text generation | [ ] |
+| 3 | Gemma 2B (`gemma-rr`) routing | HTTP 200 from in-cluster vLLM | [ ] |
+| 4 | Anti-spoofing (`/authtest`) | Overwrites forged tenant header | [ ] |
+| 5 | Google SA ID Token auth | HTTP 200 via Workload Identity | [ ] |
+| 6 | Partner API Key auth | HTTP 200 via `partner.agent-router.internal` | [ ] |
+| 7 | Unauthenticated request rejection | HTTP 401 Unauthorized | [ ] |
+| 8 | Unauthorized model access rejection | HTTP 404 Route Not Found | [ ] |
+| 9 | Multi-tenant quota isolation | Target tenant throttled (429), other tenant normal (200) | [ ] |
+| 10 | EPP prefix cache speedup | 4x to 6x latency reduction on warm prompt | [ ] |
+| 11 | Arize Phoenix trace persistence | Traces visible on `:6006` backed by Cloud SQL | [ ] |
+| 12 | Claude Code CLI integration | Direct prompt execution via gateway endpoint | [ ] |

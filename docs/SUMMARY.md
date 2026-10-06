@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Overview](README.md)
+* [Overview](overview.md)
 
 ## Getting Started
 
@@ -20,7 +20,7 @@
 
 ## 한국어 (Korean)
 
-* [아키텍처 개요](korean/ko.md)
+* [아키텍처 개요](README.md)
 
 ## 시작하기
 

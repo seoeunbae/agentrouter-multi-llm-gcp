@@ -1,12 +1,12 @@
 # Claude Code & Vertex AI Compatibility
 
-This document analyzes the root cause of the `advisor-tool-2026-03-01` beta header error (`HTTP 400 Bad Request`) that occurs when invoking Google Cloud Vertex AI or Envoy AI Gateway from Claude Code (v2.1+). It provides immediate client-side remediation steps as well as long-term gateway-level architectural solutions.
+Explains the cause of the `advisor-tool-2026-03-01` beta header error (`HTTP 400 Bad Request`) when calling Google Cloud Vertex AI or Envoy AI Gateway from Claude Code (v2.1+), along with client and gateway solutions.
 
 ***
 
 ## 1. Symptom & Error Log
 
-When running recent versions of Claude Code (e.g., `v2.1.272`) on Google Cloud Workstations or local development environments, submitting any prompt triggers an immediate `HTTP 400 Bad Request` error:
+When running recent versions of Claude Code (e.g., `v2.1.272`) on Google Cloud Workstations or local environments, submitting a prompt returns an `HTTP 400 Bad Request` error:
 
 ```
  ▐▛███▛█   Claude Code v2.1.272
@@ -18,80 +18,80 @@ When running recent versions of Claude Code (e.g., `v2.1.272`) on Google Cloud W
 ● API Error: 400 Unexpected value(s) `advisor-tool-2026-03-01` for the `anthropic-beta` header. Please consult our documentation at platform.claude.com/docs or try again without the header.
 ```
 
-This failure occurs both when routing through Envoy AI Gateway and when invoking Google Cloud Vertex AI directly (`CLAUDE_CODE_USE_VERTEX=1`).
+This occurs both when routing through Envoy AI Gateway and when calling Vertex AI directly (`CLAUDE_CODE_USE_VERTEX=1`).
 
 ***
 
 ## 2. What is the Advisor Tool (`advisor-tool-2026-03-01`)?
 
-The `advisor-tool-2026-03-01` identifier activates Anthropic's **Advisor Tool** beta feature.
+`advisor-tool-2026-03-01` enables Anthropic's Advisor Tool beta feature.
 
-### 2.1 Official Documentation Citations
+### 2.1 Official Documentation
 
-* **Official Documentation**: [Claude Platform Docs — Advisor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool)
-* **Korean Documentation**: [Claude Platform Docs — Advisor 도구](https://platform.claude.com/docs/ko/agents-and-tools/tool-use/advisor-tool)
-*   **Official Specification Excerpt**:
+* English Docs: [Claude Platform Docs — Advisor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool)
+* Korean Docs: [Claude Platform Docs — Advisor 도구](https://platform.claude.com/docs/ko/agents-and-tools/tool-use/advisor-tool)
+* Specification Excerpt:
 
-    > _"Pair a faster executor model with a higher-intelligence advisor model that provides strategic guidance mid-generation."_\
-    > _"The advisor tool is in beta. Include the beta header `advisor-tool-2026-03-01` in your requests."_
+  > _"Pair a faster executor model with a higher-intelligence advisor model that provides strategic guidance mid-generation."_\
+  > _"The advisor tool is in beta. Include the beta header `advisor-tool-2026-03-01` in your requests."_
 
-### 2.2 Mechanism (Executor + Advisor Hybrid Reasoning Pattern)
+### 2.2 How It Works (Executor + Advisor Hybrid Reasoning)
 
-The Advisor Tool is a server-side orchestration capability designed to balance cost efficiency and frontier intelligence in long-horizon agentic workflows:
+The Advisor Tool is a server-side orchestration feature that pairs a fast model with a higher-capability model:
 
-1. **Executor Model Execution**:
-   * A fast, cost-effective executor model (e.g., `claude-sonnet-5` or `claude-haiku-4-5`) handles the vast majority of routine, mechanical operations such as file exploration, code scaffolding, and simple tool calls.
-2. **Mid-Generation Consultation**:
-   * When the executor encounters a complex architectural decision or requires deep reasoning, it emits a `server_tool_use` call to invoke the `advisor` tool mid-generation.
-3. **Server-Side Advisor Routing**:
-   * Without closing the client stream, Anthropic's API server internally forwards the full conversation context to a higher-intelligence **Advisor Model** (e.g., `claude-opus-4-6`).
-   * The advisor produces a concise strategic plan or course correction (typically 400–700 tokens as an `advisor_tool_result`), and the executor immediately resumes generation informed by that guidance.
+1. Executor Model:
+   * A faster model (`claude-sonnet-5` or `claude-haiku-4-5`) handles routine tasks such as file exploration and code edits.
+2. Mid-Generation Consultation:
+   * When complex reasoning is needed, the executor emits a `server_tool_use` call to invoke the `advisor` tool mid-generation.
+3. Server-Side Advisor Call:
+   * Keeping the client stream open, Anthropic's API server forwards the conversation context to an Advisor model (`claude-opus-4-6`).
+   * The advisor returns a short plan (`advisor_tool_result`, 400–700 tokens), and the executor resumes generation.
 
 ### 2.3 Automatic Injection by Claude Code
 
-Because Claude Code operates as a long-horizon coding agent, running an Opus model for every single turn incurs high latency and token costs. To optimize performance when Sonnet is selected, Claude Code automatically injects two elements into outgoing `/v1/messages` requests:
+When Sonnet is selected, recent versions of Claude Code automatically add two fields to `/v1/messages` requests:
 
-1.  **HTTP Request Header**:
+1. HTTP Request Header:
 
-    ```http
-    anthropic-beta: advisor-tool-2026-03-01
-    ```
-2.  **JSON Request Body (`tools` Array Definition)**:
+   ```http
+   anthropic-beta: advisor-tool-2026-03-01
+   ```
+2. JSON Request Body (`tools` Array):
 
-    ```json
-    {
-      "model": "claude-sonnet-5",
-      "tools": [
-        {
-          "type": "advisor_20260301",
-          "name": "advisor",
-          "model": "claude-opus-4-6",
-          "max_uses": 3
-        }
-      ]
-    }
-    ```
+   ```json
+   {
+     "model": "claude-sonnet-5",
+     "tools": [
+       {
+         "type": "advisor_20260301",
+         "name": "advisor",
+         "model": "claude-opus-4-6",
+         "max_uses": 3
+       }
+     ]
+   }
+   ```
 
 ***
 
-## 3. Root Cause: Anthropic 1st-Party API vs. Google Cloud Vertex AI Architecture
+## 3. Root Cause: Anthropic API vs. Vertex AI Architecture
 
-This error is not a bug in Envoy AI Gateway. Rather, the upstream backend (**Google Cloud Vertex AI**) does not support this beta feature and strictly rejects unrecognized headers and schema tags.
+This error is returned by Google Cloud Vertex AI, which does not support this beta feature and rejects unrecognized headers and tool types.
 
-### 3.1 Why is it Unsupported on Vertex AI?
+### 3.1 Why Vertex AI Rejects It
 
-* **Cross-Model Routing vs. Endpoint Isolation**:
-  * Anthropic's 1st-party platform (`api.anthropic.com`) manages all Claude model pools under a unified orchestrator. It can pause a Sonnet stream mid-request, internally invoke Opus, and meter tokens across both models within a single HTTP request.
-  * Conversely, Google Cloud Vertex AI (`aiplatform.googleapis.com`) exposes each model as a strictly isolated GCP Publisher Model endpoint (`/projects/.../models/claude-sonnet-5:streamRawPredict` vs. `.../models/claude-opus-4-6:streamRawPredict`).
-  * Because GCP IAM authorization, regional quotas, and billing pipelines are scoped per endpoint, a prediction request targeting the Sonnet endpoint cannot dynamically jump to the Opus endpoint inside Vertex AI's serving infrastructure (`harpoon`).
+* Cross-Model Routing vs. Endpoint Isolation:
+  * Anthropic's 1st-party API (`api.anthropic.com`) manages all Claude models under a single orchestrator, allowing a single `/v1/messages` request to invoke both Sonnet and Opus.
+  * Google Cloud Vertex AI (`aiplatform.googleapis.com`) exposes each model as a separate endpoint (`/projects/.../models/claude-sonnet-5:streamRawPredict` vs. `.../models/claude-opus-4-6:streamRawPredict`).
+  * Because IAM, regional quotas, and billing in GCP are scoped per endpoint, a request to the Sonnet endpoint cannot invoke the Opus endpoint internally.
 
-### 3.2 Empirical Verification: Vertex AI's Double Validation Mechanism
+### 3.2 Two-Layer Validation on Vertex AI
 
-Direct `curl` tests through Envoy AI Gateway to Vertex AI demonstrate that Vertex AI enforces strict allowlist validation at **two distinct layers**:
+Vertex AI (`harpoon`) validates requests against an allowlist at two layers:
 
 #### Layer 1: HTTP Header Validation (`anthropic-beta`)
 
-When sending the request with `-H "anthropic-beta: advisor-tool-2026-03-01"`:
+Calling with `-H "anthropic-beta: advisor-tool-2026-03-01"`:
 
 ```bash
 curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
@@ -102,25 +102,25 @@ curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
   -d '{"model":"claude-sonnet-5","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
 ```
 
-*   **Live Response (`HTTP 400 Bad Request`)**:
+* Response (`HTTP 400 Bad Request`):
 
-    ```http
-    HTTP/1.1 400 Bad Request
-    x-vertex-ai-internal-prediction-backend: harpoon
-    request-id: req_vrtx_011Cf69ffRgRk2w8QxkdR5ZA
+  ```http
+  HTTP/1.1 400 Bad Request
+  x-vertex-ai-internal-prediction-backend: harpoon
+  request-id: req_vrtx_011Cf69ffRgRk2w8QxkdR5ZA
 
-    {
-      "type": "error",
-      "error": {
-        "type": "invalid_request_error",
-        "message": "Unexpected value(s) `advisor-tool-2026-03-01` for the `anthropic-beta` header. Please consult our documentation at platform.claude.com/docs or try again without the header."
-      }
+  {
+    "type": "error",
+    "error": {
+      "type": "invalid_request_error",
+      "message": "Unexpected value(s) `advisor-tool-2026-03-01` for the `anthropic-beta` header. Please consult our documentation at platform.claude.com/docs or try again without the header."
     }
-    ```
+  }
+  ```
 
 #### Layer 2: JSON Body Schema Validation (`tools` Array)
 
-If the gateway strips the `anthropic-beta` header but leaves the `advisor_20260301` tool definition in the JSON body:
+Stripping the `anthropic-beta` header while leaving `advisor_20260301` in the JSON body:
 
 ```bash
 curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
@@ -130,41 +130,41 @@ curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
   -d '{"model":"claude-sonnet-5","max_tokens":10,"tools":[{"type":"advisor_20260301","name":"advisor","model":"claude-opus-4-6"}],"messages":[{"role":"user","content":"hi"}]}'
 ```
 
-*   **Live Response (`HTTP 400 Bad Request`)**:
+* Response (`HTTP 400 Bad Request`):
 
-    ```http
-    HTTP/1.1 400 Bad Request
-    x-vertex-ai-internal-prediction-backend: harpoon
-    request-id: req_vrtx_011Cf69mJL5zmnNWDZji9DuH
+  ```http
+  HTTP/1.1 400 Bad Request
+  x-vertex-ai-internal-prediction-backend: harpoon
+  request-id: req_vrtx_011Cf69mJL5zmnNWDZji9DuH
 
-    {
-      "type": "error",
-      "error": {
-        "type": "invalid_request_error",
-        "message": "tools.0: Input tag 'advisor_20260301' found using 'type' does not match any of the expected tags: 'bash_20250124', 'browser_toolset_20260801', 'computer_toolset_20260801', 'custom', 'memory_20250818', 'text_editor_20250124', 'text_editor_20250429', 'text_editor_20250728', 'tool_search_tool_bm25', 'tool_search_tool_bm25_20251119', 'tool_search_tool_regex', 'tool_search_tool_regex_20251119', 'web_search_20250305'"
-      }
+  {
+    "type": "error",
+    "error": {
+      "type": "invalid_request_error",
+      "message": "tools.0: Input tag 'advisor_20260301' found using 'type' does not match any of the expected tags: 'bash_20250124', 'browser_toolset_20260801', 'computer_toolset_20260801', 'custom', 'memory_20250818', 'text_editor_20250124', 'text_editor_20250429', 'text_editor_20250728', 'tool_search_tool_bm25', 'tool_search_tool_bm25_20251119', 'tool_search_tool_regex', 'tool_search_tool_regex_20251119', 'web_search_20250305'"
     }
-    ```
+  }
+  ```
 
-Consequently, simply removing the HTTP header via a basic proxy rule is insufficient because the request will still fail at Layer 2 during body schema validation.
+Removing only the HTTP header is not sufficient because the request still fails body validation at Layer 2.
 
 ***
 
-## 4. Standard Remediation: Disabling Client Experimental Betas (Recommended)
+## 4. Recommended Fix: Disable Client Experimental Betas
 
-The cleanest and most reliable solution when targeting Vertex AI or Envoy AI Gateway is instructing the Claude Code client to disable experimental beta injections.
+Configure Claude Code to omit experimental beta headers and tool definitions.
 
-### 4.1 Environment Variable Configuration (`CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1`)
+### 4.1 Environment Variable (`CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1`)
 
-Export the variable in your shell session or add it to `~/.bashrc`:
+Set the variable in your shell or `~/.bashrc`:
 
 ```bash
 export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
 ```
 
-### 4.2 Persistent Configuration via `~/.claude/settings.json`
+### 4.2 Persistent Setting in `~/.claude/settings.json`
 
-Add the flag to the `env` block in `~/.claude/settings.json` so it applies across all invocations. The helper script [`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py) in this repository automatically injects this key:
+Add the flag to the `env` block in `~/.claude/settings.json`. [`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py) includes this setting by default:
 
 ```json
 {
@@ -177,28 +177,28 @@ Add the flag to the `env` block in `~/.claude/settings.json` so it applies acros
 }
 ```
 
-With this setting enabled, Claude Code omits both the `anthropic-beta: advisor-tool-2026-03-01` header and the `advisor_20260301` tool entry, ensuring seamless operation across both direct Vertex AI and Envoy AI Gateway modes.
+With this enabled, Claude Code omits both the `anthropic-beta: advisor-tool-2026-03-01` header and the `advisor_20260301` tool entry.
 
 ***
 
-## 5. Gateway-Level Long-Term Architecture Reference
+## 5. Gateway-Level Sanitization Architecture
 
-In enterprise environments where enforcing environment variables across hundreds of developer workstations is impractical, **Envoy AI Gateway can act as a centralized Compatibility Layer** that automatically sanitizes incompatible headers and payload fields before forwarding requests to Vertex AI.
+Where client environment variables cannot be enforced across all workstations, Envoy AI Gateway can strip unsupported headers and body fields before forwarding requests to Vertex AI.
 
-### 5.1 Architectural Options Comparison
+### 5.1 Option Comparison
 
-| Evaluation Criteria                               | Option A: EnvoyExtensionPolicy (Lua Filter) |   Option B: HTTPRouteFilter (HeaderModifier)  | Option C: Custom ExtProc (gRPC Service) |
-| ------------------------------------------------- | :-----------------------------------------: | :-------------------------------------------: | :-------------------------------------: |
-| **Selective Header Filtering (`anthropic-beta`)** |     Supported (granular token filtering)    |     Unsupported (drops entire header only)    |                Supported                |
-| **Body Tool Removal (`advisor_20260301`)**        |                  Supported                  | Unsupported (**Fails with Layer 2 HTTP 400**) |    Supported (full JSON AST parsing)    |
-| **Extra Pod / Infrastructure Deployment**         |       None (single CRD YAML manifest)       |                      None                     |  Required (separate Deployment/Service) |
-| **Added Network Latency**                         |    Negligible (< 0.1ms in-memory LuaJIT)    |                      None                     |          Low (\~1–3ms gRPC hop)         |
+| Criteria | Option A: EnvoyExtensionPolicy (Lua Filter) | Option B: HTTPRouteFilter (HeaderModifier) | Option C: Custom ExtProc (gRPC Service) |
+| --- | :---: | :---: | :---: |
+| Selective Header Filtering (`anthropic-beta`) | Supported | Unsupported (drops entire header) | Supported |
+| Body Tool Removal (`advisor_20260301`) | Supported | Unsupported (fails with Layer 2 HTTP 400) | Supported (JSON AST parsing) |
+| Extra Pod Deployment | None (single CRD YAML) | None | Required (separate Deployment) |
+| Added Latency | < 0.1ms | None | 1–3ms gRPC hop |
 
-### 5.2 Reference Implementation: `EnvoyExtensionPolicy` (Lua HTTP Filter)
+### 5.2 `EnvoyExtensionPolicy` (Lua Filter) Example
 
-Using Envoy Gateway's native `EnvoyExtensionPolicy` CRD, both the HTTP header and JSON request body can be sanitized in-flight without deploying additional containers.
+Envoy Gateway's `EnvoyExtensionPolicy` CRD can sanitize both the header and JSON body in-flight without extra containers.
 
-_(Prerequisite: The target `AIGatewayRoute` or `HTTPRoute` must have `aigateway.envoyproxy.io/processing-body-mode: buffered` enabled to allow body inspection and mutation.)_
+(The target `AIGatewayRoute` or `HTTPRoute` must have `aigateway.envoyproxy.io/processing-body-mode: buffered` enabled.)
 
 ```yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -256,7 +256,7 @@ spec:
         end
 ```
 
-### 5.3 Recommended Defense-in-Depth Strategy
+### 5.3 Recommended Setup
 
-1. **Primary Defense (Client-Side)**: Set `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: "1"` in workstation provisioning scripts ([`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py)) and default user profiles (`~/.claude/settings.json`) to prevent clients from generating unsupported payloads.
-2. **Secondary Defense (Gateway-Side)**: Deploy the `EnvoyExtensionPolicy` sanitizer on the gateway so that unconfigured or newly updated clients continue to function without interruption.
+1. Client Default: Set `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: "1"` in workstation setup scripts ([`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py)) and `~/.claude/settings.json`.
+2. Gateway Fallback: Optionally apply the `EnvoyExtensionPolicy` above so unconfigured clients continue working without errors.

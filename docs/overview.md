@@ -1,4 +1,4 @@
-# Multi-LLM Serving Architecture with Agentrouter
+# Overview
 
 A multi-LLM serving platform on Google Kubernetes Engine (GKE) combining [Agentrouter (formerly Envoy AI Gateway)](https://github.com/theagentrouter/agent-router) (`v1.1.0`), Kubernetes Gateway API Inference Extension (GIE `v1.6.0`), llm-d-router (`EPP v0.10.0`), vLLM, Google Cloud Model Armor, Cloud DLP, and Vertex AI.
 
@@ -7,17 +7,17 @@ A multi-LLM serving platform on Google Kubernetes Engine (GKE) combining [Agentr
 ## Documentation Navigation
 
 ### Getting Started
-* [Quickstart & Deployment](docs/getting-started/quickstart.md): Deploy GKE, L4 GPUs, Cloud SQL, GCS, and the gateway stack with `make deploy`.
-* [Customer Workshop Guide](docs/getting-started/workshop-guide.md): Hands-on guide covering IAM, GPU quotas, 3-tier auth, EPP prefix cache, Model Armor, and Phoenix tracing.
+* [Quickstart & Deployment](getting-started/quickstart.md): Deploy GKE, L4 GPUs, Cloud SQL, GCS, and the gateway stack with `make deploy`.
+* [Customer Workshop Guide](getting-started/workshop-guide.md): Hands-on guide covering IAM, GPU quotas, 3-tier auth, EPP prefix cache, Model Armor, and Phoenix tracing.
 
 ### Architecture & Design
-* [Gateway & Resource Hierarchy](docs/architecture-and-design/gateway-resources.md): Kubernetes Gateway API resource hierarchy and policy attachments.
-* [End-to-End Request Flow](docs/architecture-and-design/request-flow.md): Sequence diagrams for employee, microservice, and partner requests.
-* [Project Specification](docs/architecture-and-design/project-spec.md): Feature inventory, milestone verification matrix, and component interfaces.
+* [Gateway & Resource Hierarchy](architecture-and-design/gateway-resources.md): Kubernetes Gateway API resource hierarchy and policy attachments.
+* [End-to-End Request Flow](architecture-and-design/request-flow.md): Sequence diagrams for employee, microservice, and partner requests.
+* [Project Specification](architecture-and-design/project-spec.md): Feature inventory, milestone verification matrix, and component interfaces.
 
 ### Verification & Guides
-* [Manual Testing Guide](docs/verification-and-guides/manual-test-guide.md): Manual verification steps and test commands by scenario.
-* [Claude Code & Vertex AI Compatibility](docs/verification-and-guides/claude-code-compatibility.md): Cause and gateway fix for the `advisor-tool-2026-03-01` beta header error on Vertex AI.
+* [Manual Testing Guide](verification-and-guides/manual-test-guide.md): Manual verification steps and test commands by scenario.
+* [Claude Code & Vertex AI Compatibility](verification-and-guides/claude-code-compatibility.md): Cause and gateway fix for the `advisor-tool-2026-03-01` beta header error on Vertex AI.
 
 ***
 
@@ -36,25 +36,25 @@ Provides a single entry point for managed models (Vertex AI Gemini, Anthropic Cl
 
 #### Reference Architecture: AgentRouter Multi-LLM on GCP
 
-![Reference Architecture: AgentRouter Multi-LLM on GCP](docs/assets/ref-arch-agentrouter-multi-llm.png)
+![Reference Architecture: AgentRouter Multi-LLM on GCP](assets/ref-arch-agentrouter-multi-llm.png)
 
 #### Reference Architecture: Claude Apps Gateway on GCP
 
-![Reference Architecture: Claude Apps Gateway on GCP](docs/assets/ref-arch-claude-apps-gateway.png)
+![Reference Architecture: Claude Apps Gateway on GCP](assets/ref-arch-claude-apps-gateway.png)
 
 #### Reference Architecture: Claude Code with IdP (Okta)
 
-![Reference Architecture: Claude Code with IdP (Okta)](docs/assets/ref-arch-claude-code-idp.png)
+![Reference Architecture: Claude Code with IdP (Okta)](assets/ref-arch-claude-code-idp.png)
 
 #### Reference Architecture: AI Gateway with Apigee, Model Armor
 
-![Reference Architecture: AI Gateway with Apigee, Model Armor](docs/assets/architecture.png)
+![Reference Architecture: AI Gateway with Apigee, Model Armor](assets/architecture.png)
 
 See the following documents for details:
 
-* [Gateway & Resource Hierarchy](docs/architecture-and-design/gateway-resources.md)
-* [End-to-End Request Flow](docs/architecture-and-design/request-flow.md)
-* [Project Specification](docs/architecture-and-design/project-spec.md)
+* [Gateway & Resource Hierarchy](architecture-and-design/gateway-resources.md)
+* [End-to-End Request Flow](architecture-and-design/request-flow.md)
+* [Project Specification](architecture-and-design/project-spec.md)
 
 ***
 
