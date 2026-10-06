@@ -34,6 +34,20 @@ Google Kubernetes Engine(GKE) 환경에서 [Agentrouter (formerly Envoy AI Gatew
 - 트래픽 제어 계층: Redis 기반 분산 카운터를 활용해 토큰 단위 속도 제한(`BackendTrafficPolicy`)과 파트너별 토큰 예산 격리(`QuotaPolicy`)를 동시에 집행합니다.
 - 관측성 계층: [Arize Phoenix](https://github.com/Arize-ai/phoenix)를 Cloud SQL 백엔드와 연동하여 OTLP 트레이스를 영구 적재한 뒤 Google Cloud Monitoring으로 GPU 및 접두사 캐시 지표를 실시간 수집합니다.
 
+### 1.1 레퍼런스 아키텍처 (Reference Architectures)
+
+#### Reference architecture: AgentRouter Multi-LLM on GCP
+
+![Reference architecture: AgentRouter Multi-LLM on GCP](../assets/ref-arch-agentrouter-multi-llm.png)
+
+#### Reference architecture: Claude Apps Gateway on GCP
+
+![Reference architecture: Claude Apps Gateway on GCP](../assets/ref-arch-claude-apps-gateway.png)
+
+#### Reference architecture: Claude Code with IdP (Okta)
+
+![Reference architecture: Claude Code with IdP (Okta)](../assets/ref-arch-claude-code-idp.png)
+
 상세 아키텍처 및 컴포넌트 흐름은 다음 문서를 참고하십시오.
 
 - [게이트웨이 및 리소스 계층 구조 다이어그램](architecture/gateway-resources.md)

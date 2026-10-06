@@ -34,6 +34,20 @@ This platform provides a unified entry point bridging public cloud managed model
 - Traffic Policy Layer: Dual rate limiting and quota management backed by distributed Redis counters (`BackendTrafficPolicy` and `QuotaPolicy`).
 - Observability Layer: [Arize Phoenix](https://github.com/Arize-ai/phoenix) persisting OTLP traces into Cloud SQL PostgreSQL, complemented by Google Cloud Monitoring collecting GPU and prefix cache metrics.
 
+### 1.1 Reference Architectures
+
+#### Reference Architecture: AgentRouter Multi-LLM on GCP
+
+![Reference Architecture: AgentRouter Multi-LLM on GCP](assets/ref-arch-agentrouter-multi-llm.png)
+
+#### Reference Architecture: Claude Apps Gateway on GCP
+
+![Reference Architecture: Claude Apps Gateway on GCP](assets/ref-arch-claude-apps-gateway.png)
+
+#### Reference Architecture: Claude Code with IdP (Okta)
+
+![Reference Architecture: Claude Code with IdP (Okta)](assets/ref-arch-claude-code-idp.png)
+
 For detailed architecture diagrams and workflows:
 
 - [Gateway & Resource Hierarchy Diagram](architecture/gateway-resources.md)

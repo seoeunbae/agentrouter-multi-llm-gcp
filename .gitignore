@@ -34,3 +34,7 @@ __pycache__/
 # Agent scratch and internal run artifacts
 .agents/
 AGENTS.md
+
+# Local docs build output
+_book/
+docs/_book/
