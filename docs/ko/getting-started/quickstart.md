@@ -1,16 +1,16 @@
 # 빠른 시작 및 배포 (Quickstart & Deployment)
 
-이 문서는 **Agentrouter Multi-LLM GCP** 플랫폼의 사전 요구사항, `Makefile` 기반 원커맨드 자동 배포, 그리고 번호별 Kubernetes 매니페스트 수동 배포 절차를 안내합니다.
+이 문서는 Agentrouter Multi-LLM GCP 플랫폼의 사전 요구사항, `Makefile` 기반 원커맨드 자동 배포, 그리고 번호별 Kubernetes 매니페스트 수동 배포 절차를 안내합니다.
 
 ---
 
 ## 1. 사전 요구사항
 
-- **Google Cloud SDK (`gcloud`)**: 대상 GCP 프로젝트 인증 완료
-- **Terraform 1.5 이상**
-- **Kubernetes CLI (`kubectl`)**
-- **`jq`**, **`curl`**
-- **Hugging Face Access Token**: `google/gemma-2-2b-it` 모델 라이선스 동의가 완료된 `Read` 권한 토큰 필수
+- Google Cloud SDK (`gcloud`): 대상 GCP 프로젝트 인증 완료
+- Terraform 1.5 이상
+- Kubernetes CLI (`kubectl`)
+- `jq`, `curl`
+- Hugging Face Access Token: `google/gemma-2-2b-it` 모델 라이선스 동의가 완료된 `Read` 권한 토큰 필수
 
 ---
 
@@ -91,6 +91,6 @@ kubectl apply -k manifests/08-model-armor
 
 ## 5. 다음 단계
 
-- **고객 워크숍 실습**: GCP IAM 권한, L4 GPU 쿼터 확인 및 전체 시나리오 실습은 [고객 워크숍 가이드](workshop-guide.md)를 참고하십시오.
-- **시나리오별 수동 검증**: 상세한 검증 명령어는 [수동 테스트 가이드](../operations/manual-test-guide.md)를 참고하십시오.
-- **Claude Code 연동**: 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 해결 방안은 [Claude Code & Vertex AI 호환성 가이드](../operations/claude-code-compatibility.md)를 참고하십시오.
+- 고객 워크숍 실습: GCP IAM 권한, L4 GPU 쿼터 확인 및 전체 시나리오 실습은 [고객 워크숍 가이드](workshop-guide.md)를 참고하십시오.
+- 시나리오별 수동 검증: 상세한 검증 명령어는 [수동 테스트 가이드](../operations/manual-test-guide.md)를 참고하십시오.
+- Claude Code 연동: 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 해결 방안은 [Claude Code & Vertex AI 호환성 가이드](../operations/claude-code-compatibility.md)를 참고하십시오.

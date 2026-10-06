@@ -1,13 +1,13 @@
 # 프로젝트 설계 명세: Agentrouter 기반 멀티 LLM 서빙 아키텍처
 
 ## 1. 아키텍처 개요
-- **인프라 계층:** GCP 프로젝트 `<YOUR_PROJECT_ID>`(리전 `asia-southeast1`), Gateway API 및 Cloud Storage FUSE CSI 드라이버가 활성화된 GKE Standard 클러스터. 2대의 NVIDIA L4 GPU Spot 노드풀(`g2-standard-8`). Cloud SQL PostgreSQL 16 인스턴스. 모델 가중치 보관용 Cloud Storage 버킷.
-- **모델 저장 및 서빙 계층:** Hugging Face에서 내려받은 가중치를 Cloud Storage에 저장한 뒤 Cloud Storage FUSE 마운트(`gke-gcsfuse/volumes: "true"`)로 vLLM `0.29.0` 파드에 전달합니다. VRAM 한계 설정을 거쳐 메모리 경합을 모사하고 PagedAttention V1 접두사 캐싱(Prefix Caching)을 활성화합니다.
-- **지능형 라우팅 및 네트워크 계층:** Envoy AI Gateway([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`)가 외부 트래픽을 수신하여 JSON 요청 본문을 버퍼링한 뒤 `model` 키를 기준으로 L7 라우팅을 수행합니다. 내부 라우트는 `inference.networking.k8s.io/v1` 규격의 `InferencePool`로 전달합니다. `llm-d-router`(`0.10.0`)가 Envoy ext-proc EPP로 동작하여 접두사 캐시 점수를 바탕으로 파드를 동적 순위화합니다. Gemini 및 Claude 모델은 GCP 자격증명으로 Vertex AI를 호출합니다.
-- **다계층 보안 및 멀티테넌시 계층:** Envoy Gateway `SecurityPolicy` 기반의 3대 다중 인증을 단일 처리합니다. 사내 임직원 및 Cloud Workstation은 GCIP JWT, 내부 마이크로서비스는 Google SA ID 토큰, 외부 파트너는 전용 API Key 인증을 적용하고 모델 라우팅을 엄격히 격리합니다.
-- **트래픽 정책 및 쿼터 계층:** Redis 분산 카운터 기반의 토큰 속도 제한(`BackendTrafficPolicy`)과 테넌트별 토큰 예산 격리(`QuotaPolicy`)를 적용해 특정 테넌트의 자원 고갈을 방어합니다.
-- **관측성 계층:** Auth Proxy 사이드카로 Cloud SQL에 연결된 [Arize Phoenix](https://github.com/Arize-ai/phoenix)가 API 경로의 OTLP 트레이스를 영구 적재합니다. PodMonitoring으로 vLLM `/metrics`의 접두사 캐시 지표를 실시간 수집합니다.
-- **검증 및 문서화:** 클러스터 내부 벤치마크 파드가 3개 라우팅 대상을 무작위 순서로 부하 테스트하고 vLLM 캐시를 동적 초기화합니다. 수집된 결과는 `AGENTS.md` 지침을 준수하는 실증 튜토리얼 문서에 반영됩니다.
+- 인프라 계층: GCP 프로젝트 `<YOUR_PROJECT_ID>`(리전 `asia-southeast1`), Gateway API 및 Cloud Storage FUSE CSI 드라이버가 활성화된 GKE Standard 클러스터. 2대의 NVIDIA L4 GPU Spot 노드풀(`g2-standard-8`). Cloud SQL PostgreSQL 16 인스턴스. 모델 가중치 보관용 Cloud Storage 버킷.
+- 모델 저장 및 서빙 계층: Hugging Face에서 내려받은 가중치를 Cloud Storage에 저장한 뒤 Cloud Storage FUSE 마운트(`gke-gcsfuse/volumes: "true"`)로 vLLM `0.29.0` 파드에 전달합니다. VRAM 한계 설정을 거쳐 메모리 경합을 모사하고 PagedAttention V1 접두사 캐싱(Prefix Caching)을 활성화합니다.
+- 지능형 라우팅 및 네트워크 계층: Envoy AI Gateway([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`)가 외부 트래픽을 수신하여 JSON 요청 본문을 버퍼링한 뒤 `model` 키를 기준으로 L7 라우팅을 수행합니다. 내부 라우트는 `inference.networking.k8s.io/v1` 규격의 `InferencePool`로 전달합니다. `llm-d-router`(`0.10.0`)가 Envoy ext-proc EPP로 동작하여 접두사 캐시 점수를 바탕으로 파드를 동적 순위화합니다. Gemini 및 Claude 모델은 GCP 자격증명으로 Vertex AI를 호출합니다.
+- 다계층 보안 및 멀티테넌시 계층: Envoy Gateway `SecurityPolicy` 기반의 3대 다중 인증을 단일 처리합니다. 사내 임직원 및 Cloud Workstation은 GCIP JWT, 내부 마이크로서비스는 Google SA ID 토큰, 외부 파트너는 전용 API Key 인증을 적용하고 모델 라우팅을 엄격히 격리합니다.
+- 트래픽 정책 및 쿼터 계층: Redis 분산 카운터 기반의 토큰 속도 제한(`BackendTrafficPolicy`)과 테넌트별 토큰 예산 격리(`QuotaPolicy`)를 적용해 특정 테넌트의 자원 고갈을 방어합니다.
+- 관측성 계층: Auth Proxy 사이드카로 Cloud SQL에 연결된 [Arize Phoenix](https://github.com/Arize-ai/phoenix)가 API 경로의 OTLP 트레이스를 영구 적재합니다. PodMonitoring으로 vLLM `/metrics`의 접두사 캐시 지표를 실시간 수집합니다.
+- 검증 및 문서화: 클러스터 내부 벤치마크 파드가 3개 라우팅 대상을 무작위 순서로 부하 테스트하고 vLLM 캐시를 동적 초기화합니다. 수집된 결과는 `AGENTS.md` 지침을 준수하는 실증 튜토리얼 문서에 반영됩니다.
 
 ---
 

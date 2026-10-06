@@ -24,34 +24,34 @@ Google Cloud Workstations 또는 로컬 개발 환경에서 최신 버전의 Cla
 
 ## 2. Advisor Tool(`advisor-tool-2026-03-01`) 기능 분석
 
-문제의 원인이 된 `advisor-tool-2026-03-01`은 Anthropic이 도입한 **Advisor Tool(조언자 도구)** 베타 기능을 활성화하기 위한 식별자입니다.
+문제의 원인이 된 `advisor-tool-2026-03-01`은 Anthropic이 도입한 Advisor Tool(조언자 도구) 베타 기능을 활성화하기 위한 식별자입니다.
 
 ### 2.1 공식 문서 출처 (Citations)
-- **영문 공식 문서**: [Claude Platform Docs — Advisor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool)
-- **국문 공식 문서**: [Claude Platform Docs — Advisor 도구](https://platform.claude.com/docs/ko/agents-and-tools/tool-use/advisor-tool)
-- **공식 명세 인용**:
+- 영문 공식 문서: [Claude Platform Docs — Advisor tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool)
+- 국문 공식 문서: [Claude Platform Docs — Advisor 도구](https://platform.claude.com/docs/ko/agents-and-tools/tool-use/advisor-tool)
+- 공식 명세 인용:
   > *"Pair a faster executor model with a higher-intelligence advisor model that provides strategic guidance mid-generation."*  
   > *"The advisor tool is in beta. Include the beta header `advisor-tool-2026-03-01` in your requests."*
 
 ### 2.2 동작 원리 (Executor + Advisor 하이브리드 추론)
 Advisor Tool은 단일 모델만으로 에이전트를 구동할 때 발생하는 비용과 지능 사이의 딜레마를 해결하기 위해 고안된 서버 사이드 오케스트레이션 기능입니다.
 
-1. **Executor(실행자) 모델의 기본 수행**:
+1. Executor(실행자) 모델의 기본 수행:
    - 속도가 빠르고 비용이 저렴한 실행자 모델(예: `claude-sonnet-5` 또는 `claude-haiku-4-5`)이 파일 탐색이나 단순 코드 수정 같은 일상적인 에이전트 작업의 대부분을 처리합니다.
-2. **생성 도중(Mid-generation) 조언 요청**:
+2. 생성 도중(Mid-generation) 조언 요청:
    - 실행자 모델이 작업을 진행하다가 복잡한 아키텍처 결정이나 고도의 추론이 필요한 분기점을 만나면 스스로 `advisor` 서버 도구(`server_tool_use`)를 호출합니다.
-3. **서버 내부 Advisor 호출 및 스트림 재개**:
-   - 클라이언트와의 연결을 끊지 않은 상태에서 Anthropic API 서버가 내부적으로 상위 모델인 **Advisor(조언자) 모델**(예: `claude-opus-4-6`)에게 현재까지의 전체 대화 맥락을 전달합니다.
+3. 서버 내부 Advisor 호출 및 스트림 재개:
+   - 클라이언트와의 연결을 끊지 않은 상태에서 Anthropic API 서버가 내부적으로 상위 모델인 Advisor(조언자) 모델(예: `claude-opus-4-6`)에게 현재까지의 전체 대화 맥락을 전달합니다.
    - Advisor 모델이 약 400~700 토큰 분량의 전략적 가이드나 수정 계획(`advisor_tool_result`)을 반환하면 실행자 모델이 이를 바탕으로 즉시 작업을 이어갑니다.
 
 ### 2.3 Claude Code의 자동 주입 동작
 장시간 코드를 분석하고 수정하는 Claude Code 특성상 매 턴마다 무거운 Opus 모델을 호출하면 비용과 지연 시간이 크게 증가합니다. 이에 따라 최신 Claude Code는 기본 모델을 Sonnet으로 설정했을 때 비용 효율과 추론 품질을 동시에 확보하고자 요청마다 아래 두 가지 요소를 자동으로 주입합니다.
 
-1. **HTTP 요청 헤더**:
+1. HTTP 요청 헤더:
    ```http
    anthropic-beta: advisor-tool-2026-03-01
    ```
-2. **JSON 요청 바디 (`tools` 배열 내 도구 정의)**:
+2. JSON 요청 바디 (`tools` 배열 내 도구 정의):
    ```json
    {
      "model": "claude-sonnet-5",
@@ -70,10 +70,10 @@ Advisor Tool은 단일 모델만으로 에이전트를 구동할 때 발생하�
 
 ## 3. 근본 원인: Anthropic 1st-Party API vs Google Cloud Vertex AI 아키텍처 차이
 
-이 에러는 Envoy AI Gateway의 결함이 아니라 업스트림 백엔드인 **Google Cloud Vertex AI가 해당 베타 기능과 스키마를 지원하지 않아 거부하는 현상**입니다.
+이 에러는 Envoy AI Gateway의 결함이 아니라 업스트림 백엔드인 Google Cloud Vertex AI가 해당 베타 기능과 스키마를 지원하지 않아 거부하는 현상입니다.
 
 ### 3.1 왜 Vertex AI에서는 지원되지 않는가?
-- **단일 요청 내 다중 모델(Cross-Model) 라우팅의 제약**:
+- 단일 요청 내 다중 모델(Cross-Model) 라우팅의 제약:
   - Anthropic 자체 플랫폼(`api.anthropic.com`)은 모든 Claude 모델 풀을 단일 오케스트레이터 아래 통합 관리합니다. 하나의 `/v1/messages` 요청 안에서 Sonnet 스트림을 잠시 멈추고 내부적으로 Opus 모델을 호출한 뒤 두 모델의 토큰 사용량을 각각 합산해 과금하는 서버 사이드 라우팅이 즉시 가능합니다.
   - 반면 Google Cloud Vertex AI(`aiplatform.googleapis.com`)는 각 모델이 독립된 GCP Publisher Model 엔드포인트(`/projects/.../models/claude-sonnet-5:streamRawPredict` 및 `.../models/claude-opus-4-6:streamRawPredict`)로 격리되어 있습니다.
   - GCP의 IAM 권한 검증과 리전별 쿼터(Quota) 및 과금 미터링(Billing) 파이프라인이 호출된 단일 엔드포인트 기준으로 동작하기 때문에 Sonnet 엔드포인트로 유입된 요청이 GCP 내부에서 임의로 Opus 엔드포인트를 호출할 수 없습니다.
@@ -91,7 +91,7 @@ curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
   -H "anthropic-beta: advisor-tool-2026-03-01" \
   -d '{"model":"claude-sonnet-5","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
 ```
-- **실측 응답 (`HTTP 400 Bad Request`)**:
+- 실측 응답 (`HTTP 400 Bad Request`):
   ```http
   HTTP/1.1 400 Bad Request
   x-vertex-ai-internal-prediction-backend: harpoon
@@ -115,7 +115,7 @@ curl -i -X POST http://<GATEWAY_IP>:8080/anthropic/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -d '{"model":"claude-sonnet-5","max_tokens":10,"tools":[{"type":"advisor_20260301","name":"advisor","model":"claude-opus-4-6"}],"messages":[{"role":"user","content":"hi"}]}'
 ```
-- **실측 응답 (`HTTP 400 Bad Request`)**:
+- 실측 응답 (`HTTP 400 Bad Request`):
   ```http
   HTTP/1.1 400 Bad Request
   x-vertex-ai-internal-prediction-backend: harpoon
@@ -165,16 +165,16 @@ Claude Code의 전역 설정 파일(`~/.claude/settings.json`) 내 `env` 블록�
 
 ## 5. 게이트웨이 수준 Long-Term 아키텍처 레퍼런스
 
-다수의 개발자 워크스테이션 환경을 개별 통제하기 어려운 엔터프라이즈 환경에서는 클라이언트가 어떤 실험적 헤더나 필드를 보내더라도 **Envoy AI Gateway가 중간에서 이를 자동 정제(Sanitize)하여 Vertex AI로 전달**하는 완충 계층(Compatibility Layer) 아키텍처를 도입할 수 있습니다.
+다수의 개발자 워크스테이션 환경을 개별 통제하기 어려운 엔터프라이즈 환경에서는 클라이언트가 어떤 실험적 헤더나 필드를 보내더라도 Envoy AI Gateway가 중간에서 이를 자동 정제(Sanitize)하여 Vertex AI로 전달하는 완충 계층(Compatibility Layer) 아키텍처를 도입할 수 있습니다.
 
 ### 5.1 아키텍처 대안 비교
 
 | 평가 항목 | 방안 A: EnvoyExtensionPolicy (Lua 필터) | 방안 B: HTTPRouteFilter (HeaderModifier) | 방안 C: Custom ExtProc (gRPC 서버) |
 |---|:---:|:---:|:---:|
-| **헤더(`anthropic-beta`) 선별 제거** | 가능 (특정 플래그만 정밀 제거) | 불가능 (헤더 전체 삭제만 가능) | 가능 |
-| **바디(`tools` 내 `advisor`) 제거** | 가능 | 불가능 (**2차 400 에러 발생**) | 가능 (완전한 JSON AST 파싱) |
-| **추가 파드/인프라 배포** | 불필요 (CRD YAML 1개만 추가) | 불필요 | 필요 (별도 Deployment 운영) |
-| **네트워크 지연 (Latency)** | 없음 (< 0.1ms 인메모리 처리) | 없음 | 낮음 (1~3ms gRPC 홉 추가) |
+| 헤더(`anthropic-beta`) 선별 제거 | 가능 (특정 플래그만 정밀 제거) | 불가능 (헤더 전체 삭제만 가능) | 가능 |
+| 바디(`tools` 내 `advisor`) 제거 | 가능 | 불가능 (2차 400 에러 발생) | 가능 (완전한 JSON AST 파싱) |
+| 추가 파드/인프라 배포 | 불필요 (CRD YAML 1개만 추가) | 불필요 | 필요 (별도 Deployment 운영) |
+| 네트워크 지연 (Latency) | 없음 (< 0.1ms 인메모리 처리) | 없음 | 낮음 (1~3ms gRPC 홉 추가) |
 
 ### 5.2 `EnvoyExtensionPolicy` (Lua HTTP Filter) 구현 레퍼런스
 Envoy Gateway가 기본 지원하는 `EnvoyExtensionPolicy` CRD를 활용하면 외부 컨테이너 추가 없이 게이트웨이 내부에서 헤더와 JSON 바디를 동시에 정규화할 수 있습니다.
@@ -238,5 +238,5 @@ spec:
 ```
 
 ### 5.3 운영 권장 전략 요약
-1. **기본 정책**: 워크스테이션 배포 스크립트([`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py))와 사용자 설정(`~/.claude/settings.json`)에 `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: "1"`을 기본 적용하여 클라이언트 단에서 불필요한 실험적 페이로드 생성을 원천 차단합니다.
-2. **게이트웨이 방어선**: 클라이언트가 환경 변수를 누락하더라도 서비스 중단이 발생하지 않도록 필요시 5.2절의 `EnvoyExtensionPolicy`를 게이트웨이에 함께 배치하여 이중 방어 체계를 구축합니다.
+1. 기본 정책: 워크스테이션 배포 스크립트([`scripts/prepare_ws_settings.py`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/scripts/prepare_ws_settings.py))와 사용자 설정(`~/.claude/settings.json`)에 `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: "1"`을 기본 적용하여 클라이언트 단에서 불필요한 실험적 페이로드 생성을 원천 차단합니다.
+2. 게이트웨이 방어선: 클라이언트가 환경 변수를 누락하더라도 서비스 중단이 발생하지 않도록 필요시 5.2절의 `EnvoyExtensionPolicy`를 게이트웨이에 함께 배치하여 이중 방어 체계를 구축합니다.

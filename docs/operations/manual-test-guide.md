@@ -81,7 +81,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
     "max_tokens": 30
   }' | jq '{model: .model, content: .choices[0].message.content, finish_reason: .choices[0].finish_reason}'
 ```
-**Expected**: Returns HTTP 200 with model response.
+Expected: Returns HTTP 200 with model response.
 
 ### 1-3. Vertex AI Claude Call
 ```bash
@@ -94,7 +94,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
     "max_tokens": 30
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
-**Expected**: Returns HTTP 200 with model response.
+Expected: Returns HTTP 200 with model response.
 
 ### 1-4. In-Cluster GPU vLLM Call (Gemma 2B)
 ```bash
@@ -107,7 +107,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
     "max_tokens": 30
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
-**Expected**: Returns HTTP 200 from vLLM.
+Expected: Returns HTTP 200 from vLLM.
 
 ---
 
@@ -126,7 +126,7 @@ curl -s -X POST "$GW/authtest" \
     probe_result: (if .headers["x-tenant-id"] == "platform" then "PASS: Spoofing Prevented" else "FAIL: Spoofed" end)
   }'
 ```
-**Expected**: `received_tenant` is `"platform"`, returning `"PASS: Spoofing Prevented"`.
+Expected: `received_tenant` is `"platform"`, returning `"PASS: Spoofing Prevented"`.
 
 ---
 
@@ -146,7 +146,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
     "max_tokens": 15
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
-**Expected**: Returns HTTP 200 without requiring static credentials.
+Expected: Returns HTTP 200 without requiring static credentials.
 
 ---
 
@@ -181,7 +181,7 @@ curl -s -X POST "$GW/v1/chat/completions" \
     "max_tokens": 20
   }' | jq '{model: .model, content: .choices[0].message.content}'
 ```
-**Expected**: Returns HTTP 200.
+Expected: Returns HTTP 200.
 
 ---
 
@@ -193,7 +193,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -H "Content-Type: application/json" \
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "unauth"}]}'
 ```
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
 ### 5-2. Expired or Invalid Token (Expect HTTP 401)
 ```bash
@@ -202,7 +202,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -H "Content-Type: application/json" \
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "tampered"}]}'
 ```
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
 ### 5-3. Partner Domain Invalid Key (Expect HTTP 401)
 ```bash
@@ -212,7 +212,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -H "Content-Type: application/json" \
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "bad key"}]}'
 ```
-**Expected**: `HTTP Status: 401`.
+Expected: `HTTP Status: 401`.
 
 ### 5-4. Partner Domain Requesting Unauthorized Model (Expect HTTP 404)
 ```bash
@@ -222,7 +222,7 @@ curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" -X POST "$GW/v1/chat/compl
   -H "Content-Type: application/json" \
   -d '{"model": "claude-sonnet-5", "messages": [{"role": "user", "content": "cost leak probe"}]}'
 ```
-**Expected**: `HTTP Status: 404` (Model is not exposed in `partner-router`).
+Expected: `HTTP Status: 404` (Model is not exposed in `partner-router`).
 
 ---
 
@@ -250,7 +250,7 @@ for i in 1 2 3; do
   echo "acme-corp call #$i: HTTP $CODE"
 done
 ```
-**Expected**: Call #1 and #2 return HTTP 200; subsequent calls return `HTTP 429`.
+Expected: Call #1 and #2 return HTTP 200; subsequent calls return `HTTP 429`.
 
 ### 6-3. Verify Resource Isolation for globex
 ```bash
@@ -260,7 +260,7 @@ curl -s -o /dev/null -w "globex HTTP Status: %{http_code}\n" -X POST "$GW/v1/cha
   -H "Content-Type: application/json" \
   -d '{"model": "gemma-rr", "messages": [{"role": "user", "content": "Quick test."}], "max_tokens": 15}'
 ```
-**Expected**: Returns `HTTP 200`, proving `acme-corp`'s throttling does not affect `globex`.
+Expected: Returns `HTTP 200`, proving `acme-corp`'s throttling does not affect `globex`.
 
 ---
 
@@ -292,7 +292,7 @@ curl -s -w "\nWarm TTFT/Total: %{time_starttransfer}s / %{time_total}s\n" -X POS
     \"max_tokens\": 20
   }" | jq -r '.choices[0].message.content // empty'
 ```
-**Expected**: Request 2 exhibits a **4x to 6x latency reduction** compared to Request 1.
+Expected: Request 2 exhibits a 4x to 6x latency reduction compared to Request 1.
 
 ---
 
@@ -303,7 +303,7 @@ curl -s -w "\nWarm TTFT/Total: %{time_starttransfer}s / %{time_total}s\n" -X POS
    kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
    ```
 2. Open `http://localhost:6006` in your browser.
-3. Verify traces in the **Traces** view:
+3. Verify traces in the Traces view:
    - Status 200 OK spans for Gemini, Claude, and Gemma.
    - Span attributes: `gen_ai.request.model`, `gen_ai.usage.prompt_tokens`, `gen_ai.usage.completion_tokens`.
    - Latency metrics across ext-proc and backend execution phases.
@@ -339,7 +339,7 @@ unset CLAUDE_CODE_USE_VERTEX
 # 3. Test non-interactive prompt
 claude -p "Respond in 5 words: Hello Claude Code via Envoy AI Gateway!"
 ```
-**Expected**: Returns model response routed through Envoy AI Gateway with JWT validation and header injection applied transparently.
+Expected: Returns model response routed through Envoy AI Gateway with JWT validation and header injection applied transparently.
 
 ---
 

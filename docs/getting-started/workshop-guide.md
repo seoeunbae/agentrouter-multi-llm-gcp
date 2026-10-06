@@ -10,11 +10,11 @@ Participants will experience enterprise AI gateway capabilities firsthand, inclu
 
 Participants build an enterprise AI serving infrastructure from a single gateway endpoint supporting internal developer workstations, internal microservices, and external partner integrations.
 
-- **Infrastructure Layer**: Provisions a GKE Standard cluster with 2x NVIDIA L4 GPU Spot node pools (`g2-standard-8`), a Cloud SQL PostgreSQL 16 instance, and a Cloud Storage bucket.
-- **Inference Backend Layer**: Integrates Google Cloud Vertex AI (Gemini 2.5 Flash and Claude Sonnet 5) alongside self-hosted vLLM (Gemma 2B).
-- **Intelligent Routing & Cache Acceleration**: Applies Kubernetes GIE `InferencePool` and `llm-d-router` (EPP) prefix cache scoring to reduce GPU prefill latency.
-- **Multi-Tier Security & Authorization**: Enforces GCIP JWTs, Google SA ID tokens, and partner API keys with isolated token rate limits per tenant.
-- **Full-Stack Observability**: Collects OpenInference traces in Arize Phoenix and vLLM Prometheus metrics in Google Cloud Monitoring.
+- Infrastructure Layer: Provisions a GKE Standard cluster with 2x NVIDIA L4 GPU Spot node pools (`g2-standard-8`), a Cloud SQL PostgreSQL 16 instance, and a Cloud Storage bucket.
+- Inference Backend Layer: Integrates Google Cloud Vertex AI (Gemini 2.5 Flash and Claude Sonnet 5) alongside self-hosted vLLM (Gemma 2B).
+- Intelligent Routing & Cache Acceleration: Applies Kubernetes GIE `InferencePool` and `llm-d-router` (EPP) prefix cache scoring to reduce GPU prefill latency.
+- Multi-Tier Security & Authorization: Enforces GCIP JWTs, Google SA ID tokens, and partner API keys with isolated token rate limits per tenant.
+- Full-Stack Observability: Collects OpenInference traces in Arize Phoenix and vLLM Prometheus metrics in Google Cloud Monitoring.
 
 For detailed architecture and request sequence diagrams, see:
 - [Resource Structure & Layer Diagram](../architecture/gateway-resources.md)
@@ -57,7 +57,7 @@ gcloud services enable compute.googleapis.com container.googleapis.com \
   iamcredentials.googleapis.com aiplatform.googleapis.com \
   identitytoolkit.googleapis.com firebase.googleapis.com --project=$GCP_PROJECT
 ```
-In addition, to run the employee JWT token script (`scripts/gcip-token.sh`), enable **Identity Platform (or Firebase Authentication)** in the Google Cloud Console for your project and register one Web App.
+In addition, to run the employee JWT token script (`scripts/gcip-token.sh`), enable Identity Platform (or Firebase Authentication) in the Google Cloud Console for your project and register one Web App.
 
 ### 2.5 Check NVIDIA L4 GPU Quota
 Provisioning 2 NVIDIA L4 GPUs requires at least 2 regional `NVIDIA_L4_GPUS` quota in your target region:
@@ -209,7 +209,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 1500
   }' | jq .
 ```
-- **Expected Result**: HTTP `200 OK`. Even though the client has no direct GCP IAM permissions or Vertex API key, the gateway authenticates upstream using its `BackendSecurityPolicy`.
+- Expected Result: HTTP `200 OK`. Even though the client has no direct GCP IAM permissions or Vertex API key, the gateway authenticates upstream using its `BackendSecurityPolicy`.
 
 ```bash
 # 3. Invoke Vertex AI Claude Sonnet 5 (Anthropic Messages API)
@@ -222,7 +222,7 @@ curl -sS -X POST "$GW/anthropic/v1/messages" \
     "max_tokens": 30
   }' | jq .
 ```
-- **Expected Result**: HTTP `200 OK` returning a standard `type: "message"` payload from Claude.
+- Expected Result: HTTP `200 OK` returning a standard `type: "message"` payload from Claude.
 
 #### 5.2.1 Employee AI Coding Agent (Claude Code CLI) Integration
 Configure Claude Code (`claude` CLI) on a Cloud Workstation or local machine to route through Envoy AI Gateway using `apiKeyHelper` for dynamic token injection:
@@ -235,7 +235,7 @@ python3 scripts/prepare_ws_settings.py
 mkdir -p ~/.claude
 cp /tmp/new_settings.json ~/.claude/settings.json
 ```
-- **Key Configuration Settings**:
+- Key Configuration Settings:
   - `"ANTHROPIC_BASE_URL": "$GW/anthropic"`: Routes all requests through the gateway's Anthropic-compatible endpoint.
   - `"apiKeyHelper"`: Dynamically invokes `gcip-token.sh` to inject fresh corporate JWT tokens.
   - `"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"`: Prevents experimental beta headers (`advisor-tool-2026-03-01`) from conflicting with Vertex AI's schema validation. See the [Claude Code & Vertex AI Compatibility Guide](../operations/claude-code-compatibility.md) for architectural details.
@@ -244,7 +244,7 @@ cp /tmp/new_settings.json ~/.claude/settings.json
 # 3. Run a one-shot prompt via Claude Code CLI
 claude -p "Say hello in 3 words"
 ```
-- **Expected Result**: Exits with code `0` and outputs a 3-word greeting routed through Envoy AI Gateway.
+- Expected Result: Exits with code `0` and outputs a 3-word greeting routed through Envoy AI Gateway.
 
 ---
 
@@ -262,7 +262,7 @@ curl -sS -X POST "$GW/authtest" \
   -H "Content-Type: application/json" \
   -d '{}' | jq .headers
 ```
-- **Expected Result**: The echoed `"x-tenant-id"` header is `"platform"` (from the signed JWT claim), neutralizing the client's `"finance-vip"` spoofing attempt.
+- Expected Result: The echoed `"x-tenant-id"` header is `"platform"` (from the signed JWT claim), neutralizing the client's `"finance-vip"` spoofing attempt.
 
 ---
 
@@ -288,7 +288,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 15
   }' | jq .
 ```
-- **Expected Result**: HTTP `200 OK` with `system_fingerprint` showing `vllm-0.29.0`. The gateway extracts the `email` claim and injects it into `x-tenant-id`.
+- Expected Result: HTTP `200 OK` with `system_fingerprint` showing `vllm-0.29.0`. The gateway extracts the `email` claim and injects it into `x-tenant-id`.
 
 ---
 
@@ -320,7 +320,7 @@ curl -sS -i -X POST "$GW/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -d '{"model":"claude-sonnet-5","messages":[{"role":"user","content":"Blocked"}]}' | head -n 1
 ```
-- **Expected Result**: `HTTP/1.1 404 Not Found`. High-cost models are excluded from the partner route.
+- Expected Result: `HTTP/1.1 404 Not Found`. High-cost models are excluded from the partner route.
 
 ```bash
 # 5. Verify tenant quota isolation (exhaust acme-corp 60 tokens/min budget)
@@ -340,7 +340,7 @@ curl -s -o /dev/null -w "Globex Concurrent Request: HTTP %{http_code}\n" -X POST
   -H "Content-Type: application/json" \
   -d '{"model":"gemma-rr","messages":[{"role":"user","content":"Globex check"}],"max_tokens":10}'
 ```
-- **Expected Result**: `acme-corp` is throttled with `HTTP 429 Too Many Requests` once its 60 token/min budget is exhausted, while `globex` immediately succeeds with `HTTP 200`.
+- Expected Result: `acme-corp` is throttled with `HTTP 429 Too Many Requests` once its 60 token/min budget is exhausted, while `globex` immediately succeeds with `HTTP 200`.
 
 ---
 
@@ -374,7 +374,7 @@ curl -N -s -o /dev/null -X POST "$GW/v1/chat/completions" \
   -d @/tmp/p2.json \
   -w "[2nd Warm TTFT]: %{time_starttransfer}s\n"
 ```
-- **Expected Result**: 2nd Warm TTFT is significantly faster than 1st Cold TTFT because EPP's `prefix-cache-scorer` routes the request directly to the GPU pod holding the KV cache.
+- Expected Result: 2nd Warm TTFT is significantly faster than 1st Cold TTFT because EPP's `prefix-cache-scorer` routes the request directly to the GPU pod holding the KV cache.
 
 ```bash
 # 4. Verify vLLM per-pod Prefix Cache hit counters
@@ -384,7 +384,7 @@ for POD in $(kubectl get pods -n vllm -l app=vllm-server -o jsonpath='{.items[*]
     | grep -E "vllm:prefix_cache_hits_total"
 done
 ```
-- **Expected Result**: Only the specific vLLM pod that processed the 1st request shows an increase of ~1,500+ tokens in `vllm:prefix_cache_hits_total`.
+- Expected Result: Only the specific vLLM pod that processed the 1st request shows an increase of ~1,500+ tokens in `vllm:prefix_cache_hits_total`.
 
 ---
 
@@ -407,16 +407,16 @@ DASH_ID=$(gcloud monitoring dashboards list --project="$GCP_PROJECT" \
 echo "Dashboard URL: https://console.cloud.google.com/monitoring/dashboards/builder/${DASH_ID}?project=${GCP_PROJECT}"
 ```
 
-1. Open the printed **Dashboard URL** in Google Cloud Console to view `vLLM Model Server Monitoring`.
+1. Open the printed Dashboard URL in Google Cloud Console to view `vLLM Model Server Monitoring`.
 2. Use the 4 top filter dropdowns (`cluster`, `namespace`, `pod`, `model_name`) to slice metrics:
    - Select a specific pod (`vllm-server-*`) in the `pod` filter to isolate a single GPU instance.
    - Keep `pod` and `model_name` set to `All` to overlay all GPU pods on the same chart and compare load balance and cache hit skew.
 3. Inspect the 6 core dashboard charts:
-   - **KV Cache Usage %**: VRAM KV cache block utilization across L4 GPUs
-   - **Prefix Cache Hit Rate %**: Prefix cache hit rate driven by EPP routing (observe the spike on the specific pod hit in Section 5.6)
-   - **Running & Waiting Requests**: Active concurrent requests and queue depth (`Waiting`)
-   - **TTFT (Time to First Token) Latency**: P50 and P95 TTFT latency trends
-   - **Generation Token & Request Throughput**: Tokens generated per second (`Tokens/s`) and completed requests per second (`Req/s`)
+   - KV Cache Usage %: VRAM KV cache block utilization across L4 GPUs
+   - Prefix Cache Hit Rate %: Prefix cache hit rate driven by EPP routing (observe the spike on the specific pod hit in Section 5.6)
+   - Running & Waiting Requests: Active concurrent requests and queue depth (`Waiting`)
+   - TTFT (Time to First Token) Latency: P50 and P95 TTFT latency trends
+   - Generation Token & Request Throughput: Tokens generated per second (`Tokens/s`) and completed requests per second (`Req/s`)
 
 ---
 
@@ -428,16 +428,16 @@ Audit the full prompt/response payloads, token consumption, and latency breakdow
 # 1. Port-forward Arize Phoenix web UI
 kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
 ```
-- **Local PC**: Open `http://localhost:6006` in your browser.
-- **Cloud Shell / Cloud Workstation**: Click the **Web Preview** icon and change the port to `6006`.
+- Local PC: Open `http://localhost:6006` in your browser.
+- Cloud Shell / Cloud Workstation: Click the Web Preview icon and change the port to `6006`.
 
-1. On the Phoenix landing page, click into the **`default` project**.
-2. Select the **`Traces`** tab at the top to view chronological `ChatCompletion` traces across all models invoked in Scenarios 1–5 (`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-rr`, `gemma-epp`).
+1. On the Phoenix landing page, click into the `default` project.
+2. Select the `Traces` tab at the top to view chronological `ChatCompletion` traces across all models invoked in Scenarios 1–5 (`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-rr`, `gemma-epp`).
 3. Click any individual `ChatCompletion` span row to open the right-hand detail panel and audit 4 enterprise attributes:
-   - **Model & Provider Identification (`Attributes` tab)**: Verify `llm.model_name` (`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-epp`) and `llm.system` (`openai`, `anthropic`).
-   - **Input & Output Payload Audit (`Input / Output` tab)**: Inspect `llm.input_messages` (exact user prompt) and `llm.output_messages` (assistant response text) captured for compliance and quality evaluation.
-   - **Token Billing Ledger (`Attributes` tab)**: Verify exact token counts in `llm.token_count.prompt`, `llm.token_count.completion`, and `llm.token_count.total`.
-   - **End-to-End Latency Breakdown (`Latency` column)**: Compare total `Duration` between 1st Cold requests and 2nd Warm cache-hit requests.
+   - Model & Provider Identification (`Attributes` tab): Verify `llm.model_name` (`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-epp`) and `llm.system` (`openai`, `anthropic`).
+   - Input & Output Payload Audit (`Input / Output` tab): Inspect `llm.input_messages` (exact user prompt) and `llm.output_messages` (assistant response text) captured for compliance and quality evaluation.
+   - Token Billing Ledger (`Attributes` tab): Verify exact token counts in `llm.token_count.prompt`, `llm.token_count.completion`, and `llm.token_count.total`.
+   - End-to-End Latency Breakdown (`Latency` column): Compare total `Duration` between 1st Cold requests and 2nd Warm cache-hit requests.
 
 ```bash
 # [Optional] Verify the 5 most recent spans directly via Phoenix REST API from CLI
@@ -445,7 +445,7 @@ kubectl exec -n routing deploy/echo-server -- wget -qO- \
   "http://phoenix-service.phoenix.svc.cluster.local:6006/v1/projects/default/spans?limit=5" \
   | jq '{total_fetched: (.data | length), spans: [.data[] | {name: .name, model: .attributes."llm.model_name", prompt_tokens: .attributes."llm.token_count.prompt", completion_tokens: .attributes."llm.token_count.completion", total_tokens: .attributes."llm.token_count.total", trace_id: .context.trace_id}]}'
 ```
-- **Expected Result**: Returns a JSON array displaying `trace_id`, `model`, `prompt_tokens`, `completion_tokens`, and `total_tokens` for your recent invocations.
+- Expected Result: Returns a JSON array displaying `trace_id`, `model`, `prompt_tokens`, `completion_tokens`, and `total_tokens` for your recent invocations.
 
 ---
 

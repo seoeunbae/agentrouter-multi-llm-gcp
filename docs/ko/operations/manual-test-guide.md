@@ -87,7 +87,7 @@ export GCP_PROJECT="${GCP_PROJECT:-<YOUR_PROJECT_ID>}"
    ```bash
    cat ~/.claude/settings.json
    ```
-   **기대 설정값**:
+   기대 설정값:
    - `"ANTHROPIC_BASE_URL": "http://<GATEWAY_IP>:8080/anthropic"`
    - `"apiKeyHelper": "/home/user/bin/gcip-token.sh alice platform"`
    - `"ANTHROPIC_MODEL": "claude-sonnet-5"`
@@ -102,13 +102,13 @@ export GCP_PROJECT="${GCP_PROJECT:-<YOUR_PROJECT_ID>}"
    ```bash
    claude -p '안녕! 3단어로 답해줘'
    ```
-   - **기대 결과**: 약 2~4초 내에 정상 응답(예: `안녕하세요, 반갑습니다!`) 출력.
+   - 기대 결과: 약 2~4초 내에 정상 응답(예: `안녕하세요, 반갑습니다!`) 출력.
 
 2. 연속 호출을 실행하여 토큰 레이트리밋(분당 50만 토큰 한도) 정상 동작을 확인합니다.
    ```bash
    claude -p 'say OK 1' && claude -p 'say OK 2'
    ```
-   - **기대 결과**: 두 요청 모두 429 지연 없이 연속 성공.
+   - 기대 결과: 두 요청 모두 429 지연 없이 연속 성공.
 
 ### 2.3 게이트웨이 유입 및 변환 로그 확인
 
@@ -118,7 +118,7 @@ kubectl logs -n envoy-gateway-system \
   -l gateway.envoyproxy.io/owning-gateway-name=envoy-ai-gateway \
   --tail=5
 ```
-- **확인 지표**:
+- 확인 지표:
   - `user-agent`: `claude-cli/...`
   - `response_code`: `200`
   - `x-envoy-origin-path`: `/v1/projects/<YOUR_PROJECT_ID>/locations/global/publishers/anthropic/models/claude-sonnet-5:streamRawPredict`
@@ -151,7 +151,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 30
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, `model` 필드에 `claude-sonnet-5` 표기.
+- 기대 결과: HTTP `200 OK`, `model` 필드에 `claude-sonnet-5` 표기.
 
 ### 3.3 Vertex AI Claude 3.5 Sonnet 호출 (Anthropic 네이티브 Messages 규격)
 
@@ -165,7 +165,7 @@ curl -sS -X POST "$GW/anthropic/v1/messages" \
     "max_tokens": 10
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, `type` 필드에 `message`, `content[0].text`에 생성 결과 표기.
+- 기대 결과: HTTP `200 OK`, `type` 필드에 `message`, `content[0].text`에 생성 결과 표기.
 
 ### 3.4 Vertex AI Gemini 2.5 Flash 호출
 
@@ -179,7 +179,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 1500
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, 클라이언트가 별도 GCP IAM 권한이나 API 키를 갖지 않아도 게이트웨이가 백엔드 자격증명으로 Vertex AI를 대리 호출하여 응답 반환.
+- 기대 결과: HTTP `200 OK`, 클라이언트가 별도 GCP IAM 권한이나 API 키를 갖지 않아도 게이트웨이가 백엔드 자격증명으로 Vertex AI를 대리 호출하여 응답 반환.
   (참고: 클라이언트가 전송하는 `Authorization: Bearer $GT`는 게이트웨이 인그레스 보안 관문을 통과하는 사내 JWT 신원 증명이며, Vertex AI 백엔드 호출 시에는 게이트웨이가 자체 `BackendSecurityPolicy` 자격증명을 사용합니다.)
 
 ### 3.5 보안 검증: 클라이언트 헤더 위조 방어 (x-tenant-id Override)
@@ -197,7 +197,7 @@ curl -sS -X POST "$GW/authtest" \
   -H "Content-Type: application/json" \
   -d '{}' | jq .headers
 ```
-- **기대 결과**: 에코 서버 수신 헤더의 `"x-tenant-id"`가 클라이언트 입력값(`finance-vip`)이 아니라
+- 기대 결과: 에코 서버 수신 헤더의 `"x-tenant-id"`가 클라이언트 입력값(`finance-vip`)이 아니라
   토큰 클레임인 `"platform"`으로 기록되어야 합니다. (에코 서버 JSON 파서 규격상 `-d '{}'` 본문 전달 필요)
 
 ---
@@ -228,7 +228,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 15
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, `system_fingerprint`에 `vllm-0.29.0` 표기.
+- 기대 결과: HTTP `200 OK`, `system_fingerprint`에 `vllm-0.29.0` 표기.
 - 게이트웨이가 토큰의 `email` 클레임을 읽어 백엔드 `x-tenant-id` 헤더에 주체 이메일을 자동 주입합니다.
 
 ### 4.2 보안 검증: Google SA 이메일 헤더 주입 확인 (/authtest)
@@ -242,7 +242,7 @@ curl -sS -X POST "$GW/authtest" \
   -H "Content-Type: application/json" \
   -d '{}' | jq .headers
 ```
-- **기대 결과**: 에코 서버 수신 헤더의 `"x-tenant-id"`에
+- 기대 결과: 에코 서버 수신 헤더의 `"x-tenant-id"`에
   서비스 계정 주체 이메일(`$SA_EMAIL`)이 기록되어야 합니다.
 
 ---
@@ -268,7 +268,7 @@ echo "Globex 키:    $GK"
 ```bash
 kubectl exec -n routing deploy/keyissuer -- python3 /app/client.py | jq .
 ```
-- **기대 결과**: `{"client_id": "partner-...", "api_key": "pk-partner-...", "status": "success"}`가 반환된 뒤
+- 기대 결과: `{"client_id": "partner-...", "api_key": "pk-partner-...", "status": "success"}`가 반환된 뒤
   K8s Secret `partner-api-keys`에 해당 키가 즉시 동기화됩니다.
 
 ### 5.3 파트너 정상 추론 호출 (`gemma-rr`)
@@ -285,7 +285,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 16
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, 정상 응답 텍스트 수신.
+- 기대 결과: HTTP `200 OK`, 정상 응답 텍스트 수신.
 
 ### 5.4 비인가 모델 차단 검증 (모델 허용목록 통제)
 
@@ -301,15 +301,15 @@ curl -sS -i -X POST "$GW/v1/chat/completions" \
     "max_tokens": 10
   }'
 ```
-- **기대 결과**: HTTP `404 Not Found`
-- **본문**: `No matching route found. It is likely because the model specified in your request is not configured in the Gateway.`
+- 기대 결과: HTTP `404 Not Found`
+- 본문: `No matching route found. It is likely because the model specified in your request is not configured in the Gateway.`
 
 ### 5.5 파트너별 쿼터 분리 및 격리 실측 (QuotaPolicy)
 
-- `acme-corp` 한도: 분당 **60 토큰** (요청당 약 15~17 토큰 소비)
-- `globex` 한도: 분당 **500 토큰**
+- `acme-corp` 한도: 분당 60 토큰 (요청당 약 15~17 토큰 소비)
+- `globex` 한도: 분당 500 토큰
 
-1. **`acme-corp` 쿼터 소진 유도 (연속 6회 호출)**:
+1. `acme-corp` 쿼터 소진 유도 (연속 6회 호출):
    ```bash
    for i in $(seq 1 6); do
      code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST "$GW/v1/chat/completions" \
@@ -320,9 +320,9 @@ curl -sS -i -X POST "$GW/v1/chat/completions" \
      echo "acme-corp 요청 #$i 결과 코드: $code"
    done
    ```
-   - **기대 결과**: #1~#4 요청은 `200 OK`, #5번째부터 한도(60 토큰)가 초과되어 `429 Too Many Requests` 반환.
+   - 기대 결과: #1~#4 요청은 `200 OK`, #5번째부터 한도(60 토큰)가 초과되어 `429 Too Many Requests` 반환.
 
-2. **`globex` 격리 확인 (Acme가 차단된 직후 호출)**:
+2. `globex` 격리 확인 (Acme가 차단된 직후 호출):
    ```bash
    curl -sS -i -X POST "$GW/v1/chat/completions" \
      -H "Host: $PARTNER_HOST" \
@@ -330,7 +330,7 @@ curl -sS -i -X POST "$GW/v1/chat/completions" \
      -H "Content-Type: application/json" \
      -d '{"model":"gemma-rr","messages":[{"role":"user","content":"Globex check"}],"max_tokens":16}'
    ```
-   - **기대 결과**: Acme가 차단된 동일 시점에도 Globex는 독자 버킷(500 토큰)을 가지므로 HTTP `200 OK` 통과.
+   - 기대 결과: Acme가 차단된 동일 시점에도 Globex는 독자 버킷(500 토큰)을 가지므로 HTTP `200 OK` 통과.
 
 ---
 
@@ -371,7 +371,7 @@ python3 /tmp/make_payload.py
 
 ### 6.2 Gemma EPP 지능형 라우팅 가속 측정
 
-1. **1차 요청 (Cold Miss)**:
+1. 1차 요청 (Cold Miss):
    ```bash
    curl -N -s -X POST "$GW/v1/chat/completions" \
      -H "Authorization: Bearer $GT" \
@@ -379,9 +379,9 @@ python3 /tmp/make_payload.py
      -d @/tmp/prefix_q1.json \
      -w "\n[1차 Cold TTFT]: %{time_starttransfer}s | [전체 시간]: %{time_total}s\n"
    ```
-   - **관측치**: 1,500 토큰 Prefill 연산으로 인해 TTFT가 약 **0.8s~1.2s** 소요됩니다.
+   - 관측치: 1,500 토큰 Prefill 연산으로 인해 TTFT가 약 0.8s~1.2s 소요됩니다.
 
-2. **2차 요청 (Warm Cache Hit)**:
+2. 2차 요청 (Warm Cache Hit):
    ```bash
    curl -N -s -X POST "$GW/v1/chat/completions" \
      -H "Authorization: Bearer $GT" \
@@ -389,10 +389,10 @@ python3 /tmp/make_payload.py
      -d @/tmp/prefix_q2.json \
      -w "\n[2차 Warm TTFT]: %{time_starttransfer}s | [전체 시간]: %{time_total}s\n"
    ```
-   - **관측치**: EPP가 프롬프트 접두사 해시를 평가하여 1차 요청을 처리했던 Pod로 자동 유도합니다.
-     TTFT가 약 **0.14s 수준으로 단축되어 5배 이상의 가속**을 보입니다.
+   - 관측치: EPP가 프롬프트 접두사 해시를 평가하여 1차 요청을 처리했던 Pod로 자동 유도합니다.
+     TTFT가 약 0.14s 수준으로 단축되어 5배 이상의 가속을 보입니다.
 
-3. **vLLM Pod별 캐시 메트릭 확인**:
+3. vLLM Pod별 캐시 메트릭 확인:
    ```bash
    for POD in $(kubectl get pods -n vllm -l app=vllm-server -o jsonpath='{.items[*].metadata.name}'); do
      echo "=== Pod: $POD ==="
@@ -420,8 +420,8 @@ python3 /tmp/make_payload.py
 ### 7.2 Google Cloud Monitoring 대시보드 점검
 
 1. 웹 브라우저로 커스텀 대시보드에 접속합니다.
-   - **URL**: `https://console.cloud.google.com/monitoring/dashboards?project=<YOUR_PROJECT_ID>` (또는 대시보드 목록에서 `vLLM Model Server Monitoring` 선택)
-   - **명칭**: `vLLM Model Server Monitoring`
+   - URL: `https://console.cloud.google.com/monitoring/dashboards?project=<YOUR_PROJECT_ID>` (또는 대시보드 목록에서 `vLLM Model Server Monitoring` 선택)
+   - 명칭: `vLLM Model Server Monitoring`
 
 2. 핵심 차트 및 위젯 확인:
    - `Prefix Cache Hit Rate %`: 실시간 접두사 캐시 적중률 게이지
@@ -436,30 +436,30 @@ python3 /tmp/make_payload.py
 
 | 테스트 유형 | 실행 명령 | 기대 응답 | 판정 기준 |
 |---|---|---|---|
-| **무인증 익명 요청** | `curl -i -s -X POST $GW/v1/chat/completions -H 'Content-Type: application/json' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `Jwt is missing` |
-| **위조 JWT 토큰** | `curl -i -s -X POST $GW/v1/chat/completions -H 'Authorization: Bearer bad-token' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `invalid_token` |
-| **틀린 파트너 키** | `curl -i -s -X POST $GW/v1/chat/completions -H "Host: $PARTNER_HOST" -H 'X-API-Key: wrong-key' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `Client authentication failed.` |
-| **Host 헤더 누락** | `curl -i -s -X POST $GW/v1/chat/completions -H 'X-API-Key: pk-acme-001' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | 기본 리스너로 유입되어 `Jwt is missing` 차단 |
+| 무인증 익명 요청 | `curl -i -s -X POST $GW/v1/chat/completions -H 'Content-Type: application/json' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `Jwt is missing` |
+| 위조 JWT 토큰 | `curl -i -s -X POST $GW/v1/chat/completions -H 'Authorization: Bearer bad-token' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `invalid_token` |
+| 틀린 파트너 키 | `curl -i -s -X POST $GW/v1/chat/completions -H "Host: $PARTNER_HOST" -H 'X-API-Key: wrong-key' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | `Client authentication failed.` |
+| Host 헤더 누락 | `curl -i -s -X POST $GW/v1/chat/completions -H 'X-API-Key: pk-acme-001' -d '{"model":"gemma-rr"}'` | `HTTP 401 Unauthorized` | 기본 리스너로 유입되어 `Jwt is missing` 차단 |
 
 ---
 
 ## 9. 문제 해결 및 점검 팁
 
-1. **`HTTP 429`가 발생하며 요청이 막힐 때**:
+1. `HTTP 429`가 발생하며 요청이 막힐 때:
    - `claude-sonnet-5`: 사내 쿼터(분당 50만 토큰)가 소진되었는지 확인합니다. 1분이 경과한 뒤 자동 복구됩니다.
    - 파트너 호출: `acme-corp`는 분당 60토큰 한도이므로 1분 후 재시도하거나 `globex` 키를 사용합니다.
 
-2. **Workstation에서 Claude Code 실행 시 게이트웨이를 경유하지 않을 때**:
+2. Workstation에서 Claude Code 실행 시 게이트웨이를 경유하지 않을 때:
    - `env | grep CLAUDE_CODE_USE_VERTEX`를 확인하여 설정되어 있다면 `unset CLAUDE_CODE_USE_VERTEX`로 제거합니다.
    - `~/.claude/settings.json`의 `ANTHROPIC_BASE_URL` 값이 게이트웨이 주소인지 확인합니다.
 
-3. **QuotaPolicy 수정 사항이 Envoy에 즉시 반영되지 않을 때**:
+3. QuotaPolicy 수정 사항이 Envoy에 즉시 반영되지 않을 때:
    - Envoy Gateway 컨트롤러를 재시작하여 xDS 설정을 재조정합니다.
    ```bash
    kubectl rollout restart deployment/envoy-gateway -n envoy-gateway-system
    kubectl rollout status deployment/envoy-gateway -n envoy-gateway-system --timeout=180s
    ```
 
-4. **Claude Code 호출 시 `400 Unexpected value(s) advisor-tool-2026-03-01 for the anthropic-beta header` 오류 발생 시**:
+4. Claude Code 호출 시 `400 Unexpected value(s) advisor-tool-2026-03-01 for the anthropic-beta header` 오류 발생 시:
    - 최신 버전 Claude Code가 주입하는 실험적 베타 헤더를 업스트림 엔드포인트가 해석하지 못해 발생하는 현상입니다.
    - `~/.claude/settings.json`의 `env` 블록에 `"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"`을 등록하거나 터미널에서 `export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1`을 선언하여 미지원 헤더 주입을 비활성화합니다.

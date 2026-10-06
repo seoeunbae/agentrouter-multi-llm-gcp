@@ -1,13 +1,13 @@
 # Project Specification: Multi-LLM Serving Architecture with Agentrouter
 
 ## 1. Architecture Overview
-- **Infrastructure Layer:** GCP Project `<YOUR_PROJECT_ID>` (`asia-southeast1`), GKE Standard cluster with Gateway API and GCS FUSE CSI driver enabled. L4 GPU NodePool (2x `g2-standard-8`, spot=true). Cloud SQL PostgreSQL 16. GCS Bucket for model weights.
-- **Model Storage & Serving Layer:** Model weights loaded from Hugging Face into GCS. vLLM `0.29.0` pods with GCS FUSE mounts (`gke-gcsfuse/volumes: "true"`). Memory contention simulated via VRAM limits, Prefix Caching V1 enabled.
-- **Routing & Networking Layer:** Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`) intercepting external traffic, buffering JSON request bodies to apply L7 routing against the `model` key. Forwarding internal routes to `InferencePool` via `inference.networking.k8s.io/v1`. `llm-d-router` (`0.10.0`) acts as an Envoy ext-proc EPP to rank InferencePool pods dynamically using Prefix Cache scoring. Egress to Vertex AI using GCP credentials for Gemini models and Anthropic Claude models.
-- **Security & Multi-Tenancy Layer:** 3-tier unified authentication via Envoy Gateway `SecurityPolicy`: GCIP JWT for corporate employees / Cloud Workstation, Google SA ID Tokens for internal microservices, and API Key authentication for external partners with strict model routing isolation.
-- **Traffic Policy & Quotas:** Redis-backed token rate limiting (`BackendTrafficPolicy`) for LLM inference calls and multi-tenant token quota isolation (`QuotaPolicy`) preventing noisy neighbor resource exhaustion.
-- **Observability Layer:** [Arize Phoenix](https://github.com/Arize-ai/phoenix) backing to Cloud SQL via Auth Proxy sidecar. OTLP trace gathering from API paths. PodMonitoring targeting vLLM `/metrics` for prefix caches.
-- **Validation & Docs:** In-cluster load generator pod resetting vLLM caches dynamically across 3 randomized arms. Output feeds into empirical tutorial assets compliant with `AGENTS.md`.
+- Infrastructure Layer: GCP Project `<YOUR_PROJECT_ID>` (`asia-southeast1`), GKE Standard cluster with Gateway API and GCS FUSE CSI driver enabled. L4 GPU NodePool (2x `g2-standard-8`, spot=true). Cloud SQL PostgreSQL 16. GCS Bucket for model weights.
+- Model Storage & Serving Layer: Model weights loaded from Hugging Face into GCS. vLLM `0.29.0` pods with GCS FUSE mounts (`gke-gcsfuse/volumes: "true"`). Memory contention simulated via VRAM limits, Prefix Caching V1 enabled.
+- Routing & Networking Layer: Envoy AI Gateway ([Agentrouter](https://github.com/theagentrouter/agent-router) `1.1.0`) intercepting external traffic, buffering JSON request bodies to apply L7 routing against the `model` key. Forwarding internal routes to `InferencePool` via `inference.networking.k8s.io/v1`. `llm-d-router` (`0.10.0`) acts as an Envoy ext-proc EPP to rank InferencePool pods dynamically using Prefix Cache scoring. Egress to Vertex AI using GCP credentials for Gemini models and Anthropic Claude models.
+- Security & Multi-Tenancy Layer: 3-tier unified authentication via Envoy Gateway `SecurityPolicy`: GCIP JWT for corporate employees / Cloud Workstation, Google SA ID Tokens for internal microservices, and API Key authentication for external partners with strict model routing isolation.
+- Traffic Policy & Quotas: Redis-backed token rate limiting (`BackendTrafficPolicy`) for LLM inference calls and multi-tenant token quota isolation (`QuotaPolicy`) preventing noisy neighbor resource exhaustion.
+- Observability Layer: [Arize Phoenix](https://github.com/Arize-ai/phoenix) backing to Cloud SQL via Auth Proxy sidecar. OTLP trace gathering from API paths. PodMonitoring targeting vLLM `/metrics` for prefix caches.
+- Validation & Docs: In-cluster load generator pod resetting vLLM caches dynamically across 3 randomized arms. Output feeds into empirical tutorial assets compliant with `AGENTS.md`.
 
 ---
 

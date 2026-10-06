@@ -1,16 +1,16 @@
 # Quickstart & Deployment
 
-This guide covers prerequisites, one-command automated deployment via `Makefile`, and step-by-step Kubernetes manifest application for the **Agentrouter Multi-LLM GCP** platform.
+This guide covers prerequisites, one-command automated deployment via `Makefile`, and step-by-step Kubernetes manifest application for the Agentrouter Multi-LLM GCP platform.
 
 ---
 
 ## 1. Prerequisites
 
-- **Google Cloud SDK (`gcloud`)** authenticated with an active GCP project
-- **Terraform 1.5+**
-- **Kubernetes CLI (`kubectl`)**
-- **`jq`**, **`curl`**
-- **Hugging Face Access Token**: Must have accepted the model license terms for `google/gemma-2-2b-it` with `Read` permission
+- Google Cloud SDK (`gcloud`) authenticated with an active GCP project
+- Terraform 1.5+
+- Kubernetes CLI (`kubectl`)
+- `jq`, `curl`
+- Hugging Face Access Token: Must have accepted the model license terms for `google/gemma-2-2b-it` with `Read` permission
 
 ---
 
@@ -91,6 +91,6 @@ kubectl apply -k manifests/08-model-armor
 
 ## 5. Next Steps
 
-- **Hands-on Workshop Walkthrough**: Follow the [Customer Workshop Guide](workshop-guide.md) for IAM checks, GPU quota verification, and end-to-end scenario testing.
-- **Scenario Verification**: Run through the [Manual Testing Guide](../operations/manual-test-guide.md) to validate JWT auth, SA tokens, Partner API keys, Redis quotas, and Prefix Caching.
-- **Claude Code Integration**: See the [Claude Code & Vertex AI Compatibility Guide](../operations/claude-code-compatibility.md) for `advisor-tool-2026-03-01` header handling.
+- Hands-on Workshop Walkthrough: Follow the [Customer Workshop Guide](workshop-guide.md) for IAM checks, GPU quota verification, and end-to-end scenario testing.
+- Scenario Verification: Run through the [Manual Testing Guide](../operations/manual-test-guide.md) to validate JWT auth, SA tokens, Partner API keys, Redis quotas, and Prefix Caching.
+- Claude Code Integration: See the [Claude Code & Vertex AI Compatibility Guide](../operations/claude-code-compatibility.md) for `advisor-tool-2026-03-01` header handling.

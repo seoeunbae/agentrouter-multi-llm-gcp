@@ -10,11 +10,11 @@
 
 실습 참가자는 단일 게이트웨이 엔드포인트에서 사내 업무 환경, 내부 마이크로서비스, 외부 파트너 서비스를 수용하는 엔터프라이즈 AI 서빙 인프라를 직접 구축합니다.
 
-- **인프라 계층**: GKE Standard 클러스터와 2대의 NVIDIA L4 GPU Spot 노드풀(`g2-standard-8`), Cloud SQL PostgreSQL 16 인스턴스 및 Cloud Storage 버킷을 프로비저닝합니다.
-- **추론 백엔드 계층**: Google Cloud Vertex AI(Gemini 2.5 Flash 및 Claude Sonnet 5)와 사내 호스팅 vLLM(Gemma 2B) 모델을 연동합니다.
-- **지능형 라우팅 및 캐시 가속**: Kubernetes GIE 규격의 `InferencePool`과 `llm-d-router`(EPP) 접두사 캐시 스코어러를 적용해 GPU 연산 지연시간을 줄입니다.
-- **다계층 보안 및 인가**: GCIP JWT, Google SA ID 토큰, 파트너 API Key 인증을 적용하고 테넌트별 토큰 예산 격리를 실습합니다.
-- **풀스택 관측성**: Arize Phoenix와 Google Cloud Monitoring으로 추론 트레이스와 접두사 캐시 지표를 수집합니다.
+- 인프라 계층: GKE Standard 클러스터와 2대의 NVIDIA L4 GPU Spot 노드풀(`g2-standard-8`), Cloud SQL PostgreSQL 16 인스턴스 및 Cloud Storage 버킷을 프로비저닝합니다.
+- 추론 백엔드 계층: Google Cloud Vertex AI(Gemini 2.5 Flash 및 Claude Sonnet 5)와 사내 호스팅 vLLM(Gemma 2B) 모델을 연동합니다.
+- 지능형 라우팅 및 캐시 가속: Kubernetes GIE 규격의 `InferencePool`과 `llm-d-router`(EPP) 접두사 캐시 스코어러를 적용해 GPU 연산 지연시간을 줄입니다.
+- 다계층 보안 및 인가: GCIP JWT, Google SA ID 토큰, 파트너 API Key 인증을 적용하고 테넌트별 토큰 예산 격리를 실습합니다.
+- 풀스택 관측성: Arize Phoenix와 Google Cloud Monitoring으로 추론 트레이스와 접두사 캐시 지표를 수집합니다.
 
 상세 아키텍처 다이어그램 및 시퀀스 흐름은 다음 문서를 참고하십시오.
 - [리소스 구조 및 계층 다이어그램](../architecture/gateway-resources.md)
@@ -57,7 +57,7 @@ gcloud services enable compute.googleapis.com container.googleapis.com \
   iamcredentials.googleapis.com aiplatform.googleapis.com \
   identitytoolkit.googleapis.com firebase.googleapis.com --project=$GCP_PROJECT
 ```
-아울러 사내 임직원 JWT 발급 스크립트(`scripts/gcip-token.sh`)를 실행하려면 GCP 콘솔의 **Identity Platform(또는 Firebase Authentication)** 메뉴에서 해당 프로젝트를 활성화하고 기본 Web App을 1개 등록해 두어야 합니다.
+아울러 사내 임직원 JWT 발급 스크립트(`scripts/gcip-token.sh`)를 실행하려면 GCP 콘솔의 Identity Platform(또는 Firebase Authentication) 메뉴에서 해당 프로젝트를 활성화하고 기본 Web App을 1개 등록해 두어야 합니다.
 
 ### 2.5 NVIDIA L4 GPU 할당량(Quota) 확인
 GKE 클러스터 노드풀에서 NVIDIA L4 GPU 2대를 프로비저닝하려면 리전별 GPU 할당량이 최소 2 이상 확보되어 있어야 합니다.
@@ -216,7 +216,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 1500
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, 클라이언트가 별도 GCP IAM 권한이나 API 키를 갖지 않아도 게이트웨이가 백엔드 자격증명(`BackendSecurityPolicy`)으로 Vertex AI를 대리 호출하여 한국어 응답을 반환합니다.
+- 기대 결과: HTTP `200 OK`, 클라이언트가 별도 GCP IAM 권한이나 API 키를 갖지 않아도 게이트웨이가 백엔드 자격증명(`BackendSecurityPolicy`)으로 Vertex AI를 대리 호출하여 한국어 응답을 반환합니다.
 
 ```bash
 # 3. Vertex AI Claude Sonnet 5 호출 (Messages 규격)
@@ -229,7 +229,7 @@ curl -sS -X POST "$GW/anthropic/v1/messages" \
     "max_tokens": 30
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, `type: "message"` 규격으로 Claude 응답 반환.
+- 기대 결과: HTTP `200 OK`, `type: "message"` 규격으로 Claude 응답 반환.
 
 #### 5.2.1 사내 임직원 AI 코딩 에이전트 (Claude Code CLI) 연동 실습
 개발자가 Cloud Workstation이나 로컬 터미널에서 Claude Code(`claude` CLI)를 사용할 때, 개별 GCP 권한 없이도 게이트웨이와 `apiKeyHelper`를 거쳐 안전하게 모델을 사용하는 구성입니다.
@@ -242,7 +242,7 @@ python3 scripts/prepare_ws_settings.py
 mkdir -p ~/.claude
 cp /tmp/new_settings.json ~/.claude/settings.json
 ```
-- **핵심 설정 포인트**:
+- 핵심 설정 포인트:
   - `"ANTHROPIC_BASE_URL": "$GW/anthropic"`: 모든 추론 요청을 Envoy AI Gateway의 Anthropic 호환 경로로 라우팅합니다.
   - `"apiKeyHelper"`: 호출 시마다 `gcip-token.sh`를 실행해 신선한 사내 JWT 토큰을 동적으로 주입합니다.
   - `"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"`: 최신 Claude Code가 자동 주입하는 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 충돌을 방지합니다. 상세 원리는 [Claude Code 및 Vertex AI 호환성 가이드](../operations/claude-code-compatibility.md)를 참고하십시오.
@@ -251,7 +251,7 @@ cp /tmp/new_settings.json ~/.claude/settings.json
 # 3. Claude Code 단발성 프롬프트 실행 검증
 claude -p "안녕! 3단어로 답해줘"
 ```
-- **기대 결과**: 종료 코드 `0`과 함께 한국어 3단어 응답이 정상 출력되며, 게이트웨이 액세스 로그에 `200 OK`가 기록됩니다.
+- 기대 결과: 종료 코드 `0`과 함께 한국어 3단어 응답이 정상 출력되며, 게이트웨이 액세스 로그에 `200 OK`가 기록됩니다.
 
 ---
 
@@ -269,7 +269,7 @@ curl -sS -X POST "$GW/authtest" \
   -H "Content-Type: application/json" \
   -d '{}' | jq .headers
 ```
-- **기대 결과**: 에코 서버 수신 헤더의 `"x-tenant-id"`가 클라이언트가 위조한 `"finance-vip"`가 아닌 JWT 서명 클레임인 `"platform"`으로 기록되어 헤더 위조 공격이 원천 차단됩니다.
+- 기대 결과: 에코 서버 수신 헤더의 `"x-tenant-id"`가 클라이언트가 위조한 `"finance-vip"`가 아닌 JWT 서명 클레임인 `"platform"`으로 기록되어 헤더 위조 공격이 원천 차단됩니다.
 
 ---
 
@@ -295,7 +295,7 @@ curl -sS -X POST "$GW/v1/chat/completions" \
     "max_tokens": 15
   }' | jq .
 ```
-- **기대 결과**: HTTP `200 OK`, `system_fingerprint`에 `vllm-0.29.0` 표기.
+- 기대 결과: HTTP `200 OK`, `system_fingerprint`에 `vllm-0.29.0` 표기.
 - 게이트웨이가 토큰의 `email` 클레임을 읽어 백엔드 `x-tenant-id` 헤더에 서비스 계정 주소를 자동 주입합니다. (동일하게 `$GW/authtest`로 확인 가능)
 
 ---
@@ -328,7 +328,7 @@ curl -sS -i -X POST "$GW/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -d '{"model":"claude-sonnet-5","messages":[{"role":"user","content":"Blocked"}]}' | head -n 1
 ```
-- **기대 결과**: `HTTP/1.1 404 Not Found` 반환. 파트너 라우트에는 고비용 모델 규칙이 등록되어 있지 않아 비용 사고를 원천 방지합니다.
+- 기대 결과: `HTTP/1.1 404 Not Found` 반환. 파트너 라우트에는 고비용 모델 규칙이 등록되어 있지 않아 비용 사고를 원천 방지합니다.
 
 ```bash
 # 5. 테넌트 쿼터 독립 격리 검증 (acme-corp 분당 60토큰 초과 유도)
@@ -348,7 +348,7 @@ curl -s -o /dev/null -w "Globex 동시 요청 응답: HTTP %{http_code}\n" -X PO
   -H "Content-Type: application/json" \
   -d '{"model":"gemma-rr","messages":[{"role":"user","content":"Globex check"}],"max_tokens":10}'
 ```
-- **기대 결과**: `acme-corp`는 분당 예산 소진으로 `HTTP 429 Too Many Requests`로 차단되지만 `globex`는 독립된 예산 버킷을 적용받아 즉시 `HTTP 200`을 반환받습니다.
+- 기대 결과: `acme-corp`는 분당 예산 소진으로 `HTTP 429 Too Many Requests`로 차단되지만 `globex`는 독립된 예산 버킷을 적용받아 즉시 `HTTP 200`을 반환받습니다.
 
 ---
 
@@ -382,7 +382,7 @@ curl -N -s -o /dev/null -X POST "$GW/v1/chat/completions" \
   -d @/tmp/p2.json \
   -w "[2차 Warm TTFT]: %{time_starttransfer}초\n"
 ```
-- **기대 결과**: 1차 Cold TTFT 대비 2차 Warm TTFT가 단축되는 가속 효과를 관측할 수 있습니다. EPP의 `prefix-cache-scorer`가 해당 캐시를 가진 GPU 파드로 요청을 정확히 유도하기 때문입니다.
+- 기대 결과: 1차 Cold TTFT 대비 2차 Warm TTFT가 단축되는 가속 효과를 관측할 수 있습니다. EPP의 `prefix-cache-scorer`가 해당 캐시를 가진 GPU 파드로 요청을 정확히 유도하기 때문입니다.
 
 ```bash
 # 4. vLLM GPU 파드별 실제 Prefix Cache 적중 카운터 비교
@@ -392,7 +392,7 @@ for POD in $(kubectl get pods -n vllm -l app=vllm-server -o jsonpath='{.items[*]
     | grep -E "vllm:prefix_cache_hits_total"
 done
 ```
-- **기대 결과**: 2대의 vLLM 파드 중 1차 요청을 처리했던 특정 파드에서만 `vllm:prefix_cache_hits_total` 수치가 약 1,500 토큰 이상 증가한 것을 눈으로 확인할 수 있습니다.
+- 기대 결과: 2대의 vLLM 파드 중 1차 요청을 처리했던 특정 파드에서만 `vllm:prefix_cache_hits_total` 수치가 약 1,500 토큰 이상 증가한 것을 눈으로 확인할 수 있습니다.
 
 ---
 
@@ -415,16 +415,16 @@ DASH_ID=$(gcloud monitoring dashboards list --project="$GCP_PROJECT" \
 echo "대시보드 접속 URL: https://console.cloud.google.com/monitoring/dashboards/builder/${DASH_ID}?project=${GCP_PROJECT}"
 ```
 
-1. 출력된 **대시보드 접속 URL**을 클릭하여 Google Cloud Console의 `vLLM Model Server Monitoring` 화면으로 이동합니다.
+1. 출력된 대시보드 접속 URL을 클릭하여 Google Cloud Console의 `vLLM Model Server Monitoring` 화면으로 이동합니다.
 2. 상단 필터 바의 드롭다운 4종(`cluster`, `namespace`, `pod`, `model_name`)을 조합해 관측 범위를 조절합니다.
    - `pod` 필터에서 특정 파드(`vllm-server-*`)를 선택하면 해당 GPU 인스턴스 단독 지표를 분리 관측할 수 있습니다.
    - `pod`와 `model_name`을 `All`로 두면 모든 GPU 파드의 시계열이 한 차트에 겹쳐 표시되어 파드 간 부하 분산과 캐시 적중 편차를 한눈에 비교할 수 있습니다.
 3. 대시보드 내 6대 핵심 위젯을 확인합니다.
-   - **KV Cache Usage %**: L4 GPU VRAM 내 KV 캐시 블록 점유율
-   - **Prefix Cache Hit Rate %**: EPP가 유도한 프롬프트 접두사 캐시 적중률 (5.6절 실습 직후 특정 파드 적중률 상승 확인)
-   - **Running & Waiting Requests**: 현재 GPU에서 동시 처리 중인 추론 요청 수와 큐 대기열(Waiting) 발생 여부
-   - **TTFT (Time to First Token) Latency**: P50 및 P95 첫 토큰 응답 지연시간 추이
-   - **Generation Token & Request Throughput**: 초당 생성 토큰 수(Tokens/s) 및 초당 처리 완료 요청 수(Req/s)
+   - KV Cache Usage %: L4 GPU VRAM 내 KV 캐시 블록 점유율
+   - Prefix Cache Hit Rate %: EPP가 유도한 프롬프트 접두사 캐시 적중률 (5.6절 실습 직후 특정 파드 적중률 상승 확인)
+   - Running & Waiting Requests: 현재 GPU에서 동시 처리 중인 추론 요청 수와 큐 대기열(Waiting) 발생 여부
+   - TTFT (Time to First Token) Latency: P50 및 P95 첫 토큰 응답 지연시간 추이
+   - Generation Token & Request Throughput: 초당 생성 토큰 수(Tokens/s) 및 초당 처리 완료 요청 수(Req/s)
 
 ---
 
@@ -436,16 +436,16 @@ echo "대시보드 접속 URL: https://console.cloud.google.com/monitoring/dashb
 # 1. Arize Phoenix 웹 UI 포트포워딩 실행
 kubectl port-forward -n phoenix svc/phoenix-service 6006:6006
 ```
-- **로컬 PC 환경**: 웹 브라우저에서 `http://localhost:6006`에 접속합니다.
-- **Cloud Shell / Cloud Workstation 환경**: 상단 **웹 미리보기(Web Preview)** 아이콘을 클릭하고 포트를 `6006`으로 변경하여 접속합니다.
+- 로컬 PC 환경: 웹 브라우저에서 `http://localhost:6006`에 접속합니다.
+- Cloud Shell / Cloud Workstation 환경: 상단 웹 미리보기(Web Preview) 아이콘을 클릭하고 포트를 `6006`으로 변경하여 접속합니다.
 
-1. Phoenix 첫 화면의 Projects 목록에서 **`default` 프로젝트**를 클릭해 진입합니다.
-2. 상단 탭에서 **`Traces`**를 선택하면 앞서 시나리오 1 ~ 5에서 호출한 모든 모델(`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-rr`, `gemma-epp`)의 `ChatCompletion` 트레이스 목록이 시간순으로 표시됩니다.
+1. Phoenix 첫 화면의 Projects 목록에서 `default` 프로젝트를 클릭해 진입합니다.
+2. 상단 탭에서 `Traces`를 선택하면 앞서 시나리오 1 ~ 5에서 호출한 모든 모델(`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-rr`, `gemma-epp`)의 `ChatCompletion` 트레이스 목록이 시간순으로 표시됩니다.
 3. 개별 `ChatCompletion` Span 행을 클릭해 우측 상세 패널에서 다음 4가지 엔터프라이즈 감사 항목을 확인합니다.
-   - **모델 및 시스템 식별 (`Attributes` 탭)**: `llm.model_name`(`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-epp` 등) 및 `llm.system`(`openai`, `anthropic`) 기록 확인
-   - **입출력 프롬프트 원문 감사 (`Input / Output` 탭)**: `llm.input_messages`(사용자가 전송한 실제 프롬프트)와 `llm.output_messages`(모델이 생성한 응답 원문)가 누락 없이 기록되어 보안 감사 및 품질 평가에 활용 가능함을 확인
-   - **토큰 과금 원장 대조 (`Attributes` 탭)**: `llm.token_count.prompt`(입력 토큰), `llm.token_count.completion`(출력 토큰), `llm.token_count.total`(총 소비 토큰) 수치 확인
-   - **엔드투엔드 레이턴시 비교 (`Latency` 컬럼)**: 게이트웨이 진입부터 백엔드 응답 완료까지 걸린 총 소요 시간(`Duration`)을 비교해 1차 Cold 요청 대비 2차 Warm 캐시 적중 요청의 지연시간 단축 효과 확인
+   - 모델 및 시스템 식별 (`Attributes` 탭): `llm.model_name`(`gemini-2.5-flash`, `claude-sonnet-5`, `gemma-epp` 등) 및 `llm.system`(`openai`, `anthropic`) 기록 확인
+   - 입출력 프롬프트 원문 감사 (`Input / Output` 탭): `llm.input_messages`(사용자가 전송한 실제 프롬프트)와 `llm.output_messages`(모델이 생성한 응답 원문)가 누락 없이 기록되어 보안 감사 및 품질 평가에 활용 가능함을 확인
+   - 토큰 과금 원장 대조 (`Attributes` 탭): `llm.token_count.prompt`(입력 토큰), `llm.token_count.completion`(출력 토큰), `llm.token_count.total`(총 소비 토큰) 수치 확인
+   - 엔드투엔드 레이턴시 비교 (`Latency` 컬럼): 게이트웨이 진입부터 백엔드 응답 완료까지 걸린 총 소요 시간(`Duration`)을 비교해 1차 Cold 요청 대비 2차 Warm 캐시 적중 요청의 지연시간 단축 효과 확인
 
 ```bash
 # [선택] 웹 브라우저 없이 터미널에서 즉시 최근 적재된 Span 5건 검증 (CLI 원라이너)
@@ -453,13 +453,13 @@ kubectl exec -n routing deploy/echo-server -- wget -qO- \
   "http://phoenix-service.phoenix.svc.cluster.local:6006/v1/projects/default/spans?limit=5" \
   | jq '{total_fetched: (.data | length), spans: [.data[] | {name: .name, model: .attributes."llm.model_name", prompt_tokens: .attributes."llm.token_count.prompt", completion_tokens: .attributes."llm.token_count.completion", total_tokens: .attributes."llm.token_count.total", trace_id: .context.trace_id}]}'
 ```
-- **기대 결과**: 최근 호출한 모델들의 `trace_id`, `model`, `prompt_tokens`, `completion_tokens`, `total_tokens`가 JSON 배열로 즉시 출력됩니다.
+- 기대 결과: 최근 호출한 모델들의 `trace_id`, `model`, `prompt_tokens`, `completion_tokens`, `total_tokens`가 JSON 배열로 즉시 출력됩니다.
 
 ---
 
 ### 5.8 시나리오 7: Google Cloud Model Armor & Cloud DLP 가드레일 실습 (프롬프트 인젝션 차단 및 PII 마스킹)
 
-Envoy `EnvoyExtensionPolicy`(`ext_proc`)를 통해 게이트웨이 앞단에 연동된 **Google Cloud Model Armor** 및 **Sensitive Data Protection(Cloud DLP)** 가드레일이 백엔드 LLM(`claude-sonnet-5`) 호출 전에 공격 프롬프트를 선제 차단하고 민감 개인정보(PII)를 자동 비식별화하는지 검증합니다.
+Envoy `EnvoyExtensionPolicy`(`ext_proc`)를 통해 게이트웨이 앞단에 연동된 Google Cloud Model Armor 및 Sensitive Data Protection(Cloud DLP) 가드레일이 백엔드 LLM(`claude-sonnet-5`) 호출 전에 공격 프롬프트를 선제 차단하고 민감 개인정보(PII)를 자동 비식별화하는지 검증합니다.
 
 ```bash
 # [사전 배포] 08-model-armor 가 아직 배포되지 않은 경우 실행
@@ -479,7 +479,7 @@ curl -i -sS -X POST "$GW/v1/chat/completions" \
     ]
   }'
 ```
-- **예상 결과**: Vertex AI Anthropic(`claude-sonnet-5`) 백엔드에 도달하기 전, `model-armor-extproc`가 Model Armor `:sanitizeUserPrompt`로 탐지하여 즉시 **`HTTP/1.1 403 Forbidden`** 과 `x-model-armor-action: BLOCKED_REQUEST` 헤더를 반환합니다.
+- 예상 결과: Vertex AI Anthropic(`claude-sonnet-5`) 백엔드에 도달하기 전, `model-armor-extproc`가 Model Armor `:sanitizeUserPrompt`로 탐지하여 즉시 `HTTP/1.1 403 Forbidden` 과 `x-model-armor-action: BLOCKED_REQUEST` 헤더를 반환합니다.
 
 #### 2) 임직원 JWT(`$GT`)로 Anthropic `claude-sonnet-5`에 민감 개인정보(PII) 포함 요청 (`REDACTED_PII` 자동 마스킹 확인)
 
@@ -494,7 +494,7 @@ curl -i -sS -X POST "$GW/v1/chat/completions" \
     ]
   }'
 ```
-- **예상 결과**: Cloud DLP 비식별화 템플릿이 주민등록번호와 이메일을 `[KOREA_RRN]`, `[EMAIL_ADDRESS]`로 마스킹(`BodyMutation`)하여 `claude-sonnet-5`로 전달하고 정상 응답(`HTTP/1.1 200 OK`)을 반환합니다.
+- 예상 결과: Cloud DLP 비식별화 템플릿이 주민등록번호와 이메일을 `[KOREA_RRN]`, `[EMAIL_ADDRESS]`로 마스킹(`BodyMutation`)하여 `claude-sonnet-5`로 전달하고 정상 응답(`HTTP/1.1 200 OK`)을 반환합니다.
 
 
 ## 6. 트러블슈팅 FAQ

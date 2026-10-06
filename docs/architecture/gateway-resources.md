@@ -54,13 +54,13 @@ flowchart TD
 
 | Resource Type | Role & Metaphor | Deployed Resource Name | Manifest File Path |
 |---|---|---|---|
-| **`GatewayClass`** | **Building Code**: Defines the ingress controller engine installed in the cluster. | `envoy-ai-gw-class` | [`manifests/01-gateway/gateway-class.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-class.yaml) |
-| **`EnvoyProxy`** | **Construction Spec**: Specifies Envoy data-plane pod CPU/memory requests, replicas, log level, and external LoadBalancer options. | `routing/envoy-custom-proxy` | [`manifests/01-gateway/envoy-proxy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/envoy-proxy.yaml) |
-| **`Gateway`** | **Building Main Entrance**: External entry point listening on port 8080 and provisioned with a GCP external LoadBalancer IP. | `routing/envoy-ai-gateway`<br/>(External IP: `<GATEWAY_IP>`) | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml) |
-| **`SecurityPolicy`** | **Security Checkpoint**: Attached to the Gateway or Route to execute JWT verification, API key authentication, and tenant header injection. | `routing/agent-router-jwt`<br/>`routing/partner-apikey` | [`manifests/02-security/security-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
-| **`HTTPRoute`** | **Standard Signpost**: Routes traffic based on standard URL paths (`/authtest`) or headers to regular Kubernetes Services. | `routing/authtest` | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml) |
-| **`AIGatewayRoute`** | **AI-Aware Router**: Buffers and parses the JSON request body, reads the `model` field (`gemini-2.5-flash`, `gemma-rr`), and dispatches to the optimal AI backend. | `routing/envoy-ai-gw-router`<br/>`routing/partner-router` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
-| **`AIServiceBackend`** | **AI Backend Interface**: Declares target backend protocol schemas (OpenAI, GCPVertexAI, GCPAnthropic) and handles protocol translation. | `routing/vertex-ai-backend`<br/>`routing/vertex-ai-claude-backend`<br/>`routing/vllm-rr-backend`<br/>`routing/partner-vllm-backend` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
+| `GatewayClass` | Building Code: Defines the ingress controller engine installed in the cluster. | `envoy-ai-gw-class` | [`manifests/01-gateway/gateway-class.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway-class.yaml) |
+| `EnvoyProxy` | Construction Spec: Specifies Envoy data-plane pod CPU/memory requests, replicas, log level, and external LoadBalancer options. | `routing/envoy-custom-proxy` | [`manifests/01-gateway/envoy-proxy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/envoy-proxy.yaml) |
+| `Gateway` | Building Main Entrance: External entry point listening on port 8080 and provisioned with a GCP external LoadBalancer IP. | `routing/envoy-ai-gateway`<br/>(External IP: `<GATEWAY_IP>`) | [`manifests/01-gateway/gateway.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/01-gateway/gateway.yaml) |
+| `SecurityPolicy` | Security Checkpoint: Attached to the Gateway or Route to execute JWT verification, API key authentication, and tenant header injection. | `routing/agent-router-jwt`<br/>`routing/partner-apikey` | [`manifests/02-security/security-policy.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/02-security/security-policy.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
+| `HTTPRoute` | Standard Signpost: Routes traffic based on standard URL paths (`/authtest`) or headers to regular Kubernetes Services. | `routing/authtest` | [`manifests/05-routing/echo-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/echo-route.yaml) |
+| `AIGatewayRoute` | AI-Aware Router: Buffers and parses the JSON request body, reads the `model` field (`gemini-2.5-flash`, `gemma-rr`), and dispatches to the optimal AI backend. | `routing/envoy-ai-gw-router`<br/>`routing/partner-router` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
+| `AIServiceBackend` | AI Backend Interface: Declares target backend protocol schemas (OpenAI, GCPVertexAI, GCPAnthropic) and handles protocol translation. | `routing/vertex-ai-backend`<br/>`routing/vertex-ai-claude-backend`<br/>`routing/vllm-rr-backend`<br/>`routing/partner-vllm-backend` | [`manifests/05-routing/ai-gateway-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/ai-gateway-route.yaml)<br/>[`manifests/05-routing/partner-route.yaml`](https://github.com/seoeunbae/agentrouter-multi-llm-gcp/blob/main/manifests/05-routing/partner-route.yaml) |
 
 ---
 
@@ -112,12 +112,12 @@ Sequence of operations when a client sends an inference request to `http://<GATE
 
 Policy attachment follows standard Kubernetes Gateway API rules across architectural tiers:
 
-1. **Gateway-Level Policy (`agent-router-jwt`)**:
+1. Gateway-Level Policy (`agent-router-jwt`):
    - `targetRefs` points to the `Gateway`.
    - All child routes attached to this Gateway inherit corporate JWT authentication by default.
    - Prevents unauthenticated routes from unintended exposure.
 
-2. **Route-Level Policy (`partner-apikey`)**:
+2. Route-Level Policy (`partner-apikey`):
    - `targetRefs` points to a specific `HTTPRoute` (`partner-router`).
    - Route-level policies override gateway-level policies according to Gateway API specifications.
    - Requests arriving at the partner domain bypass standard corporate JWT evaluation and enforce strict API key validation.
