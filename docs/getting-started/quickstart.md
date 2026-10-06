@@ -1,18 +1,18 @@
 # Quickstart & Deployment
 
-This guide covers prerequisites, one-command automated deployment via `Makefile`, and step-by-step Kubernetes manifest application for the Agentrouter Multi-LLM GCP platform.
+This guide covers prerequisites, one-command automated deployment via `Makefile`, and step-by-step Kubernetes manifest application for the **Agentrouter Multi-LLM GCP** platform.
 
----
+***
 
 ## 1. Prerequisites
 
-- Google Cloud SDK (`gcloud`) authenticated with an active GCP project
-- Terraform 1.5+
-- Kubernetes CLI (`kubectl`)
-- `jq`, `curl`
-- Hugging Face Access Token: Must have accepted the model license terms for `google/gemma-2-2b-it` with `Read` permission
+* **Google Cloud SDK (`gcloud`)** authenticated with an active GCP project
+* **Terraform 1.5+**
+* **Kubernetes CLI (`kubectl`)**
+* **`jq`**, **`curl`**
+* **Hugging Face Access Token**: Must have accepted the model license terms for `google/gemma-2-2b-it` with `Read` permission
 
----
+***
 
 ## 2. One-Command Deployment
 
@@ -39,7 +39,7 @@ make benchmark
 make clean
 ```
 
----
+***
 
 ## 3. Step-by-Step Manifest Application
 
@@ -72,25 +72,25 @@ kubectl apply -k manifests/07-observability
 kubectl apply -k manifests/08-model-armor
 ```
 
----
+***
 
 ## 4. Makefile Target Reference
 
-| Target | Description |
-|---|---|
-| `make deploy` | Runs `terraform apply`, fetches GKE credentials, substitutes manifest placeholders, and deploys all Kubernetes manifests (`00`–`08`) |
-| `make deploy-model-armor` | Provisions only Google Cloud Model Armor & Cloud DLP templates via Terraform and applies `manifests/08-model-armor` |
-| `make update-manifests` | Substitutes Terraform outputs (`PROJECT_ID`, `GCS_BUCKET_NAME`, `GSA_EMAIL`, `SQL_CONNECTION_NAME`, `MODEL_ARMOR_TEMPLATE_ID`) into YAML manifests |
-| `make setup-secrets` | Creates the `vertex-ai-sa-key` Kubernetes Secret in the `routing` namespace |
-| `make apply-manifests` | Applies all numbered Kustomize directories (`00-setup` through `08-model-armor`) and creates the Cloud Monitoring dashboard |
-| `make benchmark` | Launches the in-cluster `e2e-benchmark-job` and streams comparative latency & cache hit results |
-| `make placeholders` | Restores placeholder tokens across all manifests prior to `git commit` |
-| `make clean` / `make destroy` | Deletes Kubernetes LoadBalancer services and workloads before running `terraform destroy` |
+| Target                        | Description                                                                                                                                        |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make deploy`                 | Runs `terraform apply`, fetches GKE credentials, substitutes manifest placeholders, and deploys all Kubernetes manifests (`00`–`08`)               |
+| `make deploy-model-armor`     | Provisions only Google Cloud Model Armor & Cloud DLP templates via Terraform and applies `manifests/08-model-armor`                                |
+| `make update-manifests`       | Substitutes Terraform outputs (`PROJECT_ID`, `GCS_BUCKET_NAME`, `GSA_EMAIL`, `SQL_CONNECTION_NAME`, `MODEL_ARMOR_TEMPLATE_ID`) into YAML manifests |
+| `make setup-secrets`          | Creates the `vertex-ai-sa-key` Kubernetes Secret in the `routing` namespace                                                                        |
+| `make apply-manifests`        | Applies all numbered Kustomize directories (`00-setup` through `08-model-armor`) and creates the Cloud Monitoring dashboard                        |
+| `make benchmark`              | Launches the in-cluster `e2e-benchmark-job` and streams comparative latency & cache hit results                                                    |
+| `make placeholders`           | Restores placeholder tokens across all manifests prior to `git commit`                                                                             |
+| `make clean` / `make destroy` | Deletes Kubernetes LoadBalancer services and workloads before running `terraform destroy`                                                          |
 
----
+***
 
 ## 5. Next Steps
 
-- Hands-on Workshop Walkthrough: Follow the [Customer Workshop Guide](workshop-guide.md) for IAM checks, GPU quota verification, and end-to-end scenario testing.
-- Scenario Verification: Run through the [Manual Testing Guide](../operations/manual-test-guide.md) to validate JWT auth, SA tokens, Partner API keys, Redis quotas, and Prefix Caching.
-- Claude Code Integration: See the [Claude Code & Vertex AI Compatibility Guide](../operations/claude-code-compatibility.md) for `advisor-tool-2026-03-01` header handling.
+* **Hands-on Workshop Walkthrough**: Follow the [Customer Workshop Guide](workshop-guide.md) for IAM checks, GPU quota verification, and end-to-end scenario testing.
+* **Scenario Verification**: Run through the [Manual Testing Guide](../verification-and-guides/manual-test-guide.md) to validate JWT auth, SA tokens, Partner API keys, Redis quotas, and Prefix Caching.
+* **Claude Code Integration**: See the [Claude Code & Vertex AI Compatibility Guide](../verification-and-guides/claude-code-compatibility.md) for `advisor-tool-2026-03-01` header handling.
