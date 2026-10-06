@@ -92,5 +92,5 @@ kubectl apply -k manifests/08-model-armor
 ## 5. 다음 단계
 
 * **고객 워크숍 실습**: GCP IAM 권한, L4 GPU 쿼터 확인 및 전체 시나리오 실습은 [고객 워크숍 가이드](workshop-guide.md)를 참고하십시오.
-* **시나리오별 수동 검증**: 상세한 검증 명령어는 [수동 테스트 가이드](../and-1/manual-test-guide.md)를 참고하십시오.
-* **Claude Code 연동**: 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 해결 방안은 [Claude Code & Vertex AI 호환성 가이드](../and-1/claude-code-compatibility.md)를 참고하십시오.
+* **시나리오별 수동 검증**: 상세한 검증 명령어는 [수동 테스트 가이드](../operations-ko/manual-test-guide.md)를 참고하십시오.
+* **Claude Code 연동**: 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 해결 방안은 [Claude Code & Vertex AI 호환성 가이드](../operations-ko/claude-code-compatibility.md)를 참고하십시오.

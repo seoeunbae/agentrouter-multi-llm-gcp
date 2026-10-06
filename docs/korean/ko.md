@@ -6,15 +6,15 @@ Google Kubernetes Engine(GKE) 환경에서 [**Agentrouter (formerly Envoy AI Gat
 
 ## 문서 바로가기
 
-| 분류              | 가이드 문서                                                                   | 핵심 내용                                                                                    |
-| --------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| **시작하기**        | [빠른 시작 및 배포](../undefined/quickstart.md)                                 | `make deploy` 명령 한 줄로 GKE, L4 GPU, Cloud SQL, GCS 인프라와 AI 게이트웨이 전체 스택을 배포합니다.            |
-| **시작하기**        | [고객 워크숍 가이드](../undefined/workshop-guide.md)                             | IAM 권한, GPU 쿼터 점검, 3대 다계층 인증, EPP 접두사 캐시, Model Armor 가드레일, Phoenix 관측성까지 단계별 실습을 안내합니다. |
-| **아키텍처 & 설계**   | [게이트웨이 및 리소스 계층 구조](../and/gateway-resources.md)                         | Kubernetes Gateway API 리소스 계층 구조와 라우팅·정책 연결 관계를 확인합니다.                                   |
-| **아키텍처 & 설계**   | [엔드투엔드 요청 처리 흐름](../and/request-flow.md)                                 | 사내 임직원, 내부 마이크로서비스, 외부 파트너 페르소나별 엔드투엔드 시퀀스 다이어그램을 확인합니다.                                 |
-| **아키텍처 & 설계**   | [프로젝트 설계 명세](../and/project-spec.md)                                     | 전체 기능 인벤토리, 마일스톤 검증 매트릭스 및 컴포넌트 간 인터페이스 계약을 정의합니다.                                       |
-| **검증 & 운영 가이드** | [수동 테스트 가이드](../and-1/manual-test-guide.md)                              | 시나리오별 수동 검증 절차와 점검 명령어를 제공합니다.                                                           |
-| **검증 & 운영 가이드** | [Claude Code & Vertex AI 호환성 가이드](../and-1/claude-code-compatibility.md) | Claude Code의 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 원인과 해결 방안을 안내합니다.     |
+| 분류              | 가이드 문서                                                                                | 핵심 내용                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **시작하기**        | [빠른 시작 및 배포](../getting-started-ko/quickstart.md)                                     | `make deploy` 명령 한 줄로 GKE, L4 GPU, Cloud SQL, GCS 인프라와 AI 게이트웨이 전체 스택을 배포합니다.            |
+| **시작하기**        | [고객 워크숍 가이드](../getting-started-ko/workshop-guide.md)                                 | IAM 권한, GPU 쿼터 점검, 3대 다계층 인증, EPP 접두사 캐시, Model Armor 가드레일, Phoenix 관측성까지 단계별 실습을 안내합니다. |
+| **아키텍처 & 설계**   | [게이트웨이 및 리소스 계층 구조](../architecture-ko/gateway-resources.md)                          | Kubernetes Gateway API 리소스 계층 구조와 라우팅·정책 연결 관계를 확인합니다.                                   |
+| **아키텍처 & 설계**   | [엔드투엔드 요청 처리 흐름](../architecture-ko/request-flow.md)                                  | 사내 임직원, 내부 마이크로서비스, 외부 파트너 페르소나별 엔드투엔드 시퀀스 다이어그램을 확인합니다.                                 |
+| **아키텍처 & 설계**   | [프로젝트 설계 명세](../architecture-ko/project-spec.md)                                      | 전체 기능 인벤토리, 마일스톤 검증 매트릭스 및 컴포넌트 간 인터페이스 계약을 정의합니다.                                       |
+| **검증 & 운영 가이드** | [수동 테스트 가이드](../operations-ko/manual-test-guide.md)                                   | 시나리오별 수동 검증 절차와 점검 명령어를 제공합니다.                                                           |
+| **검증 & 운영 가이드** | [Claude Code & Vertex AI 호환성 가이드](../operations-ko/claude-code-compatibility.md)      | Claude Code의 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 원인과 해결 방안을 안내합니다.     |
 
 ***
 
@@ -31,9 +31,9 @@ Google Kubernetes Engine(GKE) 환경에서 [**Agentrouter (formerly Envoy AI Gat
 
 상세 아키텍처 및 컴포넌트 흐름은 다음 문서를 참고하십시오.
 
-* [게이트웨이 및 리소스 계층 구조 다이어그램](../and/gateway-resources.md)
-* [시나리오별 엔드투엔드 요청 처리 시퀀스](../and/request-flow.md)
-* [프로젝트 설계 명세 및 기능 인벤토리](../and/project-spec.md)
+* [게이트웨이 및 리소스 계층 구조 다이어그램](../architecture-ko/gateway-resources.md)
+* [시나리오별 엔드투엔드 요청 처리 시퀀스](../architecture-ko/request-flow.md)
+* [프로젝트 설계 명세 및 기능 인벤토리](../architecture-ko/project-spec.md)
 
 ***
 

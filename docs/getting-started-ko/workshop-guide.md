@@ -18,8 +18,8 @@
 
 상세 아키텍처 다이어그램 및 시퀀스 흐름은 다음 문서를 참고하십시오.
 
-* [리소스 구조 및 계층 다이어그램](../and/gateway-resources.md)
-* [시나리오별 엔드투엔드 요청 처리 시퀀스](../and/request-flow.md)
+* [리소스 구조 및 계층 다이어그램](../architecture-ko/gateway-resources.md)
+* [시나리오별 엔드투엔드 요청 처리 시퀀스](../architecture-ko/request-flow.md)
 
 ***
 
@@ -276,7 +276,7 @@ cp /tmp/new_settings.json ~/.claude/settings.json
 * **핵심 설정 포인트**:
   * `"ANTHROPIC_BASE_URL": "$GW/anthropic"`: 모든 추론 요청을 Envoy AI Gateway의 Anthropic 호환 경로로 라우팅합니다.
   * `"apiKeyHelper"`: 호출 시마다 `gcip-token.sh`를 실행해 신선한 사내 JWT 토큰을 동적으로 주입합니다.
-  * `"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"`: 최신 Claude Code가 자동 주입하는 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 충돌을 방지합니다. 상세 원리는 [Claude Code 및 Vertex AI 호환성 가이드](../and-1/claude-code-compatibility.md)를 참고하십시오.
+  * `"CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1"`: 최신 Claude Code가 자동 주입하는 실험적 베타 헤더(`advisor-tool-2026-03-01`)와 Vertex AI 간 호환성 충돌을 방지합니다. 상세 원리는 [Claude Code 및 Vertex AI 호환성 가이드](../operations-ko/claude-code-compatibility.md)를 참고하십시오.
 
 ```bash
 # 3. Claude Code 단발성 프롬프트 실행 검증
