@@ -1,11 +1,11 @@
 $schema: https://api.gitbook.com/gitbook-docs.yaml
 site:
-  title: seoeun
+  title: AgentRouter Multi LLM GCP
   structure:
     - type: space
       key: space-1
       title: AgentRouter Multi LLM GCP
-      path: untitled
+      path: docs
       default: true
       content:
         directory: ./docs
